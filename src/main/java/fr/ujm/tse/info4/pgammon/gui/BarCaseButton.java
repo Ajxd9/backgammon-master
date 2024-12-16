@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-
 import javax.swing.ImageIcon;
 
 import fr.ujm.tse.info4.pgammon.models.Square;
@@ -49,10 +48,10 @@ public class BarCaseButton extends CaseButton {
         int h = getHeight();
         SquareColor checkerColor = c.getCheckerColor();
 
-        if (checkerColor == SquareColor.EMPTY || c.getCheckerCount() == 0)
+        if (checkerColor == SquareColor.EMPTY || c.getNumCheckers() == 0)
             return;
 
-        int checkerCount = c.getCheckerCount();
+        int checkerCount = c.getNumCheckers();
         int count = Math.min(checkerCount, MAX_CHECKERS_DRAWN);
 
         Graphics2D g2 = (Graphics2D) g.create();
@@ -65,12 +64,12 @@ public class BarCaseButton extends CaseButton {
             offset++;
 
         ImageIcon icon;
-        if (getCase().getCheckerColor() == CellColor.EMPTY) {
+        if (getCase().getCheckerColor() == SquareColor.EMPTY) {
             icon = new ImageIcon();
         } else if (isPossible()) {
-            icon = (getCase().getCheckerColor() == CellColor.WHITE) ? whiteAssistIcon : blackAssistIcon;
+            icon = (getCase().getCheckerColor() == SquareColor.WHITE) ? whiteAssistIcon : blackAssistIcon;
         } else {
-            icon = (getCase().getCheckerColor() == CellColor.WHITE) ? whiteIcon : blackIcon;
+            icon = (getCase().getCheckerColor() == SquareColor.WHITE) ? whiteIcon : blackIcon;
         }
 
         int selectedCount = 0;
@@ -82,10 +81,10 @@ public class BarCaseButton extends CaseButton {
             g2.drawImage(icon.getImage(), 0, y, this);
         }
 
-        if (isCandidate() && c.getCheckerCount() > 0) {
+        if (isCandidate() && c.getNumCheckers() > 0) {
             float i = count - 0.8f;
             int y = (int) ((h - CHECKER_SEPARATION) / 2 + (i - (count - 1) / 2f) * (CHECKER_SEPARATION) + offset);
-            ImageIcon transparentIcon = (getCase().getCheckerColor() == CellColor.WHITE) ? whiteTransparentIcon : blackTransparentIcon;
+            ImageIcon transparentIcon = (getCase().getCheckerColor() == SquareColor.WHITE) ? whiteTransparentIcon : blackTransparentIcon;
 
             g2.drawImage(transparentIcon.getImage(), 1, y, this);
         }
@@ -94,7 +93,7 @@ public class BarCaseButton extends CaseButton {
             String checkerCountString = Integer.toString(checkerCount);
             g2.setFont(new Font("Arial", Font.BOLD, 18));
 
-            if (c.getCheckerColor() == CellColor.WHITE)
+            if (c.getCheckerColor() == SquareColor.WHITE)
                 g2.setColor(new Color(0x111111));
             else
                 g2.setColor(new Color(0xCCCCCC));
