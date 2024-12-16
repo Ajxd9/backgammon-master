@@ -51,7 +51,7 @@ public class GameParameters {
         winningGamesCount = Integer.valueOf(parameters.getChildText("winningGamesCount"));
         useDoubling = parameters.getChildText("useDoubling").equals("1");
     }
-
+    
     public int getSecondsPerTurn() {
         return secondsPerTurn;
     }

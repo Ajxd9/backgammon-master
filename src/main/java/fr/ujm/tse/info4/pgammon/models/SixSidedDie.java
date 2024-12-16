@@ -40,9 +40,9 @@ public class SixSidedDie {
         isUsed = false;
     }
     
-    public void save(Element diceXML) {
+    public void save(Element sixSidedDice) {
         Element dieXML = new Element("sixSidedDie");
-        diceXML.addContent(dieXML);
+        sixSidedDice.addContent(dieXML);
         
         Element valueXML = new Element("value");
         valueXML.setText(String.valueOf(value));
@@ -73,6 +73,7 @@ public class SixSidedDie {
     }
     
     /* GETTERS AND SETTERS */
+    
     public int getValue() {
         return value;
     }

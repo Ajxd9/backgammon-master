@@ -68,7 +68,7 @@ public class Clock implements ActionListener {
         setValue(duration);
         stop();
     }
-
+    
     public void restart() {
         setValue(0);
         start();
@@ -83,7 +83,7 @@ public class Clock implements ActionListener {
         this.duration = value;
         fireUpdate();
     }
-
+    
     public float getRatio() {
         return (float)(value)/(float)(duration);
     }
@@ -91,11 +91,11 @@ public class Clock implements ActionListener {
     public Timer getTimer() {
         return timer;
     }
-
+    
     public int getDuration() {
         return duration;
     }
-
+    
     public int getValue() {
         return value;
     }

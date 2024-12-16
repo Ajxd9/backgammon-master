@@ -4,7 +4,6 @@ import java.util.EventObject;
 
 public class ClockEvent extends EventObject {
     ClockEventType type;
-    
     public enum ClockEventType {
         END,
         UPDATE
@@ -18,6 +17,6 @@ public class ClockEvent extends EventObject {
     public ClockEventType getEventType() {
         return type;
     }
-
+    
     private static final long serialVersionUID = 1570857988187744152L;
 }
