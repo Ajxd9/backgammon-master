@@ -1,4 +1,4 @@
-package fr.ujm.tse.info4.pgammon.views;
+package fr.ujm.tse.info4.pgammon.view;
 
 import java.awt.Color;
 
@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import fr.ujm.tse.info4.pgammon.gui.ScoreDisplay;
 import fr.ujm.tse.info4.pgammon.gui.MonochromeIconType;
 import fr.ujm.tse.info4.pgammon.gui.MonochromeIconButton;
-import fr.ujm.tse.info4.pgammon.models.CellColor;
+import fr.ujm.tse.info4.pgammon.models.SquareColor;
 import fr.ujm.tse.info4.pgammon.models.Game;
 
 public class RightInProgressPanelView extends JPanel {
@@ -62,7 +62,7 @@ public class RightInProgressPanelView extends JPanel {
         add(diceLabel);
         
         // Component and label for doubling cube
-        doublingCubeDisplay = new ScoreDisplay(game.getDoublingCube().getValue(), CellColor.WHITE);
+        doublingCubeDisplay = new ScoreDisplay(game.getDoublingCube().getValue(), SquareColor.WHITE);
         doublingCubeDisplay.setBounds(10, 379, diceButton.getPreferredSize().width, diceButton.getPreferredSize().height);
         add(doublingCubeDisplay);
         

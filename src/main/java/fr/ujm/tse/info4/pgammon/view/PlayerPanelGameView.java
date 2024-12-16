@@ -1,4 +1,4 @@
-package fr.ujm.tse.info4.pgammon.views;
+package fr.ujm.tse.info4.pgammon.view;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;

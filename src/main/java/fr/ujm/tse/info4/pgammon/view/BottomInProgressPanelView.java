@@ -1,4 +1,4 @@
-package fr.ujm.tse.info4.pgammon.views;
+package fr.ujm.tse.info4.pgammon.view;
 
 import java.awt.Color;
 
@@ -8,9 +8,9 @@ import javax.swing.JPanel;
 import fr.ujm.tse.info4.pgammon.gui.ScoreDisplay;
 import fr.ujm.tse.info4.pgammon.gui.MonochromeIconType;
 import fr.ujm.tse.info4.pgammon.gui.MonochromeIconButton;
-import fr.ujm.tse.info4.pgammon.models.CellColor;
+import fr.ujm.tse.info4.pgammon.models.SquareColor;
 
-public class BottomInProgressPanelView extends JPanel {
+public class BottomInProgressPanelView  extends JPanel {
     /**
      * This class displays the bottom panel during a game
      */
@@ -76,11 +76,11 @@ public class BottomInProgressPanelView extends JPanel {
         add(interruptSessionLabel);
         
         // Score component and label
-        player1ScoreDisplay = new ScoreDisplay(player1Score, CellColor.WHITE);
+        player1ScoreDisplay = new ScoreDisplay(player1Score, SquareColor.WHITE);
         player1ScoreDisplay.setBounds(270, 5, interruptSessionButton.getPreferredSize().width, interruptSessionButton.getPreferredSize().height);
         add(player1ScoreDisplay);
         
-        player2ScoreDisplay = new ScoreDisplay(player2Score, CellColor.BLACK);
+        player2ScoreDisplay = new ScoreDisplay(player2Score, SquareColor.BLACK);
         player2ScoreDisplay.setBounds(350, 5, interruptSessionButton.getPreferredSize().width, interruptSessionButton.getPreferredSize().height);
         add(player2ScoreDisplay);
         

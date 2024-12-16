@@ -1,4 +1,4 @@
-package fr.ujm.tse.info4.pgammon.views;
+package fr.ujm.tse.info4.pgammon.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -70,17 +70,17 @@ public class PlayerDescriptionView extends MonochromePanel {
         if (player == null)
             return;
 
-        playerNameLabel.setText(player.getNickname());
+        playerNameLabel.setText(player.getUsername());
         statisticsLabel.setText("<html>" + player.getStats().getGamesPlayed() +
-                "<br>" + player.getStats().getWins() +
-                "<br>" + player.getStats().getLosses() +
+                "<br>" + player.getStats().getWinCount() +
+                "<br>" + player.getStats().getLossCount() +
                 "<br>" + (int) (player.getStats().getWinPercentage() * 100) +
                 "</html>");
 
-        if (player.getAssistantLevel() == AssistantLevel.FULL) {
+        if (player.getAssistanceLevel() == AssistantLevel.FULL) {
             possibleMovesCheckbox.setSelected(true);
             suggestMoveCheckbox.setSelected(true);
-        } else if (player.getAssistantLevel() == AssistantLevel.BASIC) {
+        } else if (player.getAssistanceLevel() == AssistantLevel.BASIC) {
             possibleMovesCheckbox.setSelected(true);
             suggestMoveCheckbox.setSelected(false);
         } else {
@@ -89,7 +89,7 @@ public class PlayerDescriptionView extends MonochromePanel {
         }
 
         suggestMoveCheckbox.setEnabled(possibleMovesCheckbox.isSelected());
-        playerAvatar.setPath(player.getImagePath());
+        playerAvatar.setPath(player.getImageSource());
     }
 
     private void setupPossibleMovesCheckboxListener() {
@@ -109,10 +109,10 @@ public class PlayerDescriptionView extends MonochromePanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (player.getAssistantLevel() == AssistantLevel.NOT_USED)
-                    player.setAssistantLevel(AssistantLevel.BASIC);
+                if (player.getAssistanceLevel() == AssistantLevel.NOT_USED)
+                    player.setAssistanceLevel(AssistantLevel.BASIC);
                 else
-                    player.setAssistantLevel(AssistantLevel.NOT_USED);
+                    player.setAssistanceLevel(AssistantLevel.NOT_USED);
 
                 updateData();
             }
@@ -136,10 +136,10 @@ public class PlayerDescriptionView extends MonochromePanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (player.getAssistantLevel() == AssistantLevel.FULL)
-                    player.setAssistantLevel(AssistantLevel.BASIC);
+                if (player.getAssistanceLevel() == AssistantLevel.FULL)
+                    player.setAssistanceLevel(AssistantLevel.BASIC);
                 else
-                    player.setAssistantLevel(AssistantLevel.FULL);
+                    player.setAssistanceLevel(AssistantLevel.FULL);
 
                 updateData();
             }
