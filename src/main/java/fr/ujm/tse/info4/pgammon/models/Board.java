@@ -246,7 +246,7 @@ public class Board
             return false;
     }
     
-    public boolean arePiecesAhead(Square pieceSquare)
+    public boolean isSquareBefore(Square pieceSquare)
     {
         int numPieces = 0;
         
@@ -295,7 +295,7 @@ public class Board
         return numPieces == 0;
     }
     
-    public boolean areAllPiecesBornOff(SquareColor color)
+    public boolean isAllPiecesMarked(SquareColor color)
     {
         if (color == SquareColor.WHITE && getVictorySquare().get(0).getNumCheckers() == 15
                 || color == SquareColor.BLACK && getVictorySquare().get(1).getNumCheckers() == 15)

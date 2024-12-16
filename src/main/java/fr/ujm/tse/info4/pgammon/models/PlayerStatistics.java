@@ -50,7 +50,7 @@ public class PlayerStatistics {
         }
         if(maxKey == null)
             return "Nobody";
-        return maxKey.getNickname();
+        return maxKey.getUsername();
     }
     
     public void addPlayTime(float time) {

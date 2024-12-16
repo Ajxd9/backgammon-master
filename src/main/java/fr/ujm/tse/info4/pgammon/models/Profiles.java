@@ -103,7 +103,7 @@ public class Profiles {
                         for(int j=0; j<players.size(); j++){
                             if(players.get(j).getId() == Integer.valueOf(c.getAttributeValue("id"))){
                                 Player playerAgainst = players.get(j);
-                                players.get(i).getStats().getNumGamesAgainstPlayer().put(playerAgainst, Integer.valueOf(c.getChildText("numGames")));
+                                players.get(i).getStats().getGamesAgainstPlayer().put(playerAgainst, Integer.valueOf(c.getChildText("numGames")));
                             }
                         }
                 }
@@ -114,7 +114,7 @@ public class Profiles {
     /**
      * Other functions    
      */
-    public void add(String _username, String _imageSource, AssistanceLevel _level) {
+    public void add(String _username, String _imageSource, AssistantLevel _level) {
         players.add(new Player(players.size()+1, _username, _imageSource, _level));
     }
     
@@ -145,7 +145,7 @@ public class Profiles {
     public void display() {
         for(int i=0; i<players.size(); i++) {
             System.out.println(players.get(i).getId()+" "+players.get(i).getUsername()+" "+
-                             players.get(i).getImageSource()+" "+players.get(i).getAssistanceLevel());
+                             players.get(i).getImageSource()+" "+players.get(i).getAssistantLevel());
         }
     }
     

@@ -258,7 +258,7 @@ public class Game {
 
         for (int i = 0; i < SixSidedDie.size(); i++) {
             if(canMarkThisPiece(startSquare, SixSidedDie.get(i)) &&
-                    endSquare.isVictorySquare() &&
+                    endSquare.isHomeSquare() &&
                     endSquare.getCheckerColor() == startSquare.getCheckerColor()) {
                 isDiceAvailable = true;
                 diceUsed = i;

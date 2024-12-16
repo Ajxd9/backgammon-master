@@ -10,14 +10,14 @@ package fr.ujm.tse.info4.pgammon.models;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import fr.ujm.tse.info4.pgammon.controleur.ControleurPrincipal;
+import fr.ujm.tse.info4.pgammon.controller.MainController;
 
 public class Master {
     @SuppressWarnings("unused")
     private static Master master;
     private int sessionId;
     private ArrayList<Session> sessionList;
-    private ControleurPrincipal mainController;
+    private MainController mainController;
     
     public Master() {
         Calendar date = Calendar.getInstance();
@@ -26,7 +26,7 @@ public class Master {
                 + 100 * date.get(Calendar.HOUR)
                 + 10 * date.get(Calendar.MINUTE)
                 + date.get(Calendar.SECOND);
-        mainController = new ControleurPrincipal(this);
+        mainController = new MainController(this);
         sessionList = new ArrayList<Session>();
     }
     
@@ -72,11 +72,11 @@ public class Master {
         return sessionList.get(sessionList.size()-1);
     }
 
-    public ControleurPrincipal getMainController() {
+    public MainController getMainController() {
         return mainController;
     }
 
-    public void setMainController(ControleurPrincipal mainController) {
+    public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 }
