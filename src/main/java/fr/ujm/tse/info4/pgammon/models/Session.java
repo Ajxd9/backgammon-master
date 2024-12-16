@@ -19,7 +19,7 @@ public class Session {
     private Game currentGame;
 
     private Player sessionWinner;
-    private PieceColor previousGamePlayerColor;
+    private SquareColor previousGamePlayerColor;
     private HashMap<Player, Integer> scores;
     private SessionState sessionState;
     private GameParameters gameParameters;
@@ -62,8 +62,8 @@ public class Session {
     
     public void endGame() {
         previousGamePlayerColor = currentGame.getFirstPlayer();
-        int doubling = currentGame.getDoubling().getDoublingValue();
-        PieceColor winningColor = currentGame.getCurrentPlayer();
+        int doubling = currentGame.getDoublingCube().getValue();
+        SquareColor winningColor = currentGame.getCurrentPlayer();
         currentGame.endGame();
         scores.put(gameParameters.getPlayer(winningColor), 
                   scores.get(gameParameters.getPlayer(winningColor)) + doubling);
@@ -84,14 +84,14 @@ public class Session {
     }
 
     public boolean checkSessionEnd() {
-        if(gameParameters.getWinningGamesRequired() == 0) 
+        if(gameParameters.getWinningGamesCount() == 0)
             return false;
-        if(scores.get(gameParameters.getWhitePlayer()) >= gameParameters.getWinningGamesRequired()) {
+        if(scores.get(gameParameters.getWhitePlayer()) >= gameParameters.getWinningGamesCount()) {
             sessionState = SessionState.FINISHED;
             sessionWinner = gameParameters.getWhitePlayer();
             return true;
         }
-        else if(scores.get(gameParameters.getBlackPlayer()) >= gameParameters.getWinningGamesRequired()) {
+        else if(scores.get(gameParameters.getBlackPlayer()) >= gameParameters.getWinningGamesCount()) {
             sessionState = SessionState.FINISHED;
             sessionWinner = gameParameters.getWhitePlayer();
             return true;
@@ -162,9 +162,9 @@ public class Session {
         }
         maxGameId = Integer.valueOf(root.getChild("session").getChildText("maxGameId"));
         switch(root.getChild("session").getChildText("previousGamePlayerColor")) {
-            case "WHITE": previousGamePlayerColor = PieceColor.WHITE; break;
-            case "BLACK": previousGamePlayerColor = PieceColor.BLACK; break;
-            case "EMPTY": previousGamePlayerColor = PieceColor.EMPTY;
+            case "WHITE": previousGamePlayerColor = SquareColor.WHITE; break;
+            case "BLACK": previousGamePlayerColor = SquareColor.BLACK; break;
+            case "EMPTY": previousGamePlayerColor = SquareColor.EMPTY;
         }
             
         int tmpID = Integer.valueOf(root.getChild("session").getChild("players").getChild("blackPlayer").getAttributeValue("id"));

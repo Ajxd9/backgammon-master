@@ -17,20 +17,18 @@ import org.jdom2.Element;
 
 public class Turn
 {
-    private ArrayList<SixSidedDice> sixSidedDice;
+    private ArrayList<SixSidedDie> SixSidedDie;
     private ArrayList<Movement> movementList;
-    private PlayerColor playerColor;
+    private SquareColor playerColor;
     
-    public Turn(PlayerColor playerColor, ArrayList<SixSidedDice> sixSidedDice)
+    public Turn(SquareColor playerColor, ArrayList<SixSidedDie> sixSidedDie)
     {
         this.playerColor = playerColor;
-        this.sixSidedDice = sixSidedDice;
+        this.SixSidedDie = sixSidedDie;
         this.movementList = new ArrayList<Movement>();
     }
     
-    public Turn(SquareColor currentPlayer, ArrayList<SixSidedDie> sixSidedDie)
-    {
-    }
+
     
     public void addMovement(Movement movement)
     {
@@ -50,12 +48,12 @@ public class Turn
             return null;
     }
     
-    public PlayerColor getPlayerColor() {
+    public SquareColor getPlayerColor() {
         return playerColor;
     }
     
-    public ArrayList<SixSidedDice> getSixSidedDice() {
-        return sixSidedDice;
+    public ArrayList<SixSidedDie> getSixSidedDie() {
+        return SixSidedDie;
     }
     
     public ArrayList<Movement> getMovementList(){
@@ -72,11 +70,11 @@ public class Turn
         playerColorXML.setText(String.valueOf(playerColor));
         turnXML.addContent(playerColorXML);
     
-        Element sixSidedDiceXML = new Element("sixSidedDice");
-        turnXML.addContent(sixSidedDiceXML);
+        Element SixSidedDieXML = new Element("SixSidedDie");
+        turnXML.addContent(SixSidedDieXML);
         
-        for(int i=0; i<sixSidedDice.size(); i++){
-            sixSidedDice.get(i).save(sixSidedDiceXML);
+        for(int i=0; i<SixSidedDie.size(); i++){
+            SixSidedDie.get(i).save(SixSidedDieXML);
         }
         
         Element movementsXML = new Element("movements");
@@ -90,20 +88,20 @@ public class Turn
     public void load(Element turn, Game game)
     {
         switch(turn.getChildText("playerColor")){
-            case "WHITE": playerColor = PlayerColor.WHITE; break;
-            case "BLACK": playerColor = PlayerColor.BLACK; break;
-            case "EMPTY": playerColor = PlayerColor.EMPTY;
+            case "WHITE": playerColor = SquareColor.WHITE; break;
+            case "BLACK": playerColor = SquareColor.BLACK; break;
+            case "EMPTY": playerColor = SquareColor.EMPTY;
         }
         
-        List<Element> sixSidedDiceList = turn.getChild("sixSidedDice").getChildren("sixSidedDie");
-        Iterator<Element> i = sixSidedDiceList.iterator();
+        List<Element> SixSidedDieList = turn.getChild("SixSidedDie").getChildren("sixSidedDie");
+        Iterator<Element> i = SixSidedDieList.iterator();
          
-        sixSidedDice = new ArrayList<SixSidedDice>();
+        SixSidedDie = new ArrayList<SixSidedDie>();
         
         while(i.hasNext()){
-            SixSidedDice tmpDie = new SixSidedDice();
+            SixSidedDie tmpDie = new SixSidedDie();
             tmpDie.load(i.next());
-            sixSidedDice.add(tmpDie);
+            SixSidedDie.add(tmpDie);
         }
         
         List<Element> movementsList = turn.getChild("movements").getChildren("movement");
