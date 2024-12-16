@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.jdom2.Element;
 
-import fr.ujm.tse.info4.pgammon.exeption.TurnNotPlayableException;
+import fr.ujm.tse.info4.pgammon.exception.TurnNotPlayableException;
 
 public class Game {
     private GameParameters gameParameters;
