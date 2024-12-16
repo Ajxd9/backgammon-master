@@ -9,9 +9,9 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import fr.ujm.tse.info4.pgammon.models.CouleurCase;
+import fr.ujm.tse.info4.pgammon.models.SquareColor;
 import fr.ujm.tse.info4.pgammon.models.Player;
-import fr.ujm.tse.info4.pgammon.models.NiveauAssistant;
+import fr.ujm.tse.info4.pgammon.models.AssistantLevel;
 
 public class PlayerPanel extends MonochromePanel {
 
@@ -20,7 +20,7 @@ public class PlayerPanel extends MonochromePanel {
      */
     private static final long serialVersionUID = 7553310687895062778L;
     private Player player;
-    private CouleurCase color;
+    private SquareColor color;
 
     public static final String whiteChecker = "images/big_pion_blanc.png";
     public static final String blackChecker = "images/big_pion_noir.png";
@@ -36,7 +36,7 @@ public class PlayerPanel extends MonochromePanel {
      * @param p Player passed as a parameter.
      * @param c CouleurCase passed as a parameter.
      */
-    public PlayerPanel(Player p, CouleurCase c) {
+    public PlayerPanel(Player p, SquareColor c) {
         super("");
         player = p;
         color = c;
@@ -59,17 +59,17 @@ public class PlayerPanel extends MonochromePanel {
      */
     public void updateData() {
         if (player != null) {
-            setTitle(player.getNickname());
+            setTitle(player.getUsername());
             playerStatsLabel.setText("<html> Wins: "
-                    + player.getStats().getWins()
-                    + "<br>Losses: " + player.getStats().getLosses());
+                    + player.getStats().getWinCount()
+                    + "<br>Losses: " + player.getStats().getLossCount());
 
             playerImage.setPath(player.getImageSource());
 
-            if (player.getAssistantLevel() == NiveauAssistant.FULL) {
+            if (player.getAssistantLevel() == AssistantLevel.FULL) {
                 showPossibleMovesCheckbox.setSelected(true);
                 suggestNextMoveCheckbox.setSelected(true);
-            } else if (player.getAssistantLevel() == NiveauAssistant.SIMPLE) {
+            } else if (player.getAssistantLevel() == AssistantLevel.BASIC) {
                 showPossibleMovesCheckbox.setSelected(true);
                 suggestNextMoveCheckbox.setSelected(false);
             } else {
@@ -95,10 +95,10 @@ public class PlayerPanel extends MonochromePanel {
         showPossibleMovesCheckbox.addMouseListener(new MouseListener() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (player.getAssistantLevel() == NiveauAssistant.NOT_USED) {
-                    player.setAssistantLevel(NiveauAssistant.SIMPLE);
+                if (player.getAssistantLevel() == AssistantLevel.NOT_USED) {
+                    player.setAssistantLevel(AssistantLevel.BASIC);
                 } else {
-                    player.setAssistantLevel(NiveauAssistant.NOT_USED);
+                    player.setAssistantLevel(AssistantLevel.NOT_USED);
                 }
                 updateData();
             }
@@ -117,10 +117,10 @@ public class PlayerPanel extends MonochromePanel {
         suggestNextMoveCheckbox.addMouseListener(new MouseListener() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (player.getAssistantLevel() == NiveauAssistant.FULL) {
-                    player.setAssistantLevel(NiveauAssistant.SIMPLE);
+                if (player.getAssistantLevel() == AssistantLevel.FULL) {
+                    player.setAssistantLevel(AssistantLevel.BASIC);
                 } else {
-                    player.setAssistantLevel(NiveauAssistant.FULL);
+                    player.setAssistantLevel(AssistantLevel.FULL);
                 }
                 updateData();
             }
@@ -138,7 +138,7 @@ public class PlayerPanel extends MonochromePanel {
     public void build() {
         // Load the checker image
         try {
-            if (color.equals(CouleurCase.WHITE)) {
+            if (color.equals(SquareColor.WHITE)) {
                 checkerImage = new ImageIcon(whiteChecker);
             } else {
                 checkerImage = new ImageIcon(blackChecker);

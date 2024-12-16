@@ -8,8 +8,8 @@ import java.awt.RenderingHints;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import fr.ujm.tse.info4.pgammon.models.CouleurCase;  //change according to model 
-import fr.ujm.tse.info4.pgammon.models.DeSixFaces;
+import fr.ujm.tse.info4.pgammon.models.SquareColor;  //change according to model 
+import fr.ujm.tse.info4.pgammon.models.SixSidedDie;
 
 public class DieButton extends JButton {
     private static final long serialVersionUID = 2520612785614004478L;
@@ -26,10 +26,10 @@ public class DieButton extends JButton {
     private static final String BLACK_DIE_5 = "images/des/de_noir_5.png";
     private static final String BLACK_DIE_6 = "images/des/de_noir_6.png";
 
-    private DeSixFaces die;
+    private SixSidedDie die;
     private ImageIcon icon;
 
-    public DieButton(DeSixFaces die) {
+    public DieButton(SixSidedDie die) {
         this.die = die;
         setEnabled(false);
         setOpaque(false);
@@ -37,18 +37,18 @@ public class DieButton extends JButton {
         update();
     }
 
-    public DeSixFaces getDie() {
+    public SixSidedDie getDie() {
         return die;
     }
 
-    public void setDie(DeSixFaces die) {
+    public void setDie(SixSidedDie die) {
         this.die = die;
         update();
     }
 
     private void update() {
         String iconRef = WHITE_DIE_1;
-        if (die.getDieColor() == CellColor.WHITE) {
+        if (die.getDieColor() == SquareColor.WHITE) {
             switch (die.getValue()) {
                 case 1:
                     iconRef = WHITE_DIE_1;

@@ -51,7 +51,7 @@ public class PlayerCellRenderer extends JPanel implements ListCellRenderer<Playe
 
         setBackground(bgColor);
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0x555555)));
-        label.setText(p.getNickname());
+        label.setText(p.getUsername());
         setAlignmentX(0.5f);
         player = p;
         playerImage.setPath(p.getImageSource());

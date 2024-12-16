@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import fr.ujm.tse.info4.pgammon.models.DieSixFaces;
+import fr.ujm.tse.info4.pgammon.models.SixSidedDie;
 import fr.ujm.tse.info4.pgammon.models.Movement;
 import fr.ujm.tse.info4.pgammon.models.Turn;
 
@@ -24,7 +24,7 @@ import fr.ujm.tse.info4.pgammon.models.Turn;
 public class ReplayBar extends JPanel {
     private static final long serialVersionUID = 1318001554445843500L;
     private List<Turn> turns;
-    private LinkedList<DieSixFaces> allDice;
+    private LinkedList<SixSidedDie> allDice;
     private LinkedList<Movement> allMovements;
     private int current;
     private int oldCurrent;
@@ -170,12 +170,12 @@ public class ReplayBar extends JPanel {
         if (turns != null) {
             for (Turn turn : turns) {
                 int length = turn.getDice().size();
-                List<DieSixFaces> dice = turn.getDice();
+                List<SixSidedDie> dice = turn.getDice();
                 List<Movement> movements = turn.getMovements();
 
                 for (int i = 0; i < length; i++) {
                     Movement movement = null;
-                    DieSixFaces die = new DieSixFaces(dice.get(i).getColor(), dice.get(i).getValue());
+                    SixSidedDie die = new SixSidedDie(dice.get(i).getColor(), dice.get(i).getValue());
                     if (movements != null && movements.size() > i) {
                         movement = movements.get(i);
                     }
