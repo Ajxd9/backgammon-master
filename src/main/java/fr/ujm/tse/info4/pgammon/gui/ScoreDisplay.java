@@ -13,26 +13,26 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import fr.ujm.tse.info4.pgammon.models.CouleurCase;
+import fr.ujm.tse.info4.pgammon.models.CaseColor; //change according to CouleurCase from models
 
-public class AfficheurScore extends JPanel {
+public class ScoreDisplay extends JPanel {
 
 	private static final long serialVersionUID = -1068393331289654980L;
 	private int score = 0;
-	private CouleurCase couleur;
+	private CouleurCase color;
 	private JLabel label;
 	
-	public AfficheurScore(int score, CouleurCase couleur) {
+	public ScoreDisplay(int score, CaseColor color) {
 		super();
 		this.score = score;
-		this.couleur = couleur;
+		this.color = color;
 		build();
 	}
 	
 	private void build() {
 		setLayout(new GridBagLayout());
 		label = new JLabel(String.valueOf(score));
-		Color c = (couleur==CouleurCase.BLANC)?new Color(0x111111):new Color(0xEEEEEE);
+		Color c = (color==CaseColor.WHITE)?new Color(0x111111):new Color(0xEEEEEE);
 		label.setForeground(c);
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 		updateFont();
@@ -42,9 +42,9 @@ public class AfficheurScore extends JPanel {
 	
 	private void updateFont(){
 		int h = Math.max(getPreferredSize().height,getSize().height);
-		int size_dec = (String.valueOf(score).length()-1)*5;
+		int sizeReduction = (String.valueOf(score).length()-1)*5;
 		int fontSize = (int) (h/1.5);
-		label.setFont(new Font("Arial",Font.BOLD,fontSize-size_dec));
+		label.setFont(new Font("Arial",Font.BOLD,fontSize - sizeReduction));
 		label.setPreferredSize(getSize());
 	}
 	
@@ -77,12 +77,12 @@ public class AfficheurScore extends JPanel {
 		
 		Paint p;
 		
-		// Fond
-		p = (couleur==CouleurCase.BLANC)?new Color(0xEEEEEE):new Color(0x111111);
+		// Background
+		p = (color == CaseColor.WHITE) ? new Color(0xEEEEEE):new Color(0x111111);
 		g2.setPaint(p); 
 		g2.fillRect(0, 0, w, h); 
 		 
-		// Bordure
+		// Border
 		p = new Color(0x888888);
 		g2.setStroke(new BasicStroke(3.0f) );
 		g2.setPaint(p); 

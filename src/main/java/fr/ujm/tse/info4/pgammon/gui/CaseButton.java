@@ -21,7 +21,7 @@ public class CaseButton extends JButton{
 	private Case c;
 	/**
 	 * 
-	 * @param _case Case a associer au bouton.
+	 * @param _case Case to associate with the button.
 	 */
 	public CaseButton(Case _case){
 		c = _case;
@@ -32,7 +32,7 @@ public class CaseButton extends JButton{
 	
 	/**
 	 * 
-	 * @return Renvoie la Case associée
+	 * @return Returns the associated Case.
 	 */
 	public Case getCase() {
 		return c;

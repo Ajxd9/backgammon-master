@@ -11,84 +11,69 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
-import fr.ujm.tse.info4.pgammon.models.CouleurCase;
+import fr.ujm.tse.info4.pgammon.models.CellColor;
 import fr.ujm.tse.info4.pgammon.models.Session;
 
 public class SessionCellRenderer extends JPanel implements ListCellRenderer<Session> {
-	private static final long serialVersionUID = 2809364114788243599L;
-	JLabel label_j1;
-	JLabel label_j2;
-	AfficheurScore label_score_j1;
-	AfficheurScore label_score_j2;
-	
-	JLabel nom1_intermediaire;
-	JLabel nom2_intermediaire;
-	
-	
-	public SessionCellRenderer() {
-		setLayout(null);
-		setPreferredSize(new Dimension(100, 60));
-		
-		label_score_j1 = new AfficheurScore(0,CouleurCase.BLANC);
-		label_score_j1.setBounds(290, 0, 25, 25);
-		add(label_score_j1);
-		
-		label_j1 = new JLabel();	
-		label_j1.setBounds(10, 0, 300, 30);
-		label_j1.setFont(new Font("Arial",Font.BOLD,18));
-		add(label_j1);
-		
-		
-		
-		label_j2 = new JLabel();
-		label_j2.setBounds(10, 30, 300, 30);
-		label_j2.setFont(new Font("Arial",Font.BOLD,18));
-		add(label_j2);
-		
-		label_score_j2 = new AfficheurScore(0,CouleurCase.NOIR);
-		label_score_j2.setBounds(290, 30, 25, 25);
-		add(label_score_j2);
-		
-		
-	}
+    private static final long serialVersionUID = 2809364114788243599L;
 
-	@Override
-	public Component getListCellRendererComponent(JList<? extends Session> list,
-			Session j, int index, boolean isSelected, boolean cellHasFocus) {
-		
-					
-		label_j1.setForeground(new Color(0xCCCCCC));
-		label_j2.setForeground(new Color(0xCCCCCC));
-		Color bgColor;
-		if(isSelected)
-			if(cellHasFocus)
-				bgColor = new Color(0x333333);
-			else
-				bgColor = new Color(0x252525);
-		else 
-			if(cellHasFocus)
-				bgColor = new Color(0x202020);
-			else
-				bgColor = new Color(0x111111);
-		setBackground(bgColor);
-		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0x555555)));
+    JLabel player1Label;
+    JLabel player2Label;
+    ScoreDisplay player1ScoreDisplay;
+    ScoreDisplay player2ScoreDisplay;
 
-		try{
-			label_j1.setText(j.getPartieEnCours().getParametreJeu().getJoueurBlanc().getPseudo());
-			label_j2.setText(j.getPartieEnCours().getParametreJeu().getJoueurNoir().getPseudo());
-					setAlignmentX(0.5f);
-			label_score_j1.setScore(j.getScores().get(j.getPartieEnCours().getParametreJeu().getJoueurBlanc()));
-			label_score_j2.setScore(j.getScores().get(j.getPartieEnCours().getParametreJeu().getJoueurNoir()));
-		}catch(Exception e){
+    public SessionCellRenderer() {
+        setLayout(null);
+        setPreferredSize(new Dimension(100, 60));
 
-			label_j1.setText("");
-			label_j2.setText("");
-					setAlignmentX(0.5f);
-			label_score_j1.setScore(0);
-			label_score_j2.setScore(0);
-		}
-			
-		return this;
-	}
+        player1ScoreDisplay = new ScoreDisplay(0, CellColor.WHITE);
+        player1ScoreDisplay.setBounds(290, 0, 25, 25);
+        add(player1ScoreDisplay);
 
+        player1Label = new JLabel();
+        player1Label.setBounds(10, 0, 300, 30);
+        player1Label.setFont(new Font("Arial", Font.BOLD, 18));
+        add(player1Label);
+
+        player2Label = new JLabel();
+        player2Label.setBounds(10, 30, 300, 30);
+        player2Label.setFont(new Font("Arial", Font.BOLD, 18));
+        add(player2Label);
+
+        player2ScoreDisplay = new ScoreDisplay(0, CellColor.BLACK);
+        player2ScoreDisplay.setBounds(290, 30, 25, 25);
+        add(player2ScoreDisplay);
+    }
+
+    @Override
+    public Component getListCellRendererComponent(JList<? extends Session> list,
+                                                  Session session, int index, boolean isSelected, boolean cellHasFocus) {
+        player1Label.setForeground(new Color(0xCCCCCC));
+        player2Label.setForeground(new Color(0xCCCCCC));
+        Color backgroundColor;
+
+        if (isSelected) {
+            backgroundColor = cellHasFocus ? new Color(0x333333) : new Color(0x252525);
+        } else {
+            backgroundColor = cellHasFocus ? new Color(0x202020) : new Color(0x111111);
+        }
+        setBackground(backgroundColor);
+        setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0x555555)));
+
+        try {
+            player1Label.setText(session.getCurrentGame().getGameSettings().getWhitePlayer().getPseudo());
+            player2Label.setText(session.getCurrentGame().getGameSettings().getBlackPlayer().getPseudo());
+            setAlignmentX(0.5f);
+            player1ScoreDisplay.setScore(session.getScores().get(session.getCurrentGame().getGameSettings().getWhitePlayer()));
+            player2ScoreDisplay.setScore(session.getScores().get(session.getCurrentGame().getGameSettings().getBlackPlayer()));
+        } catch (Exception e) {
+            player1Label.setText("");
+            player2Label.setText("");
+            setAlignmentX(0.5f);
+            player1ScoreDisplay.setScore(0);
+            player2ScoreDisplay.setScore(0);
+        }
+
+        return this;
+    }
 }

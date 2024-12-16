@@ -13,7 +13,7 @@ public class AvatarList extends JPanel{
 	private static final long serialVersionUID = 4047846163448859090L;
 	private OpaqueBG bg;
 	private String path = "";
-	private MonochromeButton ajouter;
+	private MonochromeButton addButton;
 	
 	public AvatarList() {
 		build();
@@ -56,14 +56,14 @@ public class AvatarList extends JPanel{
 			}
 		});
 		
-		ajouter = new MonochromeButton("Add");
-		ajouter.setBounds(200, 400, 200, 40);
+		addButton = new MonochromeButton("Add");
+		addButton.setBounds(200, 400, 200, 40);
 		
 		bg = new OpaqueBG();
 		bg.setBounds(getBounds());
 
 		add(closeBtn);
-		add(ajouter);
+		add(addButton);
 		add(scroll);
 		add(bg);
 	}
@@ -91,11 +91,11 @@ public class AvatarList extends JPanel{
 		this.path = path;
 	}
 
-	public MonochromeButton getAjouter() {
-		return ajouter;
-	}
+	public MonochromeButton getAddButton() {
+        return addButton;
+    }
 
-	public void setAjouter(MonochromeButton ajouter) {
-		this.ajouter = ajouter;
-	}
+    public void setAddButton(MonochromeButton addButton) {
+        this.addButton = addButton;
+    }
 }

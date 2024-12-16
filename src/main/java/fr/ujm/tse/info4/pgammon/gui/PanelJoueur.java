@@ -8,272 +8,176 @@ import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
 import fr.ujm.tse.info4.pgammon.models.CouleurCase;
 import fr.ujm.tse.info4.pgammon.models.Player;
 import fr.ujm.tse.info4.pgammon.models.NiveauAssistant;
 
-public class PanelJoueur extends MonochromePanel{
-	
-	/**
-	 * Cette classe permet de modifier le panel de joueur dans la vue nouvelle session
-	 */
-	
-	private static final long serialVersionUID = 7553310687895062778L;
-	private Player joueur;
-	private CouleurCase couleur;
-	
-	
-	public static final String pionblanc = "images/big_pion_blanc.png";
-	public static final String pionnoir = "images/big_pion_noir.png";
-	private ImageIcon imgpion;
-	
-	
-	
-	
-	
-	
-	private MonochromeCheckbox couppossible;
-	private MonochromeCheckbox conseilcoup;
-	private JLabel affichestat;
-	private ImageAvatar imgjoueur;
-	
-	/**
-	 * Constructeur de panel joueur
-	 * @param j joueur passé en paramètre
-	 * @param coul CouleurCase passé en paramètre
-	 */
-		public PanelJoueur(Player j,CouleurCase coul){
-			super("");
-			joueur=j;
-			couleur=coul;
-			
-			build();
-			updateData();
-			
-		}
-		
-		/**
-		 * Setter du joueur
-		 * @param j change la valeur du joueur
-		 */
-		public void setJoueur(Player j){
-			joueur=j;
-			updateData();
-		}
-		
-		
-		/**
-		 * permet de faire la mise a jour du panel
-		 */
-		public void updateData(){
-			if(joueur != null)
-			{
-				
-				setTitle(joueur.getPseudo());
-				affichestat.setText("<html> Victoires &nbsp : "
-						+new Integer(joueur.getStat().getNbVictoires()).toString()
-						+"<br>Défaites : "+joueur.getStat().getNbDefaites()
-						);
-				imgjoueur.setPath(joueur.getImageSource());
-				
-				if(joueur.getNiveauAssistant() == NiveauAssistant.COMPLET){
-					couppossible.setSelected(true);
-					conseilcoup.setSelected(true);
-				}
-				else if(joueur.getNiveauAssistant() == NiveauAssistant.SIMPLE){
-					couppossible.setSelected(true);
-					conseilcoup.setSelected(false);
-				}
-				else{
-					couppossible.setSelected(false);
-					conseilcoup.setSelected(false);
-				}
-				if(couppossible.isSelected()){
-					conseilcoup.setEnabled(true);
-				}else{
-					conseilcoup.setEnabled(false);
-				}
+public class PlayerPanel extends MonochromePanel {
 
-				imgjoueur.setVisible(true);
-				couppossible.setVisible(true);
-				
-				//cette ligne permet d'afficher le conseil coup
-				//mais il n'est pas encore implémenté
-				//conseilcoup.setVisible(true);
-				
-			}else{
-				setTitle("");
-				affichestat.setText("");
+    /**
+     * This class allows modifying the player panel in the new session view.
+     */
+    private static final long serialVersionUID = 7553310687895062778L;
+    private Player player;
+    private CouleurCase color;
 
-				imgjoueur.setVisible(false);
-				couppossible.setVisible(false);
-				conseilcoup.setVisible(false);
-			}
-			
-		}
-		
-		private void listenerboutonchangerCoupPossible()
-		{
-			couppossible.addMouseListener(new MouseListener() {
-				
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					if(joueur.getNiveauAssistant() == NiveauAssistant.NON_UTILISE )
-						joueur.setNiveauAssistant(NiveauAssistant.SIMPLE);
-					else
-						joueur.setNiveauAssistant(NiveauAssistant.NON_UTILISE);
-					updateData();}
-				@Override
-				public void mousePressed(MouseEvent e) {}		
-				@Override
-				public void mouseExited(MouseEvent e) {}			
-				@Override
-				public void mouseEntered(MouseEvent e) {}
-				@Override
-				public void mouseClicked(MouseEvent e) {
-				}
-			});
-		}
-		
-		private void listenerboutonchangerConseilcoup()
-		{
-			conseilcoup.addMouseListener(new MouseListener() {
-				
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					if(joueur.getNiveauAssistant() == NiveauAssistant.COMPLET )
-						joueur.setNiveauAssistant(NiveauAssistant.SIMPLE);
-					else
-						joueur.setNiveauAssistant(NiveauAssistant.COMPLET);
-					updateData();}
-				@Override
-				public void mousePressed(MouseEvent e) {}		
-				@Override
-				public void mouseExited(MouseEvent e) {}			
-				@Override
-				public void mouseEntered(MouseEvent e) {}
-				@Override
-				public void mouseClicked(MouseEvent e) {
-				}
-			});
-		}
-		
-		public void build(){
-			
-			//récupération de l'image
-			try{
-				if(couleur.equals(CouleurCase.BLANC)){
-					imgpion = new ImageIcon(pionblanc);
-				}
-				else{
-					imgpion = new ImageIcon(pionnoir);
-				}
-				
-			}catch(Exception err){
-				System.err.println(err);
-			}
-			
-			imgjoueur = new ImageAvatar("");
-			imgjoueur.setBounds(15, 40, 50, 50);
-			add(imgjoueur);
-			
-			affichestat = new JLabel();
-			couppossible = new MonochromeCheckbox("<html> Show <br> possible moves");
-			conseilcoup = new MonochromeCheckbox("<html> Suggest <br> next move");
-			
-			//affichage des stats du joueur
-			affichestat.setForeground(new Color(0xCCCCCC));
-			
-			affichestat.setBounds(130, 40, 200, 50);
-			affichestat.setFont(new Font("Arial",Font.HANGING_BASELINE,12));
-			
-			
-			
-			//creation composant checbox
-			conseilcoup.setForeground(new Color(0xCCCCCC));
-			conseilcoup.setBounds(190, 90, 150, 50);
-			conseilcoup.setOpaque(false);
-			
-			//creation composant checbox
-			couppossible.setForeground(new Color(0xCCCCCC));
-			couppossible.setBounds(10, 90, 150, 50);
-			couppossible.setOpaque(false);
-			
-			//conteneurimgpion
-			
-			add(couppossible);
-			add(conseilcoup);
-			add(affichestat);
-			
-			listenerboutonchangerCoupPossible();
-			listenerboutonchangerConseilcoup();
-		}
-		
-		
-		/**
-		 * Getter du checkbox coup possible
-		 * @return retourne la valeur du checkbox coup possible
-		 */
-		public MonochromeCheckbox getCouppossible() {
-			return couppossible;
-		}
+    public static final String whiteChecker = "images/big_pion_blanc.png";
+    public static final String blackChecker = "images/big_pion_noir.png";
+    private ImageIcon checkerImage;
 
-		/**
-		 * Setter du checkbox coup possible
-		 * @param couppossible change la checkbox coup possible
-		 */
-		public void setCouppossible(MonochromeCheckbox couppossible) {
-			this.couppossible = couppossible;
-		}
+    private MonochromeCheckbox showPossibleMovesCheckbox;
+    private MonochromeCheckbox suggestNextMoveCheckbox;
+    private JLabel playerStatsLabel;
+    private ImageAvatar playerImage;
 
-		/**
-		 * Getter du checkbox conseil coup
-		 * @return retourne la valeur du checkbox conseil coup
-		 */
-		public MonochromeCheckbox getConseilcoup() {
-			return conseilcoup;
-		}
+    /**
+     * Constructor for the player panel.
+     * @param p Player passed as a parameter.
+     * @param c CouleurCase passed as a parameter.
+     */
+    public PlayerPanel(Player p, CouleurCase c) {
+        super("");
+        player = p;
+        color = c;
 
-		/**
-		 * Setter du checkbox conseil coup
-		 * @param couppossible change la checkbox conseil coup
-		 */
-		public void setConseilcoup(MonochromeCheckbox conseilcoup) {
-			this.conseilcoup = conseilcoup;
-		}
+        build();
+        updateData();
+    }
 
-		/**
-		 * Getter de l'affichage des statistiques
-		 * @return retourne les stastiques
-		 */
-		public JLabel getAffichestat() {
-			return affichestat;
-		}
+    /**
+     * Setter for the player.
+     * @param p Changes the player value.
+     */
+    public void setPlayer(Player p) {
+        player = p;
+        updateData();
+    }
 
-		/**
-		 * Setter des statistiques
-		 * @param affichestat change la valeur des statistiques
-		 */
-		public void setAffichestat(JLabel affichestat) {
-			this.affichestat = affichestat;
-		}
+    /**
+     * Updates the panel data.
+     */
+    public void updateData() {
+        if (player != null) {
+            setTitle(player.getNickname());
+            playerStatsLabel.setText("<html> Wins: "
+                    + player.getStats().getWins()
+                    + "<br>Losses: " + player.getStats().getLosses());
 
-		/**
-		 * Getter de joueur
-		 * @return retourne un joueur
-		 */
-		public Player getJoueur() {
-			return joueur;
-		}
+            playerImage.setPath(player.getImageSource());
 
-		@Override
-		protected void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			
-			g.drawImage(imgpion.getImage(),70,40,this);
-			
-			
-		}
-		
+            if (player.getAssistantLevel() == NiveauAssistant.FULL) {
+                showPossibleMovesCheckbox.setSelected(true);
+                suggestNextMoveCheckbox.setSelected(true);
+            } else if (player.getAssistantLevel() == NiveauAssistant.SIMPLE) {
+                showPossibleMovesCheckbox.setSelected(true);
+                suggestNextMoveCheckbox.setSelected(false);
+            } else {
+                showPossibleMovesCheckbox.setSelected(false);
+                suggestNextMoveCheckbox.setSelected(false);
+            }
 
+            suggestNextMoveCheckbox.setEnabled(showPossibleMovesCheckbox.isSelected());
+
+            playerImage.setVisible(true);
+            showPossibleMovesCheckbox.setVisible(true);
+        } else {
+            setTitle("");
+            playerStatsLabel.setText("");
+
+            playerImage.setVisible(false);
+            showPossibleMovesCheckbox.setVisible(false);
+            suggestNextMoveCheckbox.setVisible(false);
+        }
+    }
+
+    private void setupShowPossibleMovesListener() {
+        showPossibleMovesCheckbox.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (player.getAssistantLevel() == NiveauAssistant.NOT_USED) {
+                    player.setAssistantLevel(NiveauAssistant.SIMPLE);
+                } else {
+                    player.setAssistantLevel(NiveauAssistant.NOT_USED);
+                }
+                updateData();
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+        });
+    }
+
+    private void setupSuggestNextMoveListener() {
+        suggestNextMoveCheckbox.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (player.getAssistantLevel() == NiveauAssistant.FULL) {
+                    player.setAssistantLevel(NiveauAssistant.SIMPLE);
+                } else {
+                    player.setAssistantLevel(NiveauAssistant.FULL);
+                }
+                updateData();
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+        });
+    }
+
+    public void build() {
+        // Load the checker image
+        try {
+            if (color.equals(CouleurCase.WHITE)) {
+                checkerImage = new ImageIcon(whiteChecker);
+            } else {
+                checkerImage = new ImageIcon(blackChecker);
+            }
+        } catch (Exception err) {
+            System.err.println(err);
+        }
+
+        playerImage = new ImageAvatar("");
+        playerImage.setBounds(15, 40, 50, 50);
+        add(playerImage);
+
+        playerStatsLabel = new JLabel();
+        showPossibleMovesCheckbox = new MonochromeCheckbox("<html> Show <br> possible moves");
+        suggestNextMoveCheckbox = new MonochromeCheckbox("<html> Suggest <br> next move");
+
+        playerStatsLabel.setForeground(new Color(0xCCCCCC));
+        playerStatsLabel.setBounds(130, 40, 200, 50);
+        playerStatsLabel.setFont(new Font("Arial", Font.HANGING_BASELINE, 12));
+
+        suggestNextMoveCheckbox.setForeground(new Color(0xCCCCCC));
+        suggestNextMoveCheckbox.setBounds(190, 90, 150, 50);
+        suggestNextMoveCheckbox.setOpaque(false);
+
+        showPossibleMovesCheckbox.setForeground(new Color(0xCCCCCC));
+        showPossibleMovesCheckbox.setBounds(10, 90, 150, 50);
+        showPossibleMovesCheckbox.setOpaque(false);
+
+        add(showPossibleMovesCheckbox);
+        add(suggestNextMoveCheckbox);
+        add(playerStatsLabel);
+
+        setupShowPossibleMovesListener();
+        setupSuggestNextMoveListener();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(checkerImage.getImage(), 70, 40, this);
+    }
 }
