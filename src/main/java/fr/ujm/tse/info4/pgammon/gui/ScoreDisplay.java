@@ -13,16 +13,16 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import fr.ujm.tse.info4.pgammon.models.CaseColor; //change according to CouleurCase from models
+import fr.ujm.tse.info4.pgammon.models.SquareColor; 
 
 public class ScoreDisplay extends JPanel {
 
 	private static final long serialVersionUID = -1068393331289654980L;
 	private int score = 0;
-	private CouleurCase color;
+	private SquareColor color;
 	private JLabel label;
 	
-	public ScoreDisplay(int score, CaseColor color) {
+	public ScoreDisplay(int score, SquareColor color) {
 		super();
 		this.score = score;
 		this.color = color;
@@ -32,7 +32,7 @@ public class ScoreDisplay extends JPanel {
 	private void build() {
 		setLayout(new GridBagLayout());
 		label = new JLabel(String.valueOf(score));
-		Color c = (color==CaseColor.WHITE)?new Color(0x111111):new Color(0xEEEEEE);
+		Color c = (color==SquareColor.WHITE)?new Color(0x111111):new Color(0xEEEEEE);
 		label.setForeground(c);
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 		updateFont();
@@ -78,7 +78,7 @@ public class ScoreDisplay extends JPanel {
 		Paint p;
 		
 		// Background
-		p = (color == CaseColor.WHITE) ? new Color(0xEEEEEE):new Color(0x111111);
+		p = (color == SquareColor.WHITE) ? new Color(0xEEEEEE):new Color(0x111111);
 		g2.setPaint(p); 
 		g2.fillRect(0, 0, w, h); 
 		 

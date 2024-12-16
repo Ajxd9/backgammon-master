@@ -67,9 +67,9 @@ public class BarCaseButton extends CaseButton {
         if (getCase().getCheckerColor() == SquareColor.EMPTY) {
             icon = new ImageIcon();
         } else if (isPossible()) {
-            icon = (getCase().getCheckerColor() == SquareColor.WHITE) ? whiteAssistIcon : blackAssistIcon;
+            icon = (getCase().getCheckerColor() == SquareColor.WHITE) ? iconeAideBlanc : iconeAideNoir;
         } else {
-            icon = (getCase().getCheckerColor() == SquareColor.WHITE) ? whiteIcon : blackIcon;
+            icon = (getCase().getCheckerColor() == SquareColor.WHITE) ? iconeBlanche : iconeNoire;
         }
 
         int selectedCount = 0;
@@ -84,7 +84,7 @@ public class BarCaseButton extends CaseButton {
         if (isCandidate() && c.getNumCheckers() > 0) {
             float i = count - 0.8f;
             int y = (int) ((h - CHECKER_SEPARATION) / 2 + (i - (count - 1) / 2f) * (CHECKER_SEPARATION) + offset);
-            ImageIcon transparentIcon = (getCase().getCheckerColor() == SquareColor.WHITE) ? whiteTransparentIcon : blackTransparentIcon;
+            ImageIcon transparentIcon = (getCase().getCheckerColor() == SquareColor.WHITE) ? iconeBlancheTransp : iconeNoireTransp;
 
             g2.drawImage(transparentIcon.getImage(), 1, y, this);
         }

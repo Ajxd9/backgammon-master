@@ -11,7 +11,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
-import fr.ujm.tse.info4.pgammon.models.CellColor;
+import fr.ujm.tse.info4.pgammon.models.SquareColor;
 import fr.ujm.tse.info4.pgammon.models.Session;
 
 public class SessionCellRenderer extends JPanel implements ListCellRenderer<Session> {
@@ -26,7 +26,7 @@ public class SessionCellRenderer extends JPanel implements ListCellRenderer<Sess
         setLayout(null);
         setPreferredSize(new Dimension(100, 60));
 
-        player1ScoreDisplay = new ScoreDisplay(0, CellColor.WHITE);
+        player1ScoreDisplay = new ScoreDisplay(0, SquareColor.WHITE);
         player1ScoreDisplay.setBounds(290, 0, 25, 25);
         add(player1ScoreDisplay);
 
@@ -40,7 +40,7 @@ public class SessionCellRenderer extends JPanel implements ListCellRenderer<Sess
         player2Label.setFont(new Font("Arial", Font.BOLD, 18));
         add(player2Label);
 
-        player2ScoreDisplay = new ScoreDisplay(0, CellColor.BLACK);
+        player2ScoreDisplay = new ScoreDisplay(0, SquareColor.BLACK);
         player2ScoreDisplay.setBounds(290, 30, 25, 25);
         add(player2ScoreDisplay);
     }
@@ -61,11 +61,11 @@ public class SessionCellRenderer extends JPanel implements ListCellRenderer<Sess
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0x555555)));
 
         try {
-            player1Label.setText(session.getCurrentGame().getGameSettings().getWhitePlayer().getPseudo());
-            player2Label.setText(session.getCurrentGame().getGameSettings().getBlackPlayer().getPseudo());
+            player1Label.setText(session.getCurrentGame().getGameParameters().getWhitePlayer().getUsername());
+            player2Label.setText(session.getCurrentGame().getGameParameters().getBlackPlayer().getUsername());
             setAlignmentX(0.5f);
-            player1ScoreDisplay.setScore(session.getScores().get(session.getCurrentGame().getGameSettings().getWhitePlayer()));
-            player2ScoreDisplay.setScore(session.getScores().get(session.getCurrentGame().getGameSettings().getBlackPlayer()));
+            player1ScoreDisplay.setScore(session.getScores().get(session.getCurrentGame().getGameParameters().getWhitePlayer()));
+            player2ScoreDisplay.setScore(session.getScores().get(session.getCurrentGame().getGameParameters().getBlackPlayer()));
         } catch (Exception e) {
             player1Label.setText("");
             player2Label.setText("");
