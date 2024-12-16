@@ -12,7 +12,7 @@ import fr.ujm.tse.info4.pgammon.gui.ImageAvatar;
 import fr.ujm.tse.info4.pgammon.gui.MonochromeButton;
 import fr.ujm.tse.info4.pgammon.gui.MonochromeLabel;
 import fr.ujm.tse.info4.pgammon.gui.MonochromePanel;
-import fr.ujm.tse.info4.pgammon.models.CellColor;
+import fr.ujm.tse.info4.pgammon.models.SquareColor;
 import fr.ujm.tse.info4.pgammon.models.Session;
 
 public class ParametersPanelLoadView extends MonochromePanel {
@@ -82,8 +82,8 @@ public class ParametersPanelLoadView extends MonochromePanel {
         scorePlayer2.setScore(session.getScores().get(session.getCurrentGame().getGameParameters().getBlackPlayer()));
         whitePlayerAvatar.setPath(session.getCurrentGame().getGameParameters().getWhitePlayer().getImageSource());
         blackPlayerAvatar.setPath(session.getCurrentGame().getGameParameters().getBlackPlayer().getImageSource());
-        whitePlayerName.setText(session.getCurrentGame().getGameParameters().getWhitePlayer().getPseudo());
-        blackPlayerName.setText(session.getCurrentGame().getGameParameters().getBlackPlayer().getPseudo());
+        whitePlayerName.setText(session.getCurrentGame().getGameParameters().getWhitePlayer().getUsername());
+        blackPlayerName.setText(session.getCurrentGame().getGameParameters().getBlackPlayer().getUsername());
 
         int winningGames = session.getSessionParameters().getWinningGameCount();
 
@@ -128,11 +128,11 @@ public class ParametersPanelLoadView extends MonochromePanel {
         timeLabel.setBounds(165, 290, 120, 40);
         add(timeLabel);
 
-        scorePlayer1 = new ScoreDisplay(0, CellColor.WHITE);
+        scorePlayer1 = new ScoreDisplay(0, SquareColor.WHITE);
         scorePlayer1.setBounds(95, 70, 40, 40);
         add(scorePlayer1);
 
-        scorePlayer2 = new ScoreDisplay(0, CellColor.BLACK);
+        scorePlayer2 = new ScoreDisplay(0, SquareColor.BLACK);
         scorePlayer2.setBounds(160, 70, 40, 40);
         add(scorePlayer2);
 

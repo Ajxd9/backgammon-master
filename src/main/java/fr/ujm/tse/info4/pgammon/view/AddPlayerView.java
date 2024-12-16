@@ -1,4 +1,4 @@
-package fr.ujm.tse.info4.pgammon.views;
+package fr.ujm.tse.info4.pgammon.view;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -110,7 +110,7 @@ public class AddPlayerView extends MonochromePanel {
      * Setter for the path
      * @param path changes the avatar path to display the new image
      */
-    public void setPath(String path) {
+    public void setPath1(String path) {
         this.path = path;
     }
 

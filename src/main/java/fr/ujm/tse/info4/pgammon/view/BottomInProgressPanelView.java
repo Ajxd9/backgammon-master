@@ -52,7 +52,7 @@ public class BottomInProgressPanelView  extends JPanel {
         add(helpLabel);
         
         // New session component and label
-        newSessionButton = new MonochromeIconButton(MonochromeIconType.PLUS, "MonochromeIconButton", "BLACK");
+        newSessionButton = new MonochromeIconButton(MonochromeIconType.ADD, "MonochromeIconButton", "BLACK");
         newSessionButton.setSizeBig();
         newSessionButton.setBounds(700, 5, newSessionButton.getPreferredSize().width, newSessionButton.getPreferredSize().height);
         add(newSessionButton);

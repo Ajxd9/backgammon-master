@@ -10,7 +10,7 @@ import java.awt.geom.Point2D;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import fr.ujm.tse.info4.pgammon.gui.IconMonochromeType;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeIconType;
 import fr.ujm.tse.info4.pgammon.gui.MonochromeIconButton;
 
 public class CompletedGameViewRight extends JPanel {
@@ -41,7 +41,7 @@ public class CompletedGameViewRight extends JPanel {
         // Right panel setup
 
         // Button to go to the next game
-        nextButton = new MonochromeIconButton(IconMonochromeType.NEXT, "MonochromeIconButton", MonochromeIconButton.BLACK);
+        nextButton = new MonochromeIconButton(MonochromeIconType.NEXT, "MonochromeIconButton", MonochromeIconButton.BLACK);
         nextButton.setSizeBig();
         nextButton.setBounds(10, 20, nextButton.getPreferredSize().width, nextButton.getPreferredSize().height);
         add(nextButton);
@@ -52,7 +52,7 @@ public class CompletedGameViewRight extends JPanel {
         add(nextLabel);
 
         // Button to replay the game
-        replayButton = new MonochromeIconButton(IconMonochromeType.PLAY, "MonochromeIconButton", MonochromeIconButton.BLACK);
+        replayButton = new MonochromeIconButton(MonochromeIconType.PLAY, "MonochromeIconButton", MonochromeIconButton.BLACK);
         replayButton.setSizeBig();
         replayButton.setBounds(10, 185, replayButton.getPreferredSize().width, replayButton.getPreferredSize().height);
         add(replayButton);
@@ -63,7 +63,7 @@ public class CompletedGameViewRight extends JPanel {
         add(replayLabel);
 
         // Button to interrupt the game
-        interruptButton = new MonochromeIconButton(IconMonochromeType.INTERRUPT_WHITE, "MonochromeIconButton", MonochromeIconButton.BLACK);
+        interruptButton = new MonochromeIconButton(MonochromeIconType.X_WHITE, "MonochromeIconButton", MonochromeIconButton.BLACK);
         interruptButton.setSizeBig();
         interruptButton.setBounds(10, 350, interruptButton.getPreferredSize().width, interruptButton.getPreferredSize().height);
         add(interruptButton);

@@ -1,4 +1,4 @@
-package com.example.game.view;
+package fr.ujm.tse.info4.pgammon.view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
