@@ -1,102 +1,53 @@
-package game;
+package Controller;
 
-/*test
-/**
- * The representation of the board used by the main game.
- *
- */
-public class Board {
-	protected Column[] columns;
-	public Column[] woodColumns;
-	
-	private int turn;
-	
-	/**
-	 * The dice that the board currently holds.
-	 */
-	private int[] dice;
-	private int[] doubles;
-	
-	/**
-	 * Integers to represent the turn
-	 */
-	public static final int BLACK = -1;
-	public static final int WHITE = 1;
+import javax.management.modelmbean.ModelMBean;
+import Model.Board;
+import View.Column;
+import View.Game;
+import View.Move;
+import Model.Piece;
+import Model.PossibleMove;
+import Model.Column;
+import View.Column;
 
-	/**
-	 * Constants to represent the unique number of the bar.
-	 */
-	public static final int WOOD_WHITE = 26;
-	public static final int WOOD_BLACK = 27;
 
-	/**
-	 * Used by the player to make moves using the gui.
-	 * Used by the AI to evalute moves.
-	 * Used by the game logic to determine possible moves.
-	 */
-	private Column selectedColumn;
-	
-	public void setDice(int[] dice){
-		this.dice = dice;
-	}
-	
-	public int[] getDice(){
-		return dice;
-	}
-	
-	public void setDoubles(int[] doubles){
-		this.doubles = doubles;
-	}
-	
-	public int[] getDoubles(){
-		return doubles;
-	}
-	
-	public Board(int turn){
-		columns = new Column[26];
-		woodColumns = new Column[2];
-		this.turn = turn;
-	}
-	
-	public void changeTurn(){
-		if (turn == BLACK){
-			turn = WHITE;
-		} else {
-			turn = BLACK;
-		}
-	}
-	
-	public int getTurn(){
-		return turn;
-	}
-	
-	public Column getSelected(){
-		return selectedColumn;
+
+public class BoardController {
+
+	private Column[] columns;
+    private Column[] woodColumns;
+
+  
+ 
+	public BoardController() {
+		this.columns = new Column[26] ;
+		this.woodColumns = new Column[2];
+		init();
 	}
 
-	public Column[] getAll(){
-		return columns;
-	}
-
-	public Column getWood(int color){
-		if (color == Column.BLACK){
-			return woodColumns[0];
-		} else {
-			return woodColumns[1];
-		}
-	}
 	
-	public void init(){
+
+/*	public void init(){
 		for (int i = 0; i < columns.length; i++){
 			columns[i] = new Column(i,this);
 		}
 
 		for (int i = 0; i < woodColumns.length; i++){
-			woodColumns[0] = new Column(WOOD_BLACK,this);
-			woodColumns[1] = new Column(WOOD_WHITE,this);
+			woodColumns[0] = new Column(Board.WOOD_BLACK,this);
+			woodColumns[1] = new Column(Board.WOOD_WHITE,this);
 		}
 	}
+	*/
 
+	public void init() {
+	    for (int i = 0; i < columns.length; i++) {
+	        columns[i] = new Column(i, this);
+	    }
+	    woodColumns[0] = new Column(Board.WOOD_BLACK, this);
+	    woodColumns[1] = new Column(Board.WOOD_WHITE, this);
+	}
+
+	
 	/**
 	 * Populates the board using the default board state.
 	 */
@@ -283,4 +234,11 @@ public class Board {
 		this.dice[i] = this.doubles[i];
 		this.doubles[i] = 0;
 	}
+	
+	
+
+	
+		
+	
+	
 }
