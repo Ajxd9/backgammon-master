@@ -9,15 +9,15 @@ import java.awt.RenderingHints;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import fr.ujm.tse.info4.pgammon.models.Horloge;
-import fr.ujm.tse.info4.pgammon.models.HorlogeEvent;
-import fr.ujm.tse.info4.pgammon.models.HorlogeEventListener; // change according to model
+import fr.ujm.tse.info4.pgammon.models.Clock;
+import fr.ujm.tse.info4.pgammon.models.ClockEvent;
+import fr.ujm.tse.info4.pgammon.models.ClockEventListener; // change according to model
 
 /**
  * Provides a component to display the clock as a bar.
  * Author: Jean-Mi
  */
-public class ClockBar extends JPanel implements HorlogeEventListener {
+public class ClockBar extends JPanel implements ClockEventListener {
     private static final long serialVersionUID = 1946775586045691887L;
     private final int LABEL_WIDTH = 50;
     JLabel timeLabel;

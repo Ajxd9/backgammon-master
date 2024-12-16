@@ -9,7 +9,7 @@ import java.awt.Paint;
 import java.awt.Point;
 import java.awt.RenderingHints;
 
-public class TurnChangeAnimation extends TranstionAnimeeBase { //change according to models
+public class TurnChangeAnimation extends AnimatedTransitionBase { //change according to models
     private static final long serialVersionUID = 2507637341332121993L;
     private char[] titleChars;
     private char[] textChars;

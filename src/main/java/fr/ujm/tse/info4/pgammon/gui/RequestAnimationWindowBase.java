@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.SortedSet;
 
-public class RequestAnimationWindowBase extends TranstionAnimeeBase {
+public class RequestAnimationWindowBase extends AnimatedTransitionBase {
 
     private static final long serialVersionUID = -4787023438548267991L;
     private char[] titleChars;

@@ -23,8 +23,13 @@ public class SquareButton extends JButton{
 	 * 
 	 * @param _Square Square to associate with the button.
 	 */
+<<<<<<< Updated upstream:src/main/java/fr/ujm/tse/info4/pgammon/gui/SquareButton.java
 	public SquareButton(Square _Square){
 		c = _Square;
+=======
+	public CaseButton(Square _case){
+		c = _case;
+>>>>>>> Stashed changes:src/main/java/fr/ujm/tse/info4/pgammon/gui/CaseButton.java
 		isCandidate = false;
 	}
 
@@ -34,12 +39,21 @@ public class SquareButton extends JButton{
 	 * 
 	 * @return Returns the associated Square.
 	 */
+<<<<<<< Updated upstream:src/main/java/fr/ujm/tse/info4/pgammon/gui/SquareButton.java
 	public Square getSquare() {
 		return c;
 	}
 
 	public void setSquare(Square _Square) {
 		c = _Square;
+=======
+	public Square getCase() {
+		return c;
+	}
+
+	public void setCase(Square _case) {
+		c = _case;
+>>>>>>> Stashed changes:src/main/java/fr/ujm/tse/info4/pgammon/gui/CaseButton.java
 	}
 	
 	

@@ -9,15 +9,15 @@ import java.awt.RenderingHints;
 
 import javax.swing.ImageIcon;
 
-import fr.ujm.tse.info4.pgammon.models.Case;
-import fr.ujm.tse.info4.pgammon.models.CellColor; //change from model
+import fr.ujm.tse.info4.pgammon.models.Square;
+import fr.ujm.tse.info4.pgammon.models.SquareColor;
 
 public class BarCaseButton extends CaseButton {
     private static final long serialVersionUID = 1696544283522096083L;
     private final int MAX_CHECKERS_DRAWN = 5;
     private final int CHECKER_SEPARATION = 27;
 
-    public BarCaseButton(Case _case, boolean _isDirectionUp) {
+    public BarCaseButton(Square _case, boolean _isDirectionUp) {
         super(_case);
         build();
     }
@@ -35,21 +35,21 @@ public class BarCaseButton extends CaseButton {
     }
 
     private void drawBackground(Graphics g) {
-        if (isPossible() && getCase().getCheckerCount() == 0) {
+        if (isPossible() && getCase().getNumCheckers() == 0) {
             g.setColor(new Color(0x000033));
             g.fillRect(0, 0, getWidth(), getHeight());
         }
     }
 
     private void drawCheckers(Graphics g) {
-        Case c = getCase();
+    	Square c = getCase();
         if (c == null)
             return;
 
         int h = getHeight();
-        CellColor checkerColor = c.getCheckerColor();
+        SquareColor checkerColor = c.getCheckerColor();
 
-        if (checkerColor == CellColor.EMPTY || c.getCheckerCount() == 0)
+        if (checkerColor == SquareColor.EMPTY || c.getCheckerCount() == 0)
             return;
 
         int checkerCount = c.getCheckerCount();
