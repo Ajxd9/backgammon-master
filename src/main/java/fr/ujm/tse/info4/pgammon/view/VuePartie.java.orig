@@ -1,0 +1,106 @@
+package fr.ujm.tse.info4.pgammon.views;
+
+import java.awt.Dimension;
+import java.awt.Graphics;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+
+import fr.ujm.tse.info4.pgammon.gui.IconMonochromeType;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeIconButton;
+import fr.ujm.tse.info4.pgammon.models.Game;
+
+public class GameView extends JPanel {
+    private static final long serialVersionUID = 2417367501490643145L;
+    
+    // Loading background image
+    public static final ImageIcon backgroundImage = new ImageIcon("images/game_background.png");
+    
+    private Game game;
+    private BoardView boardView;
+    
+    // Buttons for playing the game
+    MonochromeIconButton back;
+    MonochromeIconButton dice;
+    MonochromeIconButton help;
+    MonochromeIconButton plus;
+    MonochromeIconButton blackX;
+    
+    // Buttons for reviewing the game
+    MonochromeIconButton next;
+    MonochromeIconButton undo;
+    MonochromeIconButton whiteX;
+
+    public GameView(Game game) {
+        this.game = game;
+        boardView = new BoardView(game);
+        build();
+    }
+    
+    private void build() {
+        setPreferredSize(new Dimension(800, 600));
+        setOpaque(false);
+        
+        setLayout(null);
+        boardView.setBounds(173, 30, 547, 446);
+        add(boardView);
+        
+        JPanel rightPanelContainerPlayingGame = new JPanel();
+        rightPanelContainerPlayingGame.setLayout(null);
+        rightPanelContainerPlayingGame.setBounds(720, 29, 80, 447);
+        rightPanelContainerPlayingGame.setOpaque(false);
+        add(rightPanelContainerPlayingGame);
+        
+        // Button for playing the game
+        back = new MonochromeIconButton(IconMonochromeType.RETURN, "MonochromeIconButton", "BLACK");
+        back.setSizeBig();
+        back.setBounds(10, 5, back.getPreferredSize().width, back.getPreferredSize().height);
+        rightPanelContainerPlayingGame.add(back);
+        
+        dice = new MonochromeIconButton(IconMonochromeType.DICE, "MonochromeIconButton", "BLACK");
+        dice.setSizeBig();
+        dice.setBounds(10, 230, dice.getPreferredSize().width, dice.getPreferredSize().height);
+        rightPanelContainerPlayingGame.add(dice);
+        
+        help = new MonochromeIconButton(IconMonochromeType.HELP, "MonochromeIconButton", "BLACK");
+        help.setSizeBig();
+        help.setBounds(10, 10, help.getPreferredSize().width, help.getPreferredSize().height);
+        add(help);
+        
+        plus = new MonochromeIconButton(IconMonochromeType.PLUS, "MonochromeIconButton", "BLACK");
+        plus.setSizeBig();
+        plus.setBounds(10, 10, plus.getPreferredSize().width, plus.getPreferredSize().height);
+        add(plus);
+        
+        blackX = new MonochromeIconButton(IconMonochromeType.BLACK_X, "MonochromeIconButton", "BLACK");
+        blackX.setSizeBig();
+        blackX.setBounds(10, 10, blackX.getPreferredSize().width, blackX.getPreferredSize().height);
+        add(blackX);
+        
+        // Buttons for reviewing the game
+        next = new MonochromeIconButton(IconMonochromeType.PLUS, "MonochromeIconButton");
+        next.setSizeBig();
+        next.setBounds(10, 10, next.getPreferredSize().width, next.getPreferredSize().height);
+        add(next);
+        
+        undo = new MonochromeIconButton(IconMonochromeType.CANCEL, "MonochromeIconButton");
+        undo.setSizeBig();
+        undo.setBounds(10, 10, undo.getPreferredSize().width, undo.getPreferredSize().height);
+        add(undo);
+        
+        whiteX = new MonochromeIconButton(IconMonochromeType.WHITE_X, "MonochromeIconButton");
+        whiteX.setSizeBig();
+        whiteX.setBounds(10, 10, whiteX.getPreferredSize().width, whiteX.getPreferredSize().height);
+        add(whiteX);
+    }
+    
+    public BoardView getBoardView() {
+        return boardView;
+    }
+    
+    @Override
+    protected void paintComponent(Graphics g) {
+        g.drawImage(backgroundImage.getImage(), 0, 0, this);
+        super.paintComponent(g);
+    }
+}

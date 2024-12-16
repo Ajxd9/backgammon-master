@@ -1,17 +1,13 @@
-package fr.ujm.tse.info4.pgammon.exeption;
+package fr.ujm.tse.info4.pgammon.exception;
 
-public class TourNonJouableException extends Exception{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class UnplayableRookException extends Exception {
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 
-	 * @param message
-	 */
-	public TourNonJouableException(String message){
-	    super(message);
-	}  
-
+    /**
+     * 
+     * @param message
+     */
+    public UnplayableRookException(String message) {
+        super(message);
+    }
 }
