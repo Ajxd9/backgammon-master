@@ -8,343 +8,265 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class PanelParametre extends MonochromePanel{
-	/**
-	 * Cette classe affiche les paramètres de partie que l'on pourra choisir
-	 */
-	
-	private static final long serialVersionUID = -4599011779523529733L;
-	
-	private MonochromeIconButton plus_partie;
-	private MonochromeIconButton moins_partie;
-	private MonochromeIconButton infinite_partie;
-	private MonochromeIconButton plus_temps;
-	private MonochromeIconButton moins_temps;
-	private MonochromeIconButton infinite_temps;
-	
-	public static final String imgparties 	= "images/parties.png";
-	public static final String imgtime 	= "images/time.png";
+public class SettingsPanel extends MonochromePanel {
+    /**
+     * This class displays the game parameters that can be selected.
+     */
+    private static final long serialVersionUID = -4599011779523529733L;
 
-	private ImageIcon iconeparties;
-	private ImageIcon iconetime;
-	
-	private MonochromeLabel lab_parties;
-	private MonochromeLabel lab_temps;
-	
-	private JLabel text_parties;
-	private JLabel text_temps;
-	
-	private MonochromeCheckbox videau;
-	
-	
-	private int nbParties;
-	private int nbTemps;
+    private MonochromeIconButton increaseGames;
+    private MonochromeIconButton decreaseGames;
+    private MonochromeIconButton infiniteGames;
+    private MonochromeIconButton increaseTime;
+    private MonochromeIconButton decreaseTime;
+    private MonochromeIconButton infiniteTime;
 
-	/**
-	 * Constructeur de la classe
-	 */
-	public PanelParametre(){
-		super("Parameters");
-		
-		build();
-		
-	}
-	
-	public void build(){
-		
-		//récupération de l'image
-		try{
-			iconeparties = new ImageIcon(imgparties);
-			iconetime = new ImageIcon(imgtime);
-		}catch(Exception err){
-			System.err.println(err);
-		}
-		
-		nbParties = 3;
-		nbTemps = 30;
-		
-		text_parties = new JLabel();
-		text_parties.setText("Score to achieve");
-		text_parties.setForeground(new Color(0xCCCCCC));
-		text_parties.setBounds(20, 30, 300, 50);
-		add(text_parties);
-		
-		text_temps = new JLabel();
-		text_temps.setText("Time limit per turn");
-		text_temps.setForeground(new Color(0xCCCCCC));
-		text_temps.setBounds(20, 150, 300, 50);
-		add(text_temps);
-		
-		lab_parties = new MonochromeLabel(new Integer(nbParties).toString());
-		lab_parties.setBounds(70, 80, 120, 40);
-		add(lab_parties);
-		
-		lab_temps = new MonochromeLabel(new Integer(nbTemps).toString()+" s");
-		lab_temps.setBounds(70, 200, 120, 40);
-		add(lab_temps);
-		
-		
-			plus_partie = new MonochromeIconButton(IconMonochromeType.SMALL_PLUS,"MonochromeIconButton","NOIR");
-			plus_partie.setSizeSmall();
-			plus_partie.setBounds(200, 80, plus_partie.getPreferredSize().width, plus_partie.getPreferredSize().height);
-			add(plus_partie);
-	
-			moins_partie = new MonochromeIconButton(IconMonochromeType.SMALL_MOINS,"MonochromeIconButton","NOIR");
-			moins_partie.setSizeSmall();
-			moins_partie.setBounds(245, 80, moins_partie.getPreferredSize().width, moins_partie.getPreferredSize().height);
-			add(moins_partie);
+    public static final String gamesImage = "images/parties.png";
+    public static final String timeImage = "images/time.png";
 
-			infinite_partie = new MonochromeIconButton(IconMonochromeType.SMALL_INFINITE,"MonochromeIconButton","NOIR");
-			infinite_partie.setSizeSmall();
-			infinite_partie.setBounds(290, 80, infinite_partie.getPreferredSize().width, infinite_partie.getPreferredSize().height);
-			add(infinite_partie);
-			
-			plus_temps = new MonochromeIconButton(IconMonochromeType.SMALL_PLUS,"MonochromeIconButton","NOIR");
-			plus_temps.setSizeSmall();
-			plus_temps.setBounds(200, 200, plus_temps.getPreferredSize().width, plus_temps.getPreferredSize().height);
-			add(plus_temps);
-			
-			
-			moins_temps = new MonochromeIconButton(IconMonochromeType.SMALL_MOINS,"MonochromeIconButton","NOIR");
-			moins_temps.setSizeSmall();
-			moins_temps.setBounds(245, 200, moins_temps.getPreferredSize().width, moins_temps.getPreferredSize().height);
-			add(moins_temps);
-			
-			
-			infinite_temps = new MonochromeIconButton(IconMonochromeType.SMALL_INFINITE,"MonochromeIconButton","NOIR");
-			infinite_temps.setSizeSmall();
-			infinite_temps.setBounds(290, 200, infinite_temps.getPreferredSize().width, infinite_temps.getPreferredSize().height);
-			add(infinite_temps);
-			
-			videau = new MonochromeCheckbox("Doubling Cube");
-			videau.setBounds(100, 270, 150, 50);
-			videau.setSelected(true);
-			add(videau);
-			
-			listenerplus_partie();
-			listenermoins_partie();
-			listenerinfinite_partie();
-			listenerplus_Temps();
-			listenermoins_Temps();
-			listenerinfinite_Temps();
-			
-			
-	}
-	
-	/**
-	 * Méthode permettant d'afficher la valeur du temps en fonction du choix de l'utilisateur
-	 * @param i un entier en paramètre qui sera le temps à afficher
-	 */
-	public void changerValeurNbTemps(int i){
-		int j=i/60;		
-		if(i == 0){
-			lab_temps.setText("\u221E");
-		}else if(i>60){
-			lab_temps.setText(new Integer(i/60).toString()+"m "+new Integer(i-60*j)+"s");
-		}
-		else{
-			lab_temps.setText(new Integer(i).toString()+" s");
-		}
-		
-	}
-	
-	private void listenerplus_Temps()
-	{
-		plus_temps.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}		
-			@Override
-			public void mouseExited(MouseEvent e) {}			
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				nbTemps = nbTemps+15;
-				changerValeurNbTemps(nbTemps);
-			}
-		});
-	}
-	
-	private void listenermoins_Temps()
-	{
-		moins_temps.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}		
-			@Override
-			public void mouseExited(MouseEvent e) {}			
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(nbTemps > 15){
-					nbTemps = nbTemps - 15;
-					changerValeurNbTemps(nbTemps);
-				}
-			}
-		});
-	}
-	
-	private void listenerinfinite_Temps()
-	{
-		infinite_temps.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}		
-			@Override
-			public void mouseExited(MouseEvent e) {}			
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				nbTemps = 0;
-				changerValeurNbTemps(nbTemps);
-			}
-		});
-	}
-	
-	/**
-	 * permet de changer la valeur du nombre de partie en fonction des choix de l'uilisateur
-	 * @param i un entier en paramètre du nombre de partie
-	 */
-	public void changerValeurNbPartie(int i){
-		if(i == 0){
-			lab_parties.setText("\u221E");
-		}else{
-			lab_parties.setText(new Integer(i).toString());
-		}
-		
-		
-	}
-	
-	private void listenerplus_partie()
-	{
-		plus_partie.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}		
-			@Override
-			public void mouseExited(MouseEvent e) {}			
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				nbParties ++;
-				changerValeurNbPartie(nbParties);
-			}
-		});
-	}
-	
-	private void listenermoins_partie()
-	{
-		moins_partie.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}		
-			@Override
-			public void mouseExited(MouseEvent e) {}			
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(nbParties > 1){
-					nbParties --;
-					changerValeurNbPartie(nbParties);
-				}
-			}
-		});
-	}
-	
-	private void listenerinfinite_partie()
-	{
-		infinite_partie.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}		
-			@Override
-			public void mouseExited(MouseEvent e) {}			
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				nbParties = 0;
-				changerValeurNbPartie(nbParties);
-			}
-		});
-	}
-	
-	
-	/**
-	 * Getter du nombre de partie
-	 * @return retourne le nombre de partie selectionné
-	 */
-	public int getNbParties() {
-		return nbParties;
-	}
+    private ImageIcon gamesIcon;
+    private ImageIcon timeIcon;
 
-	/**
-	 * Getter du nombre de temps
-	 * @return retourne le nombre de temps selectionné
-	 */
-	public int getNbTemps() {
-		return nbTemps;
-	}
+    private MonochromeLabel gamesLabel;
+    private MonochromeLabel timeLabel;
 
-	
+    private JLabel gamesText;
+    private JLabel timeText;
 
-	/**
-	 * Getter du label de partie
-	 * @return retourne le label de partie
-	 */
-	public MonochromeLabel getLab_parties() {
-		return lab_parties;
-	}
+    private MonochromeCheckbox doublingCube;
 
-	
-	/**
-	 * Getter du label de temps
-	 * @return retourne le label de temps
-	 */
-	public MonochromeLabel getLab_temps() {
-		return lab_temps;
-	}
+    private int numberOfGames;
+    private int timeLimit;
 
-	
-	/**
-	 * Getter du checkbox du videau
-	 * @return retourne la valeur de la checkbox
-	 */
-	public MonochromeCheckbox getVideau() {
-		return videau;
-	}
+    /**
+     * Constructor of the class.
+     */
+    public SettingsPanel() {
+        super("Parameters");
 
-	/**
-	 * Setter du checkbox du videau
-	 * @param videau change la valeur du checkbox
-	 */
-	public void setVideau(MonochromeCheckbox videau) {
-		this.videau = videau;
-	}
+        build();
+    }
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		
-		g.drawImage(iconeparties.getImage(),10,75,this);
-		g.drawImage(iconetime.getImage(),10,194,this);
-	}
+    public void build() {
+        // Load the images
+        try {
+            gamesIcon = new ImageIcon(gamesImage);
+            timeIcon = new ImageIcon(timeImage);
+        } catch (Exception err) {
+            System.err.println(err);
+        }
 
+        numberOfGames = 3;
+        timeLimit = 30;
+
+        gamesText = new JLabel();
+        gamesText.setText("Score to achieve");
+        gamesText.setForeground(new Color(0xCCCCCC));
+        gamesText.setBounds(20, 30, 300, 50);
+        add(gamesText);
+
+        timeText = new JLabel();
+        timeText.setText("Time limit per turn");
+        timeText.setForeground(new Color(0xCCCCCC));
+        timeText.setBounds(20, 150, 300, 50);
+        add(timeText);
+
+        gamesLabel = new MonochromeLabel(Integer.toString(numberOfGames));
+        gamesLabel.setBounds(70, 80, 120, 40);
+        add(gamesLabel);
+
+        timeLabel = new MonochromeLabel(Integer.toString(timeLimit) + " s");
+        timeLabel.setBounds(70, 200, 120, 40);
+        add(timeLabel);
+
+        increaseGames = new MonochromeIconButton(MonochromeIconType.SMALL_ADD, "MonochromeIconButton", "BLACK");
+        increaseGames.setSizeSmall();
+        increaseGames.setBounds(200, 80, increaseGames.getPreferredSize().width, increaseGames.getPreferredSize().height);
+        add(increaseGames);
+
+        decreaseGames = new MonochromeIconButton(MonochromeIconType.SMALL_MINUS, "MonochromeIconButton", "BLACK");
+        decreaseGames.setSizeSmall();
+        decreaseGames.setBounds(245, 80, decreaseGames.getPreferredSize().width, decreaseGames.getPreferredSize().height);
+        add(decreaseGames);
+
+        infiniteGames = new MonochromeIconButton(MonochromeIconType.SMALL_INFINITY, "MonochromeIconButton", "BLACK");
+        infiniteGames.setSizeSmall();
+        infiniteGames.setBounds(290, 80, infiniteGames.getPreferredSize().width, infiniteGames.getPreferredSize().height);
+        add(infiniteGames);
+
+        increaseTime = new MonochromeIconButton(MonochromeIconType.SMALL_ADD, "MonochromeIconButton", "BLACK");
+        increaseTime.setSizeSmall();
+        increaseTime.setBounds(200, 200, increaseTime.getPreferredSize().width, increaseTime.getPreferredSize().height);
+        add(increaseTime);
+
+        decreaseTime = new MonochromeIconButton(MonochromeIconType.SMALL_MINUS, "MonochromeIconButton", "BLACK");
+        decreaseTime.setSizeSmall();
+        decreaseTime.setBounds(245, 200, decreaseTime.getPreferredSize().width, decreaseTime.getPreferredSize().height);
+        add(decreaseTime);
+
+        infiniteTime = new MonochromeIconButton(MonochromeIconType.SMALL_INFINITY, "MonochromeIconButton", "BLACK");
+        infiniteTime.setSizeSmall();
+        infiniteTime.setBounds(290, 200, infiniteTime.getPreferredSize().width, infiniteTime.getPreferredSize().height);
+        add(infiniteTime);
+
+        doublingCube = new MonochromeCheckbox("Doubling Cube");
+        doublingCube.setBounds(100, 270, 150, 50);
+        doublingCube.setSelected(true);
+        add(doublingCube);
+
+        setupIncreaseGamesListener();
+        setupDecreaseGamesListener();
+        setupInfiniteGamesListener();
+        setupIncreaseTimeListener();
+        setupDecreaseTimeListener();
+        setupInfiniteTimeListener();
+    }
+
+    /**
+     * Updates the time value based on the user's choice.
+     * @param time Integer value representing the time to display.
+     */
+    public void updateTimeValue(int time) {
+        int minutes = time / 60;
+        if (time == 0) {
+            timeLabel.setText("\u221E");
+        } else if (time > 60) {
+            timeLabel.setText(minutes + "m " + (time - 60 * minutes) + "s");
+        } else {
+            timeLabel.setText(time + " s");
+        }
+    }
+
+    private void setupIncreaseTimeListener() {
+        increaseTime.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                timeLimit += 15;
+                updateTimeValue(timeLimit);
+            }
+        });
+    }
+
+    private void setupDecreaseTimeListener() {
+        decreaseTime.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (timeLimit > 15) {
+                    timeLimit -= 15;
+                    updateTimeValue(timeLimit);
+                }
+            }
+        });
+    }
+
+    private void setupInfiniteTimeListener() {
+        infiniteTime.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                timeLimit = 0;
+                updateTimeValue(timeLimit);
+            }
+        });
+    }
+
+    /**
+     * Updates the number of games based on user choice.
+     * @param games Integer representing the number of games.
+     */
+    public void updateNumberOfGames(int games) {
+        if (games == 0) {
+            gamesLabel.setText("\u221E");
+        } else {
+            gamesLabel.setText(Integer.toString(games));
+        }
+    }
+
+    private void setupIncreaseGamesListener() {
+        increaseGames.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                numberOfGames++;
+                updateNumberOfGames(numberOfGames);
+            }
+        });
+    }
+
+    private void setupDecreaseGamesListener() {
+        decreaseGames.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (numberOfGames > 1) {
+                    numberOfGames--;
+                    updateNumberOfGames(numberOfGames);
+                }
+            }
+        });
+    }
+
+    private void setupInfiniteGamesListener() {
+        infiniteGames.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                numberOfGames = 0;
+                updateNumberOfGames(numberOfGames);
+            }
+        });
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        g.drawImage(gamesIcon.getImage(), 10, 75, this);
+        g.drawImage(timeIcon.getImage(), 10, 194, this);
+    }
 }
+

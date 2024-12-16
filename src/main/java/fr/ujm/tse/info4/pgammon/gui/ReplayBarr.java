@@ -12,332 +12,321 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import fr.ujm.tse.info4.pgammon.models.DeSixFaces;
-import fr.ujm.tse.info4.pgammon.models.Deplacement;
-import fr.ujm.tse.info4.pgammon.models.Tour;
-
+import fr.ujm.tse.info4.pgammon.models.DieSixFaces;
+import fr.ujm.tse.info4.pgammon.models.Movement;
+import fr.ujm.tse.info4.pgammon.models.Turn;
 
 /**
- * Barre de replay automatique. La barre fournie 4 boutons et un affichage
- * des tours.
+ * Automatic replay bar. The bar provides 4 buttons and a display
+ * of the turns.
  * @author Jean-Mi
- *
  */
-public class ReplayBarr extends JPanel {
-	private static final long serialVersionUID = 1318001554445843500L;
-	private List<Tour> tours;
-	private LinkedList<DeSixFaces> allDes;
-	private LinkedList<Deplacement> allDeplacements;
-	private int current;
-	private int old_current;
-	private int total;
-	private final int SEPARATION = 30;
-	private final int NB_TO_SHOW = 13;
-	private final int DELAY = 30;
-	private JPanel elmentContainer;
-	
-	public static final ImageIcon fleche_suiv = new ImageIcon("images/barr_btn_next.png");
-	public static final ImageIcon fleche_prec = new ImageIcon("images/barr_btn_prev.png");
-	public static final ImageIcon fleche_fin = new ImageIcon("images/barr_btn_end.png");
-	public static final ImageIcon fleche_debut = new ImageIcon("images/barr_btn_begin.png");
-	public static final ImageIcon fleche_icon = new ImageIcon("images/fleche_barr.png");
+public class ReplayBar extends JPanel {
+    private static final long serialVersionUID = 1318001554445843500L;
+    private List<Turn> turns;
+    private LinkedList<DieSixFaces> allDice;
+    private LinkedList<Movement> allMovements;
+    private int current;
+    private int oldCurrent;
+    private int total;
+    private final int SEPARATION = 30;
+    private final int ELEMENTS_TO_SHOW = 13;
+    private final int DELAY = 30;
+    private JPanel elementContainer;
 
-	private JButton nextBtn;
-	private JButton prevBtn;
-	private JButton endBtn;
-	private JButton beginBtn;
+    public static final ImageIcon nextArrow = new ImageIcon("images/bar_btn_next.png");
+    public static final ImageIcon prevArrow = new ImageIcon("images/bar_btn_prev.png");
+    public static final ImageIcon endArrow = new ImageIcon("images/bar_btn_end.png");
+    public static final ImageIcon startArrow = new ImageIcon("images/bar_btn_begin.png");
+    public static final ImageIcon arrowIcon = new ImageIcon("images/arrow_bar.png");
 
-	private JLabel fl_suiv;
-	private JLabel fl_prec;
-	private JLabel fl_fin;
-	private JLabel fl_debut;
-	private JLabel fl_icon;
-	
-	private Timer timer;
-	private int current_position;
-	private int final_position;
-	private boolean avance;
-	
-	/**
-	 * Créé la barre complete
-	 * @param tours tour
-	 */
-	public ReplayBarr(List<Tour> tours) {
-		this.tours = tours;
-		current = 0;
-		old_current=0;
-		avance = false;
-		init();
-		build();
-		init_position();
-	}
+    private JButton nextBtn;
+    private JButton prevBtn;
+    private JButton endBtn;
+    private JButton startBtn;
 
-	/**
-	 * Change la liste des tours
-	 * @param tours liste des tours
-	 */
-	public void setTours(List<Tour> tours){
-		this.tours = tours;
-		current = 0;
-		old_current=0;
-		init();
-		init_position();
-		rebuild();
-	}
-	
-	@Override
-	public void setVisible(boolean aFlag) {
-		super.setVisible(aFlag);
-		if(aFlag)
-			timer.start();
-		else
-			timer.stop();
-	}
-	
-	/**
-	 * Va au déplacement transmit. 
-	 * @param dep Déplacement ou aller
-	 * @param isAvance permet de savoir si on va a gauche ou a droite
-	 */
-	public void goTo(Deplacement dep, boolean isAvance){
-		avance = isAvance;
-		setCurrent(getIndexOf(dep));
-	}
+    private JLabel nextLabel;
+    private JLabel prevLabel;
+    private JLabel endLabel;
+    private JLabel startLabel;
+    private JLabel arrowLabel;
 
-	/**
-	 * @deprecated Ne gere pas le sens
-	 * @param dep
-	 */
-	@Deprecated
-	public void goTo(Deplacement dep){
-		setCurrent(getIndexOf(dep));
-	}
+    private Timer timer;
+    private int currentPosition;
+    private int finalPosition;
+    private boolean advancing;
 
-	/**
-	 * Va au deplacement non nul suivant
-	 * @deprecated Pour la synchronisation, utiliser goTo();
-	 */
-	@Deprecated
-	public void goNext(){
-		int index = current+1;
-		while(index < total-1 && allDeplacements.get(index) == null )
-			index++;
-		setCurrent(index);
-	}
-	
-	/**
-	 * Va au deplacement non nul précedent.
-	 * @deprecated Pour la synchronisation, utiliser goTo();
-	 */
-	@Deprecated
-	public void goPrevious(){
-		int index = current-1;
-		while(index > 0 && allDeplacements.get(index) == null )
-			index--;
-		
-		setCurrent(index);
-	}
-	/**
-	 * Retourne au premier déplacement.
-	 */
-	public void goBegin(){
-		avance = false;
-		setCurrent(0);
-	}
-	/**
-	 * Retourne au dernier déplacement.
-	 */
-	public void goEnd(){
-		setCurrent(total-1);
-		avance = false;
-	}
-	
-	
-	private void setCurrent(int value){
-		if(value<0)
-			value = 0;
-		if(value>= total)
-			value = total-1;
-		
-		old_current = current;
-		current = value;
-		rebuild();
-	}
-	private void init(){
-		allDes = new LinkedList<>();
-		allDeplacements = new LinkedList<>();
-		
-		if(tours != null){
-			for (Tour tour : tours) {
-				int length = tour.getDeSixFaces().size();
-				List<DeSixFaces> des = tour.getDeSixFaces();
-				List<Deplacement> deplacements = tour.getListDeplacement();
-				
-				for( int i = 0; i < length ; i++ ){
-					Deplacement dep = null;
-					DeSixFaces de = new DeSixFaces(des.get(i).getCouleurDe(),des.get(i).getValeur());
-					if(deplacements != null && deplacements.size()>i){
-						dep = deplacements.get(i);
-					}
-					allDes.add(de);
-					allDeplacements.add(dep);
-				}
-			}
-		}
-		total = allDes.size();
-		
-	}
-	
-	private void build() {
-		setOpaque(false);
-		setPreferredSize(new Dimension(400,200));
-		setLayout(null);
-		
-		elmentContainer = new JPanel();
-		elmentContainer.setLayout(null);
-		elmentContainer.setOpaque(false);
-		
-		fl_suiv = new JLabel(fleche_suiv);
-		fl_suiv.setBounds(660,10, 47, 84);
-		
-		fl_prec = new JLabel(fleche_prec);
-		fl_prec.setBounds(100,10, 47, 84);
-		
-		fl_fin = new JLabel(fleche_fin);
-		fl_fin.setBounds(700,10, 47, 84);
-		
-		fl_debut = new JLabel(fleche_debut);
-		fl_debut.setBounds(50,10, 47, 84);
-		
-		fl_icon = new JLabel(fleche_icon);
-		fl_icon.setBounds(376,10, 47, 84);
-		
-		
+    /**
+     * Creates the full bar.
+     * @param turns List of turns.
+     */
+    public ReplayBar(List<Turn> turns) {
+        this.turns = turns;
+        current = 0;
+        oldCurrent = 0;
+        advancing = false;
+        initialize();
+        build();
+        initializePosition();
+    }
 
-		add(fl_suiv);
-		add(fl_prec);
-		add(fl_fin);
-		add(fl_debut);
-		add(fl_icon);
-		
-		nextBtn = new ReplayBarrButton("next");
-		prevBtn = new ReplayBarrButton("prev");
-		endBtn = new ReplayBarrButton("end");
-		beginBtn = new ReplayBarrButton("begin");
-		beginBtn.setBounds(  0, 0, 370, 100);
-		prevBtn.setBounds( 100, 0, 270, 100);
-		nextBtn.setBounds( 430, 0, 270, 100);
-		endBtn.setBounds(  430, 0, 370, 100);
-		add(nextBtn);
-		add(prevBtn);
-		add(endBtn);
-		add(beginBtn);
-		add(elmentContainer);
-		
-		rebuild();
+    /**
+     * Changes the list of turns.
+     * @param turns List of turns.
+     */
+    public void setTurns(List<Turn> turns) {
+        this.turns = turns;
+        current = 0;
+        oldCurrent = 0;
+        initialize();
+        initializePosition();
+        rebuild();
+    }
 
-	}
+    @Override
+    public void setVisible(boolean flag) {
+        super.setVisible(flag);
+        if (flag)
+            timer.start();
+        else
+            timer.stop();
+    }
 
-	
-	private void rebuild() {
-		elmentContainer.setPreferredSize(new Dimension((total)*30, 100));
+    /**
+     * Goes to the given movement.
+     * @param movement Movement to navigate to.
+     * @param isAdvancing Indicates whether moving forward or backward.
+     */
+    public void goTo(Movement movement, boolean isAdvancing) {
+        advancing = isAdvancing;
+        setCurrent(getIndexOf(movement));
+    }
 
-		elmentContainer.removeAll();
-		int min = Math.min(current, old_current);
-		int max = Math.max(current, old_current);
-		for(int i = 0; i < NB_TO_SHOW ; i ++){
-			putElement(min-1-i);
-			putElement(max+1+i);
-		}
-		for(int i = min; i <= max ; i ++){
-			putElement(i);
-		}
-		int avance_offset = 0;
-		if(avance)
-			avance_offset = -30;
-		final_position = (getSize().width)/2 + avance_offset - current * SEPARATION;
-	}
+    /**
+     * Deprecated: Does not handle direction.
+     * @param movement
+     */
+    @Deprecated
+    public void goTo(Movement movement) {
+        setCurrent(getIndexOf(movement));
+    }
 
-	@Override
-	public void setBounds(int x, int y, int width, int height) {
-		super.setBounds(x, y, width, height);
-		rebuild();
-	}
-	private void putElement(int index){
-		if(index < 0 || index >= total)
-			return;
-		DeSixFaces de = allDes.get(index);
-		Deplacement dep = allDeplacements.get(index);
-		
-		ReplayBarrElement elt = new ReplayBarrElement(de, dep);
-		elt.setBounds(SEPARATION * index, 0,
-				elt.getPreferredSize().width, elt.getPreferredSize().height);
-		elmentContainer.add(elt);
-	}
-	
+    /**
+     * Goes to the next non-null movement.
+     * Deprecated: For synchronization, use goTo().
+     */
+    @Deprecated
+    public void goNext() {
+        int index = current + 1;
+        while (index < total - 1 && allMovements.get(index) == null)
+            index++;
+        setCurrent(index);
+    }
 
-	private void init_position() {
+    /**
+     * Goes to the previous non-null movement.
+     * Deprecated: For synchronization, use goTo().
+     */
+    @Deprecated
+    public void goPrevious() {
+        int index = current - 1;
+        while (index > 0 && allMovements.get(index) == null)
+            index--;
 
-		elmentContainer.setBounds(final_position,0,elmentContainer.getPreferredSize().width,elmentContainer.getPreferredSize().height);
-		if(timer == null)
-			timer = new Timer(DELAY, new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					int diff = (int) (0.7*(final_position-current_position));
-					current_position = final_position - diff;
-					if(Math.abs(diff) < 1)
-						current_position = final_position;
-					elmentContainer.setBounds(current_position,0,elmentContainer.getPreferredSize().width,elmentContainer.getPreferredSize().height);
-					
-				} 
-			});
-		timer.start();
-		current_position = final_position;
-	}
-	
+        setCurrent(index);
+    }
 
-	
-	private int getIndexOf(Deplacement dep){
-		int i = 0;
-		for(Deplacement d : allDeplacements){
-			if(d != null){
-				if(d.getIdDeplacement() == dep.getIdDeplacement())
-					return i;
-			}
-			i++;
-		}
-		return i;
-	}
-	
-	/**
-	 * @return : le bouton suivant
-	 */
-	public JButton getNextBtn() {
-		return nextBtn;
-	}
+    /**
+     * Goes back to the first movement.
+     */
+    public void goToStart() {
+        advancing = false;
+        setCurrent(0);
+    }
 
-	/**
-	 * @return : le bouton precedent
-	 */
-	public JButton getPrevBtn() {
-		return prevBtn;
-	}
+    /**
+     * Goes to the last movement.
+     */
+    public void goToEnd() {
+        setCurrent(total - 1);
+        advancing = false;
+    }
 
-	/**
-	 * @return : le bouton fin
-	 */
-	public JButton getEndBtn() {
-		return endBtn;
-	}
+    private void setCurrent(int value) {
+        if (value < 0)
+            value = 0;
+        if (value >= total)
+            value = total - 1;
 
-	/**
-	 * @return : le bouton debut
-	 */
-	public JButton getBeginBtn() {
-		return beginBtn;
-	}
+        oldCurrent = current;
+        current = value;
+        rebuild();
+    }
 
+    private void initialize() {
+        allDice = new LinkedList<>();
+        allMovements = new LinkedList<>();
 
-	
+        if (turns != null) {
+            for (Turn turn : turns) {
+                int length = turn.getDice().size();
+                List<DieSixFaces> dice = turn.getDice();
+                List<Movement> movements = turn.getMovements();
+
+                for (int i = 0; i < length; i++) {
+                    Movement movement = null;
+                    DieSixFaces die = new DieSixFaces(dice.get(i).getColor(), dice.get(i).getValue());
+                    if (movements != null && movements.size() > i) {
+                        movement = movements.get(i);
+                    }
+                    allDice.add(die);
+                    allMovements.add(movement);
+                }
+            }
+        }
+        total = allDice.size();
+    }
+
+    private void build() {
+        setOpaque(false);
+        setPreferredSize(new Dimension(400, 200));
+        setLayout(null);
+
+        elementContainer = new JPanel();
+        elementContainer.setLayout(null);
+        elementContainer.setOpaque(false);
+
+        nextLabel = new JLabel(nextArrow);
+        nextLabel.setBounds(660, 10, 47, 84);
+
+        prevLabel = new JLabel(prevArrow);
+        prevLabel.setBounds(100, 10, 47, 84);
+
+        endLabel = new JLabel(endArrow);
+        endLabel.setBounds(700, 10, 47, 84);
+
+        startLabel = new JLabel(startArrow);
+        startLabel.setBounds(50, 10, 47, 84);
+
+        arrowLabel = new JLabel(arrowIcon);
+        arrowLabel.setBounds(376, 10, 47, 84);
+
+        add(nextLabel);
+        add(prevLabel);
+        add(endLabel);
+        add(startLabel);
+        add(arrowLabel);
+
+        nextBtn = new ReplayBarButton("next");
+        prevBtn = new ReplayBarButton("prev");
+        endBtn = new ReplayBarButton("end");
+        startBtn = new ReplayBarButton("start");
+        startBtn.setBounds(0, 0, 370, 100);
+        prevBtn.setBounds(100, 0, 270, 100);
+        nextBtn.setBounds(430, 0, 270, 100);
+        endBtn.setBounds(430, 0, 370, 100);
+        add(nextBtn);
+        add(prevBtn);
+        add(endBtn);
+        add(startBtn);
+        add(elementContainer);
+
+        rebuild();
+    }
+
+    private void rebuild() {
+        elementContainer.setPreferredSize(new Dimension((total) * 30, 100));
+
+        elementContainer.removeAll();
+        int min = Math.min(current, oldCurrent);
+        int max = Math.max(current, oldCurrent);
+        for (int i = 0; i < ELEMENTS_TO_SHOW; i++) {
+            putElement(min - 1 - i);
+            putElement(max + 1 + i);
+        }
+        for (int i = min; i <= max; i++) {
+            putElement(i);
+        }
+        int advanceOffset = 0;
+        if (advancing)
+            advanceOffset = -30;
+        finalPosition = (getSize().width) / 2 + advanceOffset - current * SEPARATION;
+    }
+
+    @Override
+    public void setBounds(int x, int y, int width, int height) {
+        super.setBounds(x, y, width, height);
+        rebuild();
+    }
+
+    private void putElement(int index) {
+        if (index < 0 || index >= total)
+            return;
+        DieSixFaces die = allDice.get(index);
+        Movement movement = allMovements.get(index);
+
+        ReplayBarElement element = new ReplayBarElement(die, movement);
+        element.setBounds(SEPARATION * index, 0,
+                element.getPreferredSize().width, element.getPreferredSize().height);
+        elementContainer.add(element);
+    }
+
+    private void initializePosition() {
+        elementContainer.setBounds(finalPosition, 0, elementContainer.getPreferredSize().width, elementContainer.getPreferredSize().height);
+        if (timer == null)
+            timer = new Timer(DELAY, new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int diff = (int) (0.7 * (finalPosition - currentPosition));
+                    currentPosition = finalPosition - diff;
+                    if (Math.abs(diff) < 1)
+                        currentPosition = finalPosition;
+                    elementContainer.setBounds(currentPosition, 0, elementContainer.getPreferredSize().width, elementContainer.getPreferredSize().height);
+
+                }
+            });
+        timer.start();
+        currentPosition = finalPosition;
+    }
+
+    private int getIndexOf(Movement movement) {
+        int i = 0;
+        for (Movement m : allMovements) {
+            if (m != null) {
+                if (m.getId() == movement.getId())
+                    return i;
+            }
+            i++;
+        }
+        return i;
+    }
+
+    /**
+     * @return The next button.
+     */
+    public JButton getNextButton() {
+        return nextBtn;
+    }
+
+    /**
+     * @return The previous button.
+     */
+    public JButton getPreviousButton() {
+        return prevBtn;
+    }
+
+    /**
+     * @return The end button.
+     */
+    public JButton getEndButton() {
+        return endBtn;
+    }
+
+    /**
+     * @return The start button.
+     */
+    public JButton getStartButton() {
+        return startBtn;
+    }
 }

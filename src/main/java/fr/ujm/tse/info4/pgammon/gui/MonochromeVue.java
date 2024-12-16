@@ -4,66 +4,66 @@ import java.util.SortedSet;
 
 import javax.swing.JPanel;
 
-public class MonochromeVue extends JPanel {
-	private static final long serialVersionUID = -5240761849241606403L;
-	private JPanel animationPanel;
-	
-	public MonochromeVue() {
-		build();
-	}
-	
-	private void build(){
-		this.setLayout(null);
-		animationPanel = new JPanel();
-		animationPanel.setLayout(null);
-		animationPanel.setBounds(0,0,800,600);
-		animationPanel.setOpaque(false);
-		add(animationPanel);
-	}
+public class MonochromeView extends JPanel {
+    private static final long serialVersionUID = -5240761849241606403L;
+    private JPanel animationPanel;
 
+    public MonochromeView() {
+        build();
+    }
 
-	private void setAnimation(TranstionAnimeeBase animation){
-		animation.setBounds(animationPanel.getBounds());
-		animationPanel.removeAll();
-		animationPanel.add(animation);
-	}
-	
-	/**
-	 * Affiche une transition avec les textes en parametres
-	 * @param titre Texte du bandeau principal
-	 * @param text Texte de l'exterieur
-	 */
-	public void afficherTransition(String titre, String text){
-		ChangementTourAnimation tourAnimation = new ChangementTourAnimation(titre, text);
-		tourAnimation.start();
-		setAnimation(tourAnimation);
-	}
-	
-	/**
-	 * Affiche une fenetre avec des boutons permetant d'interagir avec l'utilisateur
-	 * @param titre Texte principal
-	 * @param reponses Liste des labels des boutons
-	 * @return renvoie la FenetreDemandeAnimationBase créé. Ce composant peut etre
-	 * écouté pour les retours
-	 */
-	public FenetreDemandeAnimationBase afficherFenetreDemande(String titre,SortedSet<String> reponses){
-		FenetreDemandeAnimationBase fenetreDemande = new FenetreDemandeAnimationBase(titre,reponses);
-		setAnimation(fenetreDemande);
-		fenetreDemande.start();
-		return fenetreDemande;
-	}
-	
-	/**
-	 * Affiche une fenetre simple permetant d'informer l'utilisateur
-	 * @param titre Texte principal
-	 * @param subTitle Sous description
-	 * @return renvoie la FenetreDemandeAnimationBase créé. Ce composant peut etre
-	 * écouté pour la fermeture de la fenetre
-	 */
-	public FenetreDemandeAnimationBase afficherFenetreDemande(String titre,String subTitle){
-		FenetreDemandeAnimationBase fenetreDemande = new FenetreDemandeAnimationBase(titre,subTitle);
-		setAnimation(fenetreDemande);
-		fenetreDemande.start();
-		return fenetreDemande;
-	}
+    private void build() {
+        this.setLayout(null);
+        animationPanel = new JPanel();
+        animationPanel.setLayout(null);
+        animationPanel.setBounds(0, 0, 800, 600);
+        animationPanel.setOpaque(false);
+        add(animationPanel);
+    }
+
+    private void setAnimation(AnimatedTransitionBase animation) {
+        animation.setBounds(animationPanel.getBounds());
+        animationPanel.removeAll();
+        animationPanel.add(animation);
+    }
+
+    /**
+     * Displays a transition with the provided text parameters.
+     * @param title Text of the main banner.
+     * @param text Text for the exterior.
+     */
+    public void displayTransition(String title, String text) {
+        TurnChangeAnimation turnAnimation = new TurnChangeAnimation(title, text);
+        turnAnimation.start();
+        setAnimation(turnAnimation);
+    }
+
+    /**
+     * Displays a window with buttons allowing interaction with the user.
+     * @param title Main text.
+     * @param responses List of button labels.
+     * @return Returns the created RequestAnimationWindowBase. This component can
+     * be listened to for user responses.
+     */
+    public RequestAnimationWindowBase displayRequestWindow(String title, SortedSet<String> responses) {
+        RequestAnimationWindowBase requestWindow = new RequestAnimationWindowBase(title, responses);
+        setAnimation(requestWindow);
+        requestWindow.start();
+        return requestWindow;
+    }
+
+    /**
+     * Displays a simple window to inform the user.
+     * @param title Main text.
+     * @param subTitle Subtitle or description.
+     * @return Returns the created RequestAnimationWindowBase. This component can
+     * be listened to for window closure events.
+     */
+    public RequestAnimationWindowBase displayRequestWindow(String title, String subTitle) {
+        RequestAnimationWindowBase requestWindow = new RequestAnimationWindowBase(title, subTitle);
+        setAnimation(requestWindow);
+        requestWindow.start();
+        return requestWindow;
+    }
 }
+
