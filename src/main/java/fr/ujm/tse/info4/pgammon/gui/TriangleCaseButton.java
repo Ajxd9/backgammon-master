@@ -13,17 +13,17 @@ import java.awt.RenderingHints;
 
 import javax.swing.ImageIcon;
 
-import fr.ujm.tse.info4.pgammon.models.Case;
-import fr.ujm.tse.info4.pgammon.models.CouleurCase;
+import fr.ujm.tse.info4.pgammon.models.Square;
+import fr.ujm.tse.info4.pgammon.models.SquareColor;
 
 /**
- * Provides the component for displaying triangle cases
+ * Provides the component for displaying triangle Squares
  * @author Jean-Mi
  *
  */
 public class TriangleCaseButton extends CaseButton {
     private static final long serialVersionUID = -7438830652988320775L;
-    private CouleurCase color;
+    private SquareColor color;
 
     private final int MAX_CHECKERS_DRAWN = 5;
     private final int CHECKER_SPACING = 27;
@@ -36,14 +36,14 @@ public class TriangleCaseButton extends CaseButton {
      * @param _color Physical color of the case
      * @param _isDirectionUp Direction of the case
      */
-    public TriangleCaseButton(Case _case, CouleurCase _color, boolean _isDirectionUp) {
+    public TriangleCaseButton(Square _case, SquareColor _color, boolean _isDirectionUp) {
         super(_case);
         color = _color;
         isDirectionUp = _isDirectionUp;
         build();
     }
 
-    public TriangleCaseButton(Case _case, CouleurCase _color) {
+    public TriangleCaseButton(Square _case, SquareColor _color) {
         super(_case);
         color = _color;
         isDirectionUp = true;
@@ -69,14 +69,14 @@ public class TriangleCaseButton extends CaseButton {
     }
 
     private void drawCheckers(Graphics g) {
-        Case c = getCase();
+        Square c = getCase();
         if (c == null) return;
 
-        CouleurCase checkerColor = c.getCouleurDame();
+        SquareColor checkerColor = c.getCheckerColor();
 
-        if (checkerColor == CouleurCase.EMPTY || c.getNbDame() == 0) return;
+        if (checkerColor == SquareColor.EMPTY || c.getNumCheckers() == 0) return;
 
-        int numCheckers = c.getNbDame();
+        int numCheckers = c.getNumCheckers();
         if (isCandidate()) numCheckers--;
 
         int count = Math.min(numCheckers, MAX_CHECKERS_DRAWN);
@@ -89,12 +89,12 @@ public class TriangleCaseButton extends CaseButton {
         if (model.isPressed()) offset++;
 
         ImageIcon icon;
-        if (getCase().getCouleurDame() == CouleurCase.EMPTY) {
+        if (getCase().getCheckerColor() == SquareColor.EMPTY) {
             icon = new ImageIcon();
         } else if (isPossible()) {
-            icon = (getCase().getCouleurDame() == CouleurCase.WHITE) ? iconeAideBlanc : iconeAideNoir;
+            icon = (getCase().getCheckerColor() == SquareColor.WHITE) ? iconeAideBlanc : iconeAideNoir;
         } else {
-            icon = (getCase().getCouleurDame() == CouleurCase.WHITE) ? iconeBlanche : iconeNoire;
+            icon = (getCase().getCheckerColor() == SquareColor.WHITE) ? iconeBlanche : iconeNoire;
         }
 
         for (int i = 0; i < count; i++) {
@@ -112,7 +112,7 @@ public class TriangleCaseButton extends CaseButton {
             String num = Integer.toString(numCheckers);
             g2.setFont(new Font("Arial", Font.BOLD, 18));
 
-            if (c.getCouleurDame() == CouleurCase.WHITE) {
+            if (c.getCheckerColor() == SquareColor.WHITE) {
                 g2.setColor(new Color(0x111111));
             } else {
                 g2.setColor(new Color(0xCCCCCC));
@@ -128,7 +128,7 @@ public class TriangleCaseButton extends CaseButton {
             g2.drawChars(num.toCharArray(), 0, num.length(), 11 - (num.length() - 1) * 5, y);
         }
 
-        if (isCandidate() && c.getNbDame() > 0) {
+        if (isCandidate() && c.getNumCheckers() > 0) {
             int i = count + 1;
             int y;
             if (isDirectionUp) {
@@ -136,7 +136,7 @@ public class TriangleCaseButton extends CaseButton {
             } else {
                 y = (int) ((i - 0.8) * (CHECKER_SPACING) + (i + 1) * offset);
             }
-            ImageIcon iconTransp = (getCase().getCouleurDame() == CouleurCase.WHITE) ? iconeBlancheTransp : iconeNoireTransp;
+            ImageIcon iconTransp = (getCase().getCheckerColor() == SquareColor.WHITE) ? iconeBlancheTransp : iconeNoireTransp;
             g2.drawImage(iconTransp.getImage(), 0, y, this);
         }
 
@@ -154,7 +154,7 @@ public class TriangleCaseButton extends CaseButton {
 
         int triangleWidth = w;
         int triangleHeight = (int) (h * 0.96);
-        if (color == CouleurCase.WHITE) triangleHeight *= 0.9;
+        if (color == SquareColor.WHITE) triangleHeight *= 0.9;
 
         Point p1;
         Point p2;
@@ -176,12 +176,12 @@ public class TriangleCaseButton extends CaseButton {
         if (isPossible()) {
             p = new Color(0x000099);
         } else if (model.isPressed()) {
-            p = (getColor() == CouleurCase.WHITE) ? new Color(0xFFFFFF) : new Color(0x777777);
+            p = (getColor() == SquareColor.WHITE) ? new Color(0xFFFFFF) : new Color(0x777777);
         } else {
             if (model.isRollover()) {
-                p = (getColor() == CouleurCase.WHITE) ? new Color(0xEEEEEE) : new Color(0x555555);
+                p = (getColor() == SquareColor.WHITE) ? new Color(0xEEEEEE) : new Color(0x555555);
             } else {
-                p = (getColor() == CouleurCase.WHITE) ? new Color(0xCECECE) : new Color(0x333333);
+                p = (getColor() == SquareColor.WHITE) ? new Color(0xCECECE) : new Color(0x333333);
             }
         }
         g2.setPaint(p);
@@ -190,9 +190,9 @@ public class TriangleCaseButton extends CaseButton {
         if (isPossible()) {
             p = new Color(0x0000FF);
         } else if (model.isPressed()) {
-            p = (getColor() == CouleurCase.WHITE) ? new Color(0xAAAAAA) : new Color(0x666666);
+            p = (getColor() == SquareColor.WHITE) ? new Color(0xAAAAAA) : new Color(0x666666);
         } else {
-            p = (getColor() == CouleurCase.WHITE) ? new Color(0x888888) : new Color(0x444444);
+            p = (getColor() == SquareColor.WHITE) ? new Color(0x888888) : new Color(0x444444);
         }
         g2.setStroke(new BasicStroke(2.0f));
         g2.setPaint(p);
@@ -206,11 +206,11 @@ public class TriangleCaseButton extends CaseButton {
         // No border painting
     }
 
-    public CouleurCase getColor() {
+    public SquareColor getColor() {
         return color;
     }
 
-    public void setColor(CouleurCase color) {
+    public void setColor(SquareColor color) {
         this.color = color;
     }
 }

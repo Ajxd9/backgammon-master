@@ -169,13 +169,13 @@ public class ReplayBar extends JPanel {
 
         if (turns != null) {
             for (Turn turn : turns) {
-                int length = turn.getDice().size();
-                List<SixSidedDie> dice = turn.getDice();
-                List<Movement> movements = turn.getMovements();
+                int length = turn.getSixSidedDie().size();
+                List<SixSidedDie> dice = turn.getSixSidedDie();
+                List<Movement> movements = turn.getMovementList();
 
                 for (int i = 0; i < length; i++) {
                     Movement movement = null;
-                    SixSidedDie die = new SixSidedDie(dice.get(i).getColor(), dice.get(i).getValue());
+                    SixSidedDie die = new SixSidedDie(dice.get(i).getDieColor(), dice.get(i).getValue());
                     if (movements != null && movements.size() > i) {
                         movement = movements.get(i);
                     }
@@ -262,7 +262,7 @@ public class ReplayBar extends JPanel {
     private void putElement(int index) {
         if (index < 0 || index >= total)
             return;
-        DieSixFaces die = allDice.get(index);
+        SixSidedDie die = allDice.get(index);
         Movement movement = allMovements.get(index);
 
         ReplayBarElement element = new ReplayBarElement(die, movement);
@@ -294,7 +294,7 @@ public class ReplayBar extends JPanel {
         int i = 0;
         for (Movement m : allMovements) {
             if (m != null) {
-                if (m.getId() == movement.getId())
+                if (m.getMovementId() == movement.getMovementId())
                     return i;
             }
             i++;

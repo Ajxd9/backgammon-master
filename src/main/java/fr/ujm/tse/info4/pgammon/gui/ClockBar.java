@@ -86,7 +86,7 @@ public class ClockBar extends JPanel implements ClockEventListener {
     protected void paintBorder(Graphics g) {}
 
     @Override
-    public void clockFinished(ClockEvent clockEvent) {}
+    public void clockEnd(ClockEvent clockEvent) {}
 
     @Override
     public void updateClock(ClockEvent evt) {
