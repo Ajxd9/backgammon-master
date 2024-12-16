@@ -28,7 +28,7 @@ public class Turn
         this.movementList = new ArrayList<Movement>();
     }
     
-    public Turn()
+    public Turn(SquareColor currentPlayer, ArrayList<SixSidedDie> sixSidedDie)
     {
     }
     

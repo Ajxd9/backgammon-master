@@ -485,7 +485,6 @@ public class Board
 
     /**
      * Load all board info under the game root element
-     * @param game Root element for Board in XML files
      */
     public void load(Element Game)
     {

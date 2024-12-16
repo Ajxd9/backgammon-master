@@ -3,9 +3,9 @@ package fr.ujm.tse.info4.pgammon.gui;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import fr.ujm.tse.info4.pgammon.models.Case;
+import fr.ujm.tse.info4.pgammon.models.Square;
 
-public class CaseButton extends JButton{
+public class SquareButton extends JButton{
 	private static final long serialVersionUID = 6276324191590405443L;
 
 	public static final ImageIcon iconeNoire = new ImageIcon("images/pion_noir.png");
@@ -18,13 +18,13 @@ public class CaseButton extends JButton{
 	private boolean isCandidate;
 	private boolean isPossible;
 
-	private Case c;
+	private Square c;
 	/**
 	 * 
-	 * @param _case Case to associate with the button.
+	 * @param _Square Square to associate with the button.
 	 */
-	public CaseButton(Case _case){
-		c = _case;
+	public SquareButton(Square _Square){
+		c = _Square;
 		isCandidate = false;
 	}
 
@@ -32,14 +32,14 @@ public class CaseButton extends JButton{
 	
 	/**
 	 * 
-	 * @return Returns the associated Case.
+	 * @return Returns the associated Square.
 	 */
-	public Case getCase() {
+	public Square getSquare() {
 		return c;
 	}
 
-	public void setCase(Case _case) {
-		c = _case;
+	public void setSquare(Square _Square) {
+		c = _Square;
 	}
 	
 	

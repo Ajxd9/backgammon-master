@@ -16,18 +16,18 @@ public class Player {
     private Integer id;
     private String username;
     private String imageSource;
-    private AssistanceLevel assistanceLevel;
+    private AssistantLevel assistanceLevel;
     private PlayerStatistics stats;
     
     public Player() {
         this.id = 0;
         this.username = "";
         this.imageSource = "";
-        this.assistanceLevel = AssistanceLevel.NOT_USED;
+        this.assistanceLevel = AssistantLevel.NOT_USED;
         stats = new PlayerStatistics();
     }
 
-    public Player(Integer id, String username, String imageSource, AssistanceLevel assistanceLevel) {
+    public Player(Integer id, String username, String imageSource, AssistantLevel assistanceLevel) {
         this.id = id;
         this.username = username;
         this.imageSource = imageSource;
@@ -50,9 +50,9 @@ public class Player {
         playerImageSource.setText(imageSource);
         player.addContent(playerImageSource);
         
-        Element playerAssistanceLevel = new Element("assistanceLevel");
-        playerAssistanceLevel.setText(assistanceLevel.toString());
-        player.addContent(playerAssistanceLevel);
+        Element playerAssistantLevel = new Element("assistanceLevel");
+        playerAssistantLevel.setText(assistanceLevel.toString());
+        player.addContent(playerAssistantLevel);
         
         stats.save(player);
     }
@@ -62,9 +62,9 @@ public class Player {
         username = it.getChildText("username");
         imageSource = it.getChildText("imageSource");
         switch(it.getChildText("assistanceLevel")){
-            case "NOT_USED": assistanceLevel = AssistanceLevel.NOT_USED; break;
-            case "SIMPLE": assistanceLevel = AssistanceLevel.SIMPLE; break;
-            case "COMPLETE": assistanceLevel = AssistanceLevel.COMPLETE;
+            case "NOT_USED": assistanceLevel = AssistantLevel.NOT_USED; break;
+            case "SIMPLE": assistanceLevel = AssistantLevel.BASIC; break;
+            case "COMPLETE": assistanceLevel = AssistantLevel.FULL;
         }
         stats.load(it.getChild("playerStatistics"));
     }   
@@ -93,11 +93,11 @@ public class Player {
         this.imageSource = imageSource;
     }
 
-    public AssistanceLevel getAssistanceLevel() {
+    public AssistantLevel getAssistantLevel() {
         return assistanceLevel;
     }
 
-    public void setAssistanceLevel(AssistanceLevel assistanceLevel) {
+    public void setAssistantLevel(AssistantLevel assistanceLevel) {
         this.assistanceLevel = assistanceLevel;
     }
 

@@ -20,10 +20,10 @@ import fr.ujm.tse.info4.pgammon.exception.TurnNotPlayableException;
 public class Game {
     private GameParameters gameParameters;
     private DoublingCube doublingCube;
-    private ArrayList<SixSidedDice> sixSidedDice;
+    private ArrayList<SixSidedDie> SixSidedDie;
     private Board board;
-    private PlayerColor firstPlayer;
-    private PlayerColor currentPlayer;
+    private SquareColor firstPlayer;
+    private SquareColor currentPlayer;
     private ArrayList<Turn> playerTurnHistory;
     private int gameId;
     private boolean gameFinished;
@@ -41,7 +41,7 @@ public class Game {
 
         playerTurnHistory = new ArrayList<Turn>();
 
-        sixSidedDice = new ArrayList<SixSidedDice>();
+        SixSidedDie = new ArrayList<SixSidedDie>();
 
         //these variables track the game state
         turnFinished = true;
@@ -61,7 +61,7 @@ public class Game {
         doublingCube = new DoublingCube();
 
         playerTurnHistory = new ArrayList<Turn>();
-        sixSidedDice = new ArrayList<SixSidedDice>();
+        SixSidedDie = new ArrayList<SixSidedDie>();
 
         //these variables track the game state
         turnFinished = true;
@@ -80,13 +80,13 @@ public class Game {
      *
      * @param player
      */
-    public void startNewGame(PlayerColor player) {
+    public void startNewGame(SquareColor player) {
         gameFinished = false;
 
-        if(player == PlayerColor.WHITE)
-            currentPlayer = PlayerColor.BLACK;
+        if(player == SquareColor.WHITE)
+            currentPlayer = SquareColor.BLACK;
         else
-            currentPlayer = PlayerColor.WHITE;
+            currentPlayer = SquareColor.WHITE;
 
         firstPlayer = currentPlayer;
     }
@@ -95,7 +95,7 @@ public class Game {
      *
      */
     public void beginTurn() {
-        playerTurnHistory.add(new Turn(currentPlayer, sixSidedDice));
+        playerTurnHistory.add(new Turn(currentPlayer, SixSidedDie));
     }
 
     /**
@@ -105,13 +105,13 @@ public class Game {
         if (board.isAllPiecesMarked(currentPlayer))
             endGame();
         else {
-            if (currentPlayer == PlayerColor.WHITE)
-                currentPlayer = PlayerColor.BLACK;
+            if (currentPlayer == SquareColor.WHITE)
+                currentPlayer = SquareColor.BLACK;
             else
-                currentPlayer = PlayerColor.WHITE;
+                currentPlayer = SquareColor.WHITE;
         }
 
-        sixSidedDice = new ArrayList<SixSidedDice>();
+        SixSidedDie = new ArrayList<SixSidedDie>();
         turnFinished = true;
     }
 
@@ -126,17 +126,17 @@ public class Game {
      *
      */
     public void chooseFirstPlayerGameStart() {
-        ArrayList<SixSidedDice> choiceDice = new ArrayList<SixSidedDice>();
-        choiceDice.add(new SixSidedDice(currentPlayer));
-        choiceDice.add(new SixSidedDice(currentPlayer));
+        ArrayList<SixSidedDie> choiceDice = new ArrayList<SixSidedDie>();
+        choiceDice.add(new SixSidedDie(currentPlayer));
+        choiceDice.add(new SixSidedDie(currentPlayer));
 
         if(choiceDice.get(0).getValue() == choiceDice.get(1).getValue()) {
             chooseFirstPlayerGameStart();
         }
         else if(choiceDice.get(0).getValue() > choiceDice.get(1).getValue())
-            currentPlayer = PlayerColor.WHITE;
+            currentPlayer = SquareColor.WHITE;
         else
-            currentPlayer = PlayerColor.BLACK;
+            currentPlayer = SquareColor.BLACK;
 
         firstPlayer = currentPlayer;
     }
@@ -160,16 +160,16 @@ public class Game {
      */
     public boolean playMove(Square startSquare, Square endSquare) {
         if(isMovePossible(startSquare, endSquare)) {
-            PlayerColor enemyPlayer = (currentPlayer == PlayerColor.WHITE) ?
-                    PlayerColor.BLACK : PlayerColor.WHITE;
+            SquareColor enemyPlayer = (currentPlayer == SquareColor.WHITE) ?
+                    SquareColor.BLACK : SquareColor.WHITE;
 
-            int piecesOnBar = board.getBarSquare(enemyPlayer).getPieceCount();
+            int piecesOnBar = board.getBarSquare(enemyPlayer).getNumCheckers();
 
             if (board.movePiece(startSquare, endSquare)) {
-                sixSidedDice.get(diceUsed).use();
+                SixSidedDie.get(diceUsed).use();
 
                 getLastTurn().addMovement(new Movement(startSquare, endSquare,
-                        (piecesOnBar < board.getBarSquare(enemyPlayer).getPieceCount())));
+                        (piecesOnBar < board.getBarSquare(enemyPlayer).getNumCheckers())));
 
                 if (board.isAllPiecesMarked(currentPlayer))
                     endGame();
@@ -189,20 +189,20 @@ public class Game {
      * @param dice
      * @return
      */
-    public boolean canMarkThisPiece(Square pieceSquare, SixSidedDice dice) {
+    public boolean canMarkThisPiece(Square pieceSquare, SixSidedDie dice) {
         Square victorySquare = board.getVictorySquare(currentPlayer);
 
         if (((board.distanceBetweenSquares(pieceSquare, victorySquare) == dice.getValue()
-                && currentPlayer == PlayerColor.WHITE)
+                && currentPlayer == SquareColor.WHITE)
                 || (board.distanceBetweenSquares(pieceSquare, victorySquare) == -dice.getValue()
-                && currentPlayer == PlayerColor.BLACK))
+                && currentPlayer == SquareColor.BLACK))
                 && !dice.isUsed()) {
             return true;
         }
         else if (((board.distanceBetweenSquares(pieceSquare, victorySquare) < dice.getValue()
-                && currentPlayer == PlayerColor.WHITE && !board.isSquareBefore(pieceSquare))
+                && currentPlayer == SquareColor.WHITE && !board.isSquareBefore(pieceSquare))
                 || (board.distanceBetweenSquares(pieceSquare, victorySquare) > -dice.getValue()
-                && currentPlayer == PlayerColor.BLACK) && !board.isSquareBefore(pieceSquare))
+                && currentPlayer == SquareColor.BLACK) && !board.isSquareBefore(pieceSquare))
                 && !dice.isUsed()) {
             return true;
         }
@@ -222,20 +222,20 @@ public class Game {
 
         victorySquare = board.getVictorySquare(currentPlayer);
 
-        for (int i = 0; i < sixSidedDice.size(); i++) {
-            if (((board.distanceBetweenSquares(pieceSquare, victorySquare) == sixSidedDice.get(i).getValue()
-                    && currentPlayer == PlayerColor.WHITE)
-                    || (board.distanceBetweenSquares(pieceSquare, victorySquare) == -sixSidedDice.get(i).getValue()
-                    && currentPlayer == PlayerColor.BLACK))
-                    && !sixSidedDice.get(i).isUsed()) {
+        for (int i = 0; i < SixSidedDie.size(); i++) {
+            if (((board.distanceBetweenSquares(pieceSquare, victorySquare) == SixSidedDie.get(i).getValue()
+                    && currentPlayer == SquareColor.WHITE)
+                    || (board.distanceBetweenSquares(pieceSquare, victorySquare) == -SixSidedDie.get(i).getValue()
+                    && currentPlayer == SquareColor.BLACK))
+                    && !SixSidedDie.get(i).isUsed()) {
                 isDiceAvailable = true;
                 currentDiceUsed = i;
             }
-            else if (((board.distanceBetweenSquares(pieceSquare, victorySquare) > sixSidedDice.get(i).getValue()
-                    && currentPlayer == PlayerColor.WHITE && !board.isSquareBefore(pieceSquare))
-                    || (board.distanceBetweenSquares(pieceSquare, victorySquare) > -sixSidedDice.get(i).getValue()
-                    && currentPlayer == PlayerColor.BLACK) && !board.isSquareBefore(pieceSquare))
-                    && !sixSidedDice.get(i).isUsed()) {
+            else if (((board.distanceBetweenSquares(pieceSquare, victorySquare) > SixSidedDie.get(i).getValue()
+                    && currentPlayer == SquareColor.WHITE && !board.isSquareBefore(pieceSquare))
+                    || (board.distanceBetweenSquares(pieceSquare, victorySquare) > -SixSidedDie.get(i).getValue()
+                    && currentPlayer == SquareColor.BLACK) && !board.isSquareBefore(pieceSquare))
+                    && !SixSidedDie.get(i).isUsed()) {
                 isDiceAvailable = true;
                 currentDiceUsed = i;
             }
@@ -256,18 +256,18 @@ public class Game {
         boolean isDiceAvailable = false;
         diceUsed = 0;
 
-        for (int i = 0; i < sixSidedDice.size(); i++) {
-            if(canMarkThisPiece(startSquare, sixSidedDice.get(i)) &&
+        for (int i = 0; i < SixSidedDie.size(); i++) {
+            if(canMarkThisPiece(startSquare, SixSidedDie.get(i)) &&
                     endSquare.isVictorySquare() &&
-                    endSquare.getPieceColor() == startSquare.getPieceColor()) {
+                    endSquare.getCheckerColor() == startSquare.getCheckerColor()) {
                 isDiceAvailable = true;
                 diceUsed = i;
             }
-            else if (((board.distanceBetweenSquares(startSquare, endSquare) == sixSidedDice.get(i).getValue()
-                    && currentPlayer == PlayerColor.WHITE)
-                    || (board.distanceBetweenSquares(startSquare, endSquare) == -sixSidedDice.get(i).getValue()
-                    && currentPlayer == PlayerColor.BLACK))
-                    && !sixSidedDice.get(i).isUsed()) {
+            else if (((board.distanceBetweenSquares(startSquare, endSquare) == SixSidedDie.get(i).getValue()
+                    && currentPlayer == SquareColor.WHITE)
+                    || (board.distanceBetweenSquares(startSquare, endSquare) == -SixSidedDie.get(i).getValue()
+                    && currentPlayer == SquareColor.BLACK))
+                    && !SixSidedDie.get(i).isUsed()) {
                 isDiceAvailable = true;
                 diceUsed = i;
             }
@@ -290,7 +290,7 @@ public class Game {
      */
     public boolean isMovePossible(Square startSquare) {
         boolean possible = false;
-        for (SixSidedDice dice : sixSidedDice) {
+        for (SixSidedDie dice : SixSidedDie) {
             if(!dice.isUsed() && isMovePossible(startSquare, board.getSquareAtDistance(startSquare, dice)))
                 possible = true;
         }
@@ -302,7 +302,7 @@ public class Game {
      * @return
      */
     public boolean areDiceUsed() {
-        for (SixSidedDice dice : sixSidedDice) {
+        for (SixSidedDie dice : SixSidedDie) {
             if (!dice.isUsed())
                 return false;
         }
@@ -312,12 +312,12 @@ public class Game {
      *
      */
     public void rollDice() {
-        sixSidedDice = new ArrayList<SixSidedDice>();
-        sixSidedDice.add(new SixSidedDice(currentPlayer));
-        sixSidedDice.add(new SixSidedDice(currentPlayer));
-        if (sixSidedDice.get(0).getValue() == sixSidedDice.get(1).getValue()) {
-            sixSidedDice.add(new SixSidedDice(currentPlayer, sixSidedDice.get(0).getValue()));
-            sixSidedDice.add(new SixSidedDice(currentPlayer, sixSidedDice.get(0).getValue()));
+        SixSidedDie = new ArrayList<SixSidedDie>();
+        SixSidedDie.add(new SixSidedDie(currentPlayer));
+        SixSidedDie.add(new SixSidedDie(currentPlayer));
+        if (SixSidedDie.get(0).getValue() == SixSidedDie.get(1).getValue()) {
+            SixSidedDie.add(new SixSidedDie(currentPlayer, SixSidedDie.get(0).getValue()));
+            SixSidedDie.add(new SixSidedDie(currentPlayer, SixSidedDie.get(0).getValue()));
         }
         turnFinished = false;
         beginTurn();
@@ -347,7 +347,7 @@ public class Game {
     public List<Square> getPossibleMoves(Square square) {
         ArrayList<Square> returnSquares = new ArrayList<Square>();
         Square endSquare;
-        for (SixSidedDice dice : sixSidedDice) {
+        for (SixSidedDie dice : SixSidedDie) {
             if (!dice.isUsed()) {
                 endSquare = board.getSquareAtDistance(square, dice);
                 if(isMovePossible(square, endSquare)) {
@@ -366,8 +366,8 @@ public class Game {
         List<Move> singleDiceMoves = new ArrayList<Move>();
 
         for (Square pieceSquare : board.getAllSquares()) {
-            if(pieceSquare.getPieceColor() == currentPlayer) {
-                for (SixSidedDice tmpDice : sixSidedDice) {
+            if(pieceSquare.getCheckerColor() == currentPlayer) {
+                for (SixSidedDie tmpDice : SixSidedDie) {
                     for (Square tmpSquare : getPossibleMoves(pieceSquare)) {
                         singleDiceMoves.add(new Move(pieceSquare, tmpSquare));
                     }
@@ -383,9 +383,9 @@ public class Game {
      */
     public boolean hasPossibleMoves() {
         for (Square pieceSquare : board.getAllSquares()) {
-            if((!board.isPieceOnBar(currentPlayer) && pieceSquare.getPieceColor() == currentPlayer)
+            if((!board.isPieceOnBar(currentPlayer) && pieceSquare.getCheckerColor() == currentPlayer)
                     || pieceSquare.isBarSquare())
-                for (SixSidedDice dice : sixSidedDice) {
+                for (SixSidedDie dice : SixSidedDie) {
                     if(!dice.isUsed())
                         if(isMovePossible(pieceSquare, board.getSquareAtDistance(pieceSquare, dice)))
                             return true;
@@ -406,15 +406,15 @@ public class Game {
             lastMovement = null;
 
         if (lastMovement != null) {
-            for (SixSidedDice dice : lastTurn.getSixSidedDice()) {
+            for (SixSidedDie dice : lastTurn.getSixSidedDie()) {
                 if (dice.isUsed() && dice.getValue() == Math.abs(board.distanceBetweenSquares(
                         lastMovement.getEndSquare(), lastMovement.getStartSquare()))) {
 
-                    PlayerColor squareArrivedSaveColor;
-                    if (lastMovement.getEndSquare().getPieceColor() == PlayerColor.WHITE)
-                        squareArrivedSaveColor = PlayerColor.BLACK;
+                    SquareColor squareArrivedSaveColor;
+                    if (lastMovement.getEndSquare().getCheckerColor() == SquareColor.WHITE)
+                        squareArrivedSaveColor = SquareColor.BLACK;
                     else
-                        squareArrivedSaveColor = PlayerColor.WHITE;
+                        squareArrivedSaveColor = SquareColor.WHITE;
 
                     board.movePiece(lastMovement.getEndSquare(), lastMovement.getStartSquare());
                     dice.setUnused();
@@ -424,8 +424,8 @@ public class Game {
                     }
                     if (turnFinished) {
                         turnFinished = false;
-                        sixSidedDice = lastTurn.getSixSidedDice();
-                        currentPlayer = lastTurn.getPlayerColor();
+                        SixSidedDie = lastTurn.getSixSidedDie();
+                        currentPlayer = lastTurn.getSquareColor();
                     }
                     lastTurn.removeLastMovement();
                     return;
@@ -495,11 +495,11 @@ public class Game {
         }
 
         if (previousMovement != null && currentTurn != null) {
-            PlayerColor squareArrivedSaveColor;
-            if (previousMovement.getEndSquare().getPieceColor() == PlayerColor.WHITE)
-                squareArrivedSaveColor = PlayerColor.BLACK;
+            SquareColor squareArrivedSaveColor;
+            if (previousMovement.getEndSquare().getCheckerColor() == SquareColor.WHITE)
+                squareArrivedSaveColor = SquareColor.BLACK;
             else
-                squareArrivedSaveColor = PlayerColor.WHITE;
+                squareArrivedSaveColor = SquareColor.WHITE;
 
             board.movePiece(previousMovement.getEndSquare(), previousMovement.getStartSquare());
 
@@ -551,11 +551,11 @@ public class Game {
         firstPlayerXML.setText(String.valueOf(firstPlayer));
         game.addContent(firstPlayerXML);
 
-        Element sixSidedDiceXML = new Element("sixSidedDice");
-        game.addContent(sixSidedDiceXML);
+        Element SixSidedDieXML = new Element("SixSidedDie");
+        game.addContent(SixSidedDieXML);
 
-        for(int i = 0; i < sixSidedDice.size(); i++) {
-            sixSidedDice.get(i).save(sixSidedDiceXML);
+        for(int i = 0; i < SixSidedDie.size(); i++) {
+            SixSidedDie.get(i).save(SixSidedDieXML);
         }
 
         board.save(game);
@@ -576,27 +576,27 @@ public class Game {
         doublingCube = new DoublingCube(Integer.valueOf(game.getChildText("doublingCube")));
 
         switch(game.getChildText("currentPlayer")) {
-            case "BLACK": currentPlayer = PlayerColor.BLACK; break;
-            case "WHITE": currentPlayer = PlayerColor.WHITE; break;
-            case "EMPTY": currentPlayer = PlayerColor.EMPTY;
+            case "BLACK": currentPlayer = SquareColor.BLACK; break;
+            case "WHITE": currentPlayer = SquareColor.WHITE; break;
+            case "EMPTY": currentPlayer = SquareColor.EMPTY;
         }
 
         gameId = Integer.valueOf(game.getChildText("gameId"));
         diceUsed = Integer.valueOf(game.getChildText("diceUsed"));
 
         switch(game.getChildText("firstPlayer")) {
-            case "BLACK": firstPlayer = PlayerColor.BLACK; break;
-            case "WHITE": firstPlayer = PlayerColor.WHITE; break;
-            case "EMPTY": firstPlayer = PlayerColor.EMPTY;
+            case "BLACK": firstPlayer = SquareColor.BLACK; break;
+            case "WHITE": firstPlayer = SquareColor.WHITE; break;
+            case "EMPTY": firstPlayer = SquareColor.EMPTY;
         }
 
-        List<Element> sixSidedDiceList = game.getChild("sixSidedDice").getChildren("sixSidedDie");
-        Iterator<Element> it = sixSidedDiceList.iterator();
+        List<Element> SixSidedDieList = game.getChild("SixSidedDie").getChildren("sixSidedDie");
+        Iterator<Element> it = SixSidedDieList.iterator();
 
         while(it.hasNext()) {
-            SixSidedDice tmpDice = new SixSidedDice();
+            SixSidedDie tmpDice = new SixSidedDie();
             tmpDice.load(it.next());
-            sixSidedDice.add(tmpDice);
+            SixSidedDie.add(tmpDice);
         }
 
         board = new Board(this);
@@ -606,7 +606,7 @@ public class Game {
         Iterator<Element> i = playerTurnHistoryList.iterator();
 
         while(i.hasNext()) {
-            Turn tmpTurn = new Turn();
+            Turn tmpTurn = new Turn(currentPlayer, SixSidedDie);
             tmpTurn.load(i.next(), this);
             playerTurnHistory.add(tmpTurn);
         }
@@ -630,12 +630,12 @@ public class Game {
         this.doublingCube = doublingCube;
     }
 
-    public ArrayList<SixSidedDice> getSixSidedDice() {
-        return sixSidedDice;
+    public ArrayList<SixSidedDie> getSixSidedDie() {
+        return SixSidedDie;
     }
 
-    public void setSixSidedDice(ArrayList<SixSidedDice> sixSidedDice) {
-        this.sixSidedDice = sixSidedDice;
+    public void setSixSidedDie(ArrayList<SixSidedDie> SixSidedDie) {
+        this.SixSidedDie = SixSidedDie;
     }
 
     public Board getBoard() {
@@ -646,11 +646,11 @@ public class Game {
         this.board = board;
     }
 
-    public PlayerColor getCurrentPlayer() {
+    public SquareColor getCurrentPlayer() {
         return currentPlayer;
     }
 
-    public void setCurrentPlayer(PlayerColor currentPlayer) {
+    public void setCurrentPlayer(SquareColor currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
@@ -678,7 +678,7 @@ public class Game {
         return turnFinished;
     }
 
-    public PlayerColor getFirstPlayer() {
+    public SquareColor getFirstPlayer() {
         return firstPlayer;
     }
 }

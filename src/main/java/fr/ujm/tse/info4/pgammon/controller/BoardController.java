@@ -7,13 +7,13 @@ import java.util.Collection;
 
 import javax.swing.JFrame;
 
-import fr.ujm.tse.info4.pgammon.exception.UnplayableTurnException;
+import fr.ujm.tse.info4.pgammon.exception.TurnNotPlayableException;
 import fr.ujm.tse.info4.pgammon.gui.CaseButton;
-import fr.ujm.tse.info4.pgammon.models.Case;
-import fr.ujm.tse.info4.pgammon.models.SixSidedDice;
-import fr.ujm.tse.info4.pgammon.models.Timer;
-import fr.ujm.tse.info4.pgammon.models.TimerEvent;
-import fr.ujm.tse.info4.pgammon.models.TimerEventListener;
+import fr.ujm.tse.info4.pgammon.models.Square;
+import fr.ujm.tse.info4.pgammon.models.SixSidedDie;
+import fr.ujm.tse.info4.pgammon.models.Clock;
+import fr.ujm.tse.info4.pgammon.models.ClockEvent;
+import fr.ujm.tse.info4.pgammon.models.ClockEventListener;
 import fr.ujm.tse.info4.pgammon.models.AssistantLevel;
 import fr.ujm.tse.info4.pgammon.models.Game;
 import fr.ujm.tse.info4.pgammon.models.Board;
@@ -25,7 +25,7 @@ public class BoardController implements Controller {
     private Game game;
     private BoardView boardView;
     private GameView gameView;
-    private Timer timer;
+    private Clock Clock;
     
     private GameController gameController;
     private JFrame frame;
@@ -43,7 +43,7 @@ public class BoardController implements Controller {
     }
 
     private void build() {
-        buildTimer();
+        buildClock();
         listenerCaseButton();
     }
     
@@ -114,27 +114,27 @@ public class BoardController implements Controller {
     }
     
     public void changeTurn() {
-        if (timer != null) {
-            timer.stop();
-            timer.setValue(0);
+        if (Clock != null) {
+            Clock.stop();
+            Clock.setValue(0);
         }
         game.changeTurn();
         gameView.showTransition(game.getGameParameters().getPlayer(game.getCurrentPlayer()).getNickname(), "Player" + game.getCurrentPlayer().toString());
     }
     
-    private void buildTimer() {
+    private void buildClock() {
         if (game.getGameParameters().getSecondsPerTurn() != 0) {
-            timer = new Timer(game.getGameParameters().getSecondsPerTurn());
-            timer.addListener(new TimerEventListener() {
+            Clock = new Clock(game.getGameParameters().getSecondsPerTurn());
+            Clock.addListener(new ClockEventListener() {
                 @Override
-                public void updateTimer(TimerEvent timer) {}
+                public void updateClock(ClockEvent Clock) {}
                 
                 @Override
-                public void endTimer(TimerEvent evt) {
+                public void endClock(ClockEvent evt) {
                     try {
                         // Random movement for remaining dice
                         int unusedDiceCount = 0;
-                        for (SixSidedDice die : game.getSixSidedDice()) {
+                        for (SixSidedDie die : game.getSixSidedDie()) {
                             if(!die.isUsed())
                                 unusedDiceCount++;
                         }
@@ -161,17 +161,17 @@ public class BoardController implements Controller {
             });
         }
         else {
-            timer = null;    
+            Clock = null;    
         }
-        gameView.getTimerBar().setTimer(timer);
+        gameView.getClockBar().setClock(Clock);
     }
 
     /**
-     * Returns the timer
-     * @return Timer
+     * Returns the Clock
+     * @return Clock
      */
-    public Timer getTimer() {
-        return timer;
+    public Clock getClock() {
+        return Clock;
     }
 
     @Override
