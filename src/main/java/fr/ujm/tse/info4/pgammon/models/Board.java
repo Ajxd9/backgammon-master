@@ -153,7 +153,7 @@ public class Board
      * @param end ending square
      * @return boolean
      */
-    public boolean isMoveValid(Square start, Square end)
+    public boolean isMovePossible(Square start, Square end)
     {
         if (start.getNumCheckers() == 0)
             return false;
@@ -221,7 +221,7 @@ public class Board
     
     public boolean movePiece(Square start, Square end)
     {
-        if(isMoveValid(start, end))
+        if(isMovePossible(start, end))
         {
             //save starting square
             Square startSquareSave = new Square(start.getCheckerColor(), start.getNumCheckers(), start.getPosition());
@@ -338,7 +338,7 @@ public class Board
      * @param color Color of Bar Square
      * @return true = there are pieces. false = it's empty
      */
-    public boolean arePiecesInBarSquare(SquareColor color)
+    public boolean isPieceOnBar(SquareColor color)
     {
         return getBarSquare(color).getNumCheckers() != 0;
     }
@@ -359,7 +359,7 @@ public class Board
             if(square1.getCheckerColor() == color && !die.isUsed()){
                 Square tmpStart = square1;
                 Square tmpEnd = getSquareAtDistance(tmpStart, die);
-                if(isMoveValid(tmpStart, tmpEnd)){
+                if(isMovePossible(tmpStart, tmpEnd)){
                     Move tmpMove = new Move(tmpStart, tmpEnd);
                     list.add(tmpMove);
                 }

@@ -276,7 +276,7 @@ public class Game {
         if (!isDiceAvailable)
             return false;
 
-        if (board.isCorrectMoveDirection(startSquare, endSquare)) {
+        if (board.isMovementDirectionCorrect(startSquare, endSquare)) {
             return board.isMovePossible(startSquare, endSquare);
         }
         else
@@ -417,15 +417,15 @@ public class Game {
                         squareArrivedSaveColor = SquareColor.WHITE;
 
                     board.movePiece(lastMovement.getEndSquare(), lastMovement.getStartSquare());
-                    dice.setUnused();
-                    if(getLastTurn().getLastMovement().isSquareHit()) {
+                    dice.resetUse();
+                    if(getLastTurn().getLastMovement().isHitMove()) {
                         board.movePiece(board.getBarSquare(squareArrivedSaveColor),
                                 lastMovement.getEndSquare());
                     }
                     if (turnFinished) {
                         turnFinished = false;
                         SixSidedDie = lastTurn.getSixSidedDie();
-                        currentPlayer = lastTurn.getSquareColor();
+                        currentPlayer = lastTurn.getPlayerColor();
                     }
                     lastTurn.removeLastMovement();
                     return;
@@ -503,7 +503,7 @@ public class Game {
 
             board.movePiece(previousMovement.getEndSquare(), previousMovement.getStartSquare());
 
-            if(previousMovement.isSquareHit()) {
+            if(previousMovement.isHitMove()) {
                 board.movePiece(board.getBarSquare(squareArrivedSaveColor),
                         previousMovement.getEndSquare());
             }
