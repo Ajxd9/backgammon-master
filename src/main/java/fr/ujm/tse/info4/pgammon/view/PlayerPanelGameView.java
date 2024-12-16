@@ -16,9 +16,10 @@ import javax.swing.JPanel;
 
 import fr.ujm.tse.info4.pgammon.gui.ImageAvatar;
 import fr.ujm.tse.info4.pgammon.gui.MonochromeCheckbox;
-import fr.ujm.tse.info4.pgammon.models.CellColor;
+import fr.ujm.tse.info4.pgammon.models.SquareColor;
 import fr.ujm.tse.info4.pgammon.models.Player;
 import fr.ujm.tse.info4.pgammon.models.AssistantLevel;
+import fr.ujm.tse.info4.pgammon.models.SquareColor;
 
 public class PlayerPanelGameView extends JPanel {
 
@@ -28,7 +29,7 @@ public class PlayerPanelGameView extends JPanel {
     private static final long serialVersionUID = -7344853213808679707L;
 
     private Player player;
-    private CellColor color;
+    private SquareColor color;
 
     public static final String whiteChecker = "images/big_pion_blanc.png";
     public static final String blackChecker = "images/big_pion_noir.png";
@@ -42,9 +43,9 @@ public class PlayerPanelGameView extends JPanel {
     /**
      * Constructor for the class
      * @param p Player passed as a parameter
-     * @param col CellColor passed as a parameter
+     * @param col SquareColor passed as a parameter
      */
-    public PlayerPanelGameView(Player p, CellColor col) {
+    public PlayerPanelGameView(Player p, SquareColor col) {
         player = p;
         color = col;
 
@@ -78,7 +79,7 @@ public class PlayerPanelGameView extends JPanel {
 
         // Retrieve the image
         try {
-            if (color.equals(CellColor.WHITE)) {
+            if (color.equals(SquareColor.WHITE)) {
                 checkerImage = new ImageIcon(whiteChecker);
             } else {
                 checkerImage = new ImageIcon(blackChecker);
@@ -106,7 +107,7 @@ public class PlayerPanelGameView extends JPanel {
 
         // Display the player's stats
         playerNameLabel.setForeground(new Color(0xCCCCCC));
-        playerNameLabel.setText(player.getPseudo());
+        playerNameLabel.setText(player.getUsername());
         playerNameLabel.setHorizontalAlignment(JLabel.CENTER);
 
         add(nameCenteringPanel);

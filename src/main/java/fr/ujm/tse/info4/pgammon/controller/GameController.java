@@ -28,7 +28,7 @@ import fr.ujm.tse.info4.pgammon.models.Square;
 import fr.ujm.tse.info4.pgammon.models.SquareColor;
 import fr.ujm.tse.info4.pgammon.models.Move;
 import fr.ujm.tse.info4.pgammon.models.SessionState;
-import fr.ujm.tse.info4.pgammon.models.SessionManagement;
+import fr.ujm.tse.info4.pgammon.models.SessionManager;
 import fr.ujm.tse.info4.pgammon.models.AssistantLevel;
 import fr.ujm.tse.info4.pgammon.models.Game;
 import fr.ujm.tse.info4.pgammon.models.Profiles;
@@ -47,17 +47,17 @@ public class GameController implements Controller
     private boolean isForwardDirection;
     private Timer gameReviewTimer;
     private SquareColor doubleStakeColor;
-    
+
     @Deprecated
     public GameController(Game game)
     {
         gameController = this;
         gameView = new GameView(game);
-        
+
         build();
         boardController = new BoardController(game, gameView, this);
     }
-    
+
     public GameController(Session session, Controller controller)
     {
         doubleStakeColor = SquareColor.EMPTY;
@@ -67,9 +67,9 @@ public class GameController implements Controller
         gameView = new GameView(session.getCurrentGame());
         gameReviewTimer = null;
         build();
-        
+
         boardController = new BoardController(session.getCurrentGame(), gameView, this);
-        gameView.getInProgressViewBottom().updateScore(session.getScores().get(session.getSessionParameters().getWhitePlayer()), 
+        gameView.getInProgressViewBottom().updateScore(session.getScores().get(session.getSessionParameters().getWhitePlayer()),
                                                       session.getScores().get(session.getSessionParameters().getBlackPlayer()));
     }
 
@@ -87,7 +87,7 @@ public class GameController implements Controller
         listenerInterruptGame();
         listenerHelpButton();
     }
-    
+
     public void listenerTimer()
     {
         gameReviewTimer = new Timer(1000, null);
@@ -104,7 +104,7 @@ public class GameController implements Controller
                     {
                         gameReviewPosition++;
                     }
-                
+
                 Move move = session.getCurrentGame().NextMove(gameReviewPosition);
                 if (move != null)
                     gameView.getCompletedViewBottom().getReplayBar().goTo(move, isForwardDirection);
@@ -119,15 +119,15 @@ public class GameController implements Controller
             }
         });
     }
-    
+
     private void listenerHelpButton() {
         gameView.getInProgressViewBottom().getHelp().addMouseListener(new MouseListener() {
             @Override
             public void mouseReleased(MouseEvent e) {}
             @Override
-            public void mousePressed(MouseEvent e) {}     
+            public void mousePressed(MouseEvent e) {}
             @Override
-            public void mouseExited(MouseEvent e) {}          
+            public void mouseExited(MouseEvent e) {}
             @Override
             public void mouseEntered(MouseEvent e) {}
             @Override
@@ -141,7 +141,7 @@ public class GameController implements Controller
             }
         });
     }
-    
+
     public void listenerGameReviewButtons()
     {
         gameView.getCompletedViewBottom().getReplayBar().getEndBtn().addMouseListener(new MouseListener(){
@@ -158,7 +158,7 @@ public class GameController implements Controller
                 if(gameReviewTimer != null)
                     gameReviewTimer.stop();
                 isForwardDirection = true;
-                
+
                 for(int i = gameReviewPosition; i < session.getCurrentGame().getNumberOfStoredMoves(); i++)
                 {
                     gameReviewPosition++;
@@ -166,14 +166,14 @@ public class GameController implements Controller
                     if (move != null)
                         gameView.getCompletedViewBottom().getReplayBar().goTo(move, isForwardDirection);
                 }
-                
+
                 gameView.getCompletedViewBottom().getReplayBar().goEnd();
                 gameView.updateUI();
                 gameView.getBoardView().updateUI();
                 gameView.getBoardView().updateDice();
             }
         });
-        
+
         gameView.getCompletedViewBottom().getReplayBar().getBeginBtn().addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent e) {}
@@ -197,7 +197,7 @@ public class GameController implements Controller
                 gameView.getBoardView().updateDice();
             }
         });
-        
+
         gameView.getCompletedViewBottom().getReplayBar().getNextBtn().addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent e) {}
@@ -221,17 +221,17 @@ public class GameController implements Controller
                     {
                         gameReviewPosition++;
                     }
-                
+
                 Move move = session.getCurrentGame().NextMove(gameReviewPosition);
                 if (move != null)
                     gameView.getCompletedViewBottom().getReplayBar().goTo(move, isForwardDirection);
-                }   
+                }
                 gameView.updateUI();
                 gameView.getBoardView().updateUI();
                 gameView.getBoardView().updateDice();
             }
         });
-        
+
         gameView.getCompletedViewBottom().getReplayBar().getPrevBtn().addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent e) {}
@@ -256,7 +256,7 @@ public class GameController implements Controller
                         gameReviewPosition--;
                     }
                     Move move = session.getCurrentGame().PreviousMove(gameReviewPosition);
-                    
+
                     if (move != null)
                         gameView.getCompletedViewBottom().getReplayBar().goTo(move, isForwardDirection);
                 }
@@ -266,7 +266,7 @@ public class GameController implements Controller
             }
         });
     }
-    
+
     public void listenerReviewGame()
     {
         gameView.getRightPanelReview().getUndo().addMouseListener(new MouseListener(){
@@ -299,7 +299,7 @@ public class GameController implements Controller
             }
         });
     }
-    
+
     public void listenerBack()
     {
         gameView.getRightPanelInProgress().getBack().addMouseListener(new MouseListener(){
@@ -319,7 +319,7 @@ public class GameController implements Controller
             }
         });
     }
-    
+
     public void listenerRollDice()
     {
         gameView.getRightPanelInProgress().getDices().addMouseListener(new MouseListener(){
@@ -347,10 +347,10 @@ public class GameController implements Controller
                 gameView.updateUI();
                 gameView.getBoardView().updateUI();
                 gameView.getBoardView().updateDice();
-            }           
+            }
         });
     }
-    
+
     public void listenerGetPossibleMovesPlayer1()
     {
         gameView.getPlayer1Panel().getPossibleMove().addMouseListener(new MouseListener() {
@@ -378,7 +378,7 @@ public class GameController implements Controller
             }
         });
     }
-    
+
     public void listenerGetPossibleMovesPlayer2()
     {
         gameView.getPlayer2Panel().getPossibleMove().addMouseListener(new MouseListener() {
@@ -491,7 +491,7 @@ public class GameController implements Controller
                         else if (action == "Save")
                         {
                             try {
-                                SessionManagement management = SessionManagement.getSessionManagement();
+                                SessionManager management = SessionManager.getSessionManagement();
                                 management.save();
                             } catch (IOException e1) {
                                 e1.printStackTrace();
@@ -546,7 +546,7 @@ public class GameController implements Controller
                         else if (action == "Save")
                         {
                             try {
-                                SessionManagement management = SessionManagement.getSessionManagement();
+                                SessionManager management = SessionManager.getSessionManagement();
                                 management.save();
                             } catch (IOException e1) {
                                 e1.printStackTrace();

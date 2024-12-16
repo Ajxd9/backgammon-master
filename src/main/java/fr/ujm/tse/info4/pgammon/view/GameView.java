@@ -25,12 +25,12 @@ public class GameView extends MonochromeView {
 	private BoardView boardView;
 	private SessionState state;
 	
-	private FinishedViewRightPanel rightPanelReview;
-	private InProgressViewRightPanel rightPanelInProgress;
-	private InProgressViewBottomPanel inProgressViewBottom;
-	private FinishedViewBottomPanel finishedViewBottom;
-	private PlayerViewInGame playerPanel1;
-	private PlayerViewInGame playerPanel2;
+	private CompletedGameViewRight rightPanelReview;
+	private RightInProgressPanelView rightPanelInProgress;
+	private BottomInProgressPanelView inProgressViewBottom;
+	private CompletedGameViewBottom finishedViewBottom;
+	private PlayerPanelGameView playerPanel1;
+	private PlayerPanelGameView playerPanel2;
 	private ClockBar clockBar;
 	
 	/**
@@ -64,27 +64,27 @@ public class GameView extends MonochromeView {
 		add(clockBar);
 		
 		// Create game panels
-		rightPanelInProgress = new InProgressViewRightPanel(game);
+		rightPanelInProgress = new RightInProgressPanelView(game);
 		rightPanelInProgress.setBounds(720,0,80,476);
 		add(rightPanelInProgress);
 
-		finishedViewBottom = new FinishedViewBottomPanel();
+		finishedViewBottom = new CompletedGameViewBottom();
 		finishedViewBottom.setBounds(0,480,800,95);
 		add(finishedViewBottom);
 		
-		inProgressViewBottom = new InProgressViewBottomPanel();
+		inProgressViewBottom = new BottomInProgressPanelView();
 		inProgressViewBottom.setBounds(0,480,800,95);
 		add(inProgressViewBottom);
 		
-		rightPanelReview = new FinishedViewRightPanel();
+		rightPanelReview = new CompletedGameViewRight();
 		rightPanelReview.setBounds(720,0,80,476);
 		add(rightPanelReview);
 		
-		playerPanel1 = new PlayerViewInGame(game.getGameParameters().getWhitePlayer(), SquareColor.WHITE);
+		playerPanel1 = new PlayerPanelGameView(game.getGameParameters().getWhitePlayer(), SquareColor.WHITE);
 		playerPanel1.setBounds(10, 5, 150, 210);
 		add(playerPanel1);
 		
-		playerPanel2 = new PlayerViewInGame(game.getGameParameters().getBlackPlayer(), SquareColor.BLACK);
+		playerPanel2 = new PlayerPanelGameView(game.getGameParameters().getBlackPlayer(), SquareColor.BLACK);
 		playerPanel2.setBounds(10, 235, 150, 215);
 		add(playerPanel2);
 
@@ -159,7 +159,7 @@ public class GameView extends MonochromeView {
 	 * Getter for the bottom view in progress state of the game
 	 * @return Returns the in-progress bottom panel
 	 */
-	public InProgressViewBottomPanel getInProgressViewBottomPanel() {
+	public BottomInProgressPanelView getInProgressViewBottomPanel() {
 		return inProgressViewBottom;
 	}
 
@@ -167,7 +167,7 @@ public class GameView extends MonochromeView {
 	 * Getter for the right view in progress state of the game
 	 * @return Returns the in-progress right panel
 	 */
-	public InProgressViewRightPanel getRightPanelInProgress() {
+	public RightInProgressPanelView getRightPanelInProgress() {
 		return rightPanelInProgress;
 	}
 
@@ -175,7 +175,7 @@ public class GameView extends MonochromeView {
 	 * Getter for the right view in finished state of the game
 	 * @return Returns the finished right panel
 	 */
-	public FinishedViewRightPanel getRightPanelReview() {
+	public CompletedGameViewRight getRightPanelReview() {
 		return rightPanelReview;
 	}
 
@@ -183,7 +183,7 @@ public class GameView extends MonochromeView {
 	 * Setter for the right panel in finished state of the game
 	 * @param rightPanelReview The right panel to set
 	 */
-	public void setRightPanelReview(FinishedViewRightPanel rightPanelReview) {
+	public void setRightPanelReview(CompletedGameViewRight rightPanelReview) {
 		this.rightPanelReview = rightPanelReview;
 	}
 
@@ -191,7 +191,7 @@ public class GameView extends MonochromeView {
 	 * Getter for the finished bottom panel
 	 * @return Returns the finished bottom panel
 	 */
-	public FinishedViewBottomPanel getFinishedViewBottomPanel() {
+	public CompletedGameViewBottom getFinishedViewBottomPanel() {
 		return finishedViewBottom;
 	}
 
@@ -199,7 +199,7 @@ public class GameView extends MonochromeView {
 	 * Getter for the white player's panel
 	 * @return Returns the white player's panel
 	 */
-	public PlayerViewInGame getPlayerPanel1() {
+	public PlayerPanelGameView getPlayerPanel1() {
 		return playerPanel1;
 	}
 
@@ -207,7 +207,7 @@ public class GameView extends MonochromeView {
 	 * Getter for the black player's panel
 	 * @return Returns the black player's panel
 	 */
-	public PlayerViewInGame getPlayerPanel2() {
+	public PlayerPanelGameView getPlayerPanel2() {
 		return playerPanel2;
 	}
 	
