@@ -112,8 +112,8 @@ public class IntermediateGameController implements Controller {
                 int numGames = gameCreationView.getNewSessionView().getSettingsPanel().getNumberOfGames();
                 boolean doubling = gameCreationView.getNewSessionView().getSettingsPanel().getdoublingCube().isSelected();
                 
-                Player whitePlayer = gameCreationView.getNewSessionView().getSettingsPanel().getPlayer();
-                Player blackPlayer = gameCreationView.getNewSessionView().getPlayer2Panel().getPlayer();
+                Player whitePlayer = gameCreationView.getNewSessionView().getPlayerPanel1().getPlayer();
+                Player blackPlayer = gameCreationView.getNewSessionView().getPlayerPanel2().getPlayer();
                 
                 if(whitePlayer == null || blackPlayer == null) {
                     gameCreationView.displayRequestWindow("Oops!", "Please choose players!");
