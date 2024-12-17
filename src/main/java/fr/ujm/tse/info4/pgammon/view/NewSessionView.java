@@ -13,13 +13,15 @@ import java.awt.geom.Point2D;
 
 import javax.swing.JPanel;
 
-import com.example.game.gui.IconMonochromeType;
-import com.example.game.gui.MonochromeButton;
-import com.example.game.gui.MonochromeIconButton;
-import com.example.game.gui.PlayerPanel;
-import com.example.game.gui.SettingsPanel;
-import com.example.game.models.SquareColor;
-import com.example.game.models.Player;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeButton;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeIconButton;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeIconType;
+import fr.ujm.tse.info4.pgammon.gui.PlayerPanel;
+import fr.ujm.tse.info4.pgammon.gui.SettingsPanel;
+import fr.ujm.tse.info4.pgammon.models.Player;
+import fr.ujm.tse.info4.pgammon.models.SquareColor;
+
+
 
 public class NewSessionView extends JPanel {
 
@@ -63,7 +65,7 @@ public class NewSessionView extends JPanel {
         
         startButton = new MonochromeButton("Start");
          
-        changeColorButton = new MonochromeIconButton(IconMonochromeType.SWITCH, "MonochromeIconButton", "BLACK");
+        changeColorButton = new MonochromeIconButton(MonochromeIconType.SWITCH, "MonochromeIconButton", "BLACK");
         changeColorButton.setSizeBig();
         changeColorButton.setBounds(10, 34, changeColorButton.getPreferredSize().width, changeColorButton.getPreferredSize().height);
         add(changeColorButton);

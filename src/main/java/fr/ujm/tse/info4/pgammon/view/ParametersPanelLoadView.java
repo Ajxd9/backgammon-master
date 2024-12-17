@@ -85,7 +85,7 @@ public class ParametersPanelLoadView extends MonochromePanel {
         whitePlayerName.setText(session.getCurrentGame().getGameParameters().getWhitePlayer().getUsername());
         blackPlayerName.setText(session.getCurrentGame().getGameParameters().getBlackPlayer().getUsername());
 
-        int winningGames = session.getSessionParameters().getWinningGameCount();
+        int winningGames = session.getGameParameters().getWinningGamesCount();
 
         if (winningGames == 0) {
             gamesLabel.setText("\u221E");
@@ -93,7 +93,7 @@ public class ParametersPanelLoadView extends MonochromePanel {
             gamesLabel.setText(Integer.toString(winningGames));
         }
 
-        int timeInSeconds = session.getSessionParameters().getSecondsPerTurn() / 1000;
+        int timeInSeconds = session.getGameParameters().getSecondsPerTurn() / 1000;
         int minutes = timeInSeconds / 60;
         if (timeInSeconds == 0) {
             timeLabel.setText("\u221E");
@@ -103,7 +103,7 @@ public class ParametersPanelLoadView extends MonochromePanel {
             timeLabel.setText(timeInSeconds + " s");
         }
 
-        if (session.getCurrentGame().getGameParameters().isDoublingCubeUsed()) {
+        if (session.getCurrentGame().getGameParameters().isUseDoubling()) {
             doublingCubeText.setText("Doubling cube is used");
         } else {
             doublingCubeText.setText("Doubling cube is not used");

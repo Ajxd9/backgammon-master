@@ -77,10 +77,10 @@ public class PlayerDescriptionView extends MonochromePanel {
                 "<br>" + (int) (player.getStats().getWinPercentage() * 100) +
                 "</html>");
 
-        if (player.getAssistanceLevel() == AssistantLevel.FULL) {
+        if (player.getAssistantLevel() == AssistantLevel.FULL) {
             possibleMovesCheckbox.setSelected(true);
             suggestMoveCheckbox.setSelected(true);
-        } else if (player.getAssistanceLevel() == AssistantLevel.BASIC) {
+        } else if (player.getAssistantLevel() == AssistantLevel.BASIC) {
             possibleMovesCheckbox.setSelected(true);
             suggestMoveCheckbox.setSelected(false);
         } else {
@@ -109,10 +109,10 @@ public class PlayerDescriptionView extends MonochromePanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (player.getAssistanceLevel() == AssistantLevel.NOT_USED)
-                    player.setAssistanceLevel(AssistantLevel.BASIC);
+                if (player.getAssistantLevel() == AssistantLevel.NOT_USED)
+                    player.setAssistantLevel(AssistantLevel.BASIC);
                 else
-                    player.setAssistanceLevel(AssistantLevel.NOT_USED);
+                    player.setAssistantLevel(AssistantLevel.NOT_USED);
 
                 updateData();
             }
@@ -136,10 +136,10 @@ public class PlayerDescriptionView extends MonochromePanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (player.getAssistanceLevel() == AssistantLevel.FULL)
-                    player.setAssistanceLevel(AssistantLevel.BASIC);
+                if (player.getAssistantLevel() == AssistantLevel.FULL)
+                    player.setAssistantLevel(AssistantLevel.BASIC);
                 else
-                    player.setAssistanceLevel(AssistantLevel.FULL);
+                    player.setAssistantLevel(AssistantLevel.FULL);
 
                 updateData();
             }
