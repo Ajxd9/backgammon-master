@@ -353,7 +353,7 @@ public class GameController implements Controller
 
     public void listenerGetPossibleMovesPlayer1()
     {
-        gameView.getPlayerPanel1().getPossibleMove().addMouseListener(new MouseListener() {
+        gameView.getPlayerPanel1().getShowPossibleMoves().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {}
             @Override
@@ -371,7 +371,7 @@ public class GameController implements Controller
                 else
                 {
                     session.getCurrentGame().getGameParameters().getWhitePlayer().setAssistantLevel(AssistantLevel.NOT_USED);
-                    gameView.getBoardView().setPossibleMoves(null);
+                    gameView.getBoardView().setPossible(null);
                     gameView.getBoardView().updateUI();
                 }
                 gameView.getPlayerPanel1().updateData();
@@ -381,7 +381,7 @@ public class GameController implements Controller
 
     public void listenerGetPossibleMovesPlayer2()
     {
-        gameView.getPlayerPanel2().getPossibleMove().addMouseListener(new MouseListener() {
+        gameView.getPlayerPanel2().getShowPossibleMoves().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {}
             @Override
@@ -399,7 +399,7 @@ public class GameController implements Controller
                 else
                 {
                     session.getCurrentGame().getGameParameters().getBlackPlayer().setAssistantLevel(AssistantLevel.NOT_USED);
-                    gameView.getBoardView().setPossibleMoves(new ArrayList<Square>());
+                    gameView.getBoardView().setPossible(new ArrayList<Square>());
                     gameView.getBoardView().updateUI();
                 }
                 gameView.getPlayerPanel2().updateData();
@@ -409,13 +409,13 @@ public class GameController implements Controller
 
     public void listenerDoubleStakeButton()
     {
-        if (!session.getGameParameters().isUsingDoubling())
+        if (!session.getGameParameters().isUseDoubling())
         {
-            gameView.getRightPanelInProgress().getDoubling().setEnabled(false);
+            gameView.getRightPanelInProgress().getDoublingCubeDisplay().setEnabled(false);
         }
         else
         {
-            gameView.getRightPanelInProgress().getDoubling().addMouseListener(new MouseListener(){
+            gameView.getRightPanelInProgress().getDoublingCubeDisplay().addMouseListener(new MouseListener(){
                 @Override
                 public void mouseClicked(MouseEvent arg0) {}
                 @Override
@@ -439,13 +439,13 @@ public class GameController implements Controller
                                 if (action == "Yes")
                                 {
                                     doubleStakeColor = session.getCurrentGame().getCurrentPlayer();
-                                    session.getCurrentGame().doubleStake();
+                                    session.getCurrentGame().doubleDoublingCube();
                                 }
                                 else if (action == "No")
                                 {
                                     endGame();
                                 }
-                                gameView.getRightPanelInProgress().updateDoubling();
+                                gameView.getRightPanelInProgress().updateDoublingCube();
                             }
                         });
                     }
@@ -456,7 +456,7 @@ public class GameController implements Controller
 
     public void listenerInterruptGame()
     {
-        gameView.getRightPanelReview().getWhiteX().addMouseListener(new MouseListener(){
+        gameView.getRightPanelReview().getX_white().addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent arg0) {}
             @Override
@@ -491,7 +491,7 @@ public class GameController implements Controller
                         else if (action == "Save")
                         {
                             try {
-                                SessionManager management = SessionManager.getSessionManagement();
+                                SessionManager management = SessionManager.getSessionManager();
                                 management.save();
                             } catch (IOException e1) {
                                 e1.printStackTrace();
@@ -511,7 +511,7 @@ public class GameController implements Controller
 
     public void listenerInterruptSession()
     {
-        gameView.getInProgressViewBottom().getBlackX().addMouseListener(new MouseListener(){
+        gameView.getInProgressViewBottomPanel().getInterruptSessionButton().addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent arg0) {}
             @Override
@@ -546,7 +546,7 @@ public class GameController implements Controller
                         else if (action == "Save")
                         {
                             try {
-                                SessionManager management = SessionManager.getSessionManagement();
+                                SessionManager management = SessionManager.getSessionManager();
                                 management.save();
                             } catch (IOException e1) {
                                 e1.printStackTrace();
@@ -593,13 +593,13 @@ public class GameController implements Controller
     public void newGame()
     {
         session.newGame();
-        session.startGame();
+        session.StartGame();
 
         gameView.setGame(session.getCurrentGame());
         gameView.setState(SessionState.IN_PROGRESS);
         boardController = new BoardController(session.getCurrentGame(), gameView, this);
 
-        session.startGame();
+        session.StartGame();
         gameView.updateUI();
     }
 
@@ -613,7 +613,7 @@ public class GameController implements Controller
 
         session.endGame();
 
-        gameView.getInProgressViewBottom().updateScore(
+        gameView.getInProgressViewBottomPanel().updateScore(
                 session.getScores().get(session.getGameParameters().getWhitePlayer()),
                 session.getScores().get(session.getGameParameters().getBlackPlayer())
         );
@@ -634,7 +634,7 @@ public class GameController implements Controller
                     " wins the game!"
             );
         }
-        gameView.setState(SessionState.COMPLETED);
+        gameView.setState(SessionState.FINISHED);
     }
 
     public Game getGame() {
@@ -683,7 +683,7 @@ public class GameController implements Controller
         squares = new ArrayList<Square>();
         squares.add(new Square(SquareColor.WHITE, 14, 25));
         squares.add(new Square(SquareColor.BLACK, 14, 0));
-        session.getCurrentGame().getBoard().initializeWinningSquares(squares);
+        session.getCurrentGame().getBoard().initializeVictorySquares(squares);
 
         squares = new ArrayList<Square>();
         squares.add(new Square(SquareColor.WHITE, 0, 0));

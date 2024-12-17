@@ -110,6 +110,7 @@ public class BottomInProgressPanelView  extends JPanel {
         return helpButton;
     }
 
+
     /**
      * Getter for the new session button
      * @return returns the new session button class
