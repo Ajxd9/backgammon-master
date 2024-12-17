@@ -50,7 +50,7 @@ public class PlayerPanel extends MonochromePanel {
      * @param p Changes the player value.
      */
     public void setPlayer(Player p) {
-        player = p;
+        this.player = p;
         updateData();
     }
 
@@ -77,14 +77,18 @@ public class PlayerPanel extends MonochromePanel {
                 suggestNextMoveCheckbox.setSelected(false);
             }
 
-            suggestNextMoveCheckbox.setEnabled(showPossibleMovesCheckbox.isSelected());
+            if (showPossibleMovesCheckbox.isSelected()) {
+            	suggestNextMoveCheckbox.setEnabled(true);
+            } else {
+            	showPossibleMovesCheckbox.setEnabled(false);
+            }
 
             playerImage.setVisible(true);
             showPossibleMovesCheckbox.setVisible(true);
+            
         } else {
             setTitle("");
             playerStatsLabel.setText("");
-
             playerImage.setVisible(false);
             showPossibleMovesCheckbox.setVisible(false);
             suggestNextMoveCheckbox.setVisible(false);
@@ -155,14 +159,17 @@ public class PlayerPanel extends MonochromePanel {
         showPossibleMovesCheckbox = new MonochromeCheckbox("<html> Show <br> possible moves");
         suggestNextMoveCheckbox = new MonochromeCheckbox("<html> Suggest <br> next move");
 
+        // Display player statistics.
         playerStatsLabel.setForeground(new Color(0xCCCCCC));
         playerStatsLabel.setBounds(130, 40, 200, 50);
         playerStatsLabel.setFont(new Font("Arial", Font.HANGING_BASELINE, 12));
 
+        // Configure the suggest move checkbox.
         suggestNextMoveCheckbox.setForeground(new Color(0xCCCCCC));
         suggestNextMoveCheckbox.setBounds(190, 90, 150, 50);
         suggestNextMoveCheckbox.setOpaque(false);
 
+        // Configure the show moves checkbox.
         showPossibleMovesCheckbox.setForeground(new Color(0xCCCCCC));
         showPossibleMovesCheckbox.setBounds(10, 90, 150, 50);
         showPossibleMovesCheckbox.setOpaque(false);
@@ -175,6 +182,62 @@ public class PlayerPanel extends MonochromePanel {
         setupSuggestNextMoveListener();
     }
 
+    /**
+     * Getter for the show moves checkbox.
+     * @return Returns the value of the show moves checkbox.
+     */
+    public MonochromeCheckbox getShowPossibleMovesCheckbox() {
+        return showPossibleMovesCheckbox;
+    }
+
+    /**
+     * Setter for the show moves checkbox.
+     * @param showMovesCheckbox Updates the show moves checkbox.
+     */
+    public void setShowPossibleMovesCheckbox(MonochromeCheckbox showPossibleMovesCheckbox) {
+        this.showPossibleMovesCheckbox = showPossibleMovesCheckbox;
+    }
+
+    /**
+     * Getter for the suggest move checkbox.
+     * @return Returns the value of the suggest move checkbox.
+     */
+    public MonochromeCheckbox getSuggestNextMoveCheckbox() {
+        return suggestNextMoveCheckbox;
+    }
+
+    /**
+     * Setter for the suggest move checkbox.
+     * @param suggestMoveCheckbox Updates the suggest move checkbox.
+     */
+    public void setSuggestNextMoveCheckbox(MonochromeCheckbox suggestNextMoveCheckbox) {
+        this.suggestNextMoveCheckbox = suggestNextMoveCheckbox;
+    }
+
+    /**
+     * Getter for the statistics display.
+     * @return Returns the statistics display.
+     */
+    public JLabel getPlayerStatsLabel() {
+        return playerStatsLabel;
+    }
+
+    /**
+     * Setter for the statistics display.
+     * @param statsDisplay Updates the statistics display.
+     */
+    public void setPlayerStatsLabel(JLabel playerStatsLabel) {
+        this.playerStatsLabel = playerStatsLabel;
+    }
+
+    /**
+     * Getter for the player.
+     * @return Returns the player.
+     */
+    public Player getPlayer() {
+        return player;
+    }
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
