@@ -33,7 +33,7 @@ import fr.ujm.tse.info4.pgammon.models.AssistantLevel;
 import fr.ujm.tse.info4.pgammon.models.Game;
 import fr.ujm.tse.info4.pgammon.models.Profiles;
 import fr.ujm.tse.info4.pgammon.models.Session;
-import fr.ujm.tse.info4.pgammon.views.GameView;
+import fr.ujm.tse.info4.pgammon.view.GameView;
 
 public class GameController implements Controller
 {

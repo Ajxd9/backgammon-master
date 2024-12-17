@@ -53,7 +53,7 @@ public class Session {
         currentGame = new Game(maxGameId, gameParameters);
     }
     
-    public void startGame() {
+    public void StartGame() {
         if (previousGamePlayerColor == null)
             currentGame.startFirstGame();
         else
