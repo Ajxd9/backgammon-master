@@ -63,8 +63,8 @@ public class Player {
         imageSource = it.getChildText("imageSource");
         switch(it.getChildText("assistanceLevel")){
             case "NOT_USED": assistanceLevel = AssistantLevel.NOT_USED; break;
-            case "SIMPLE": assistanceLevel = AssistantLevel.BASIC; break;
-            case "COMPLETE": assistanceLevel = AssistantLevel.FULL;
+            case "BASIC": assistanceLevel = AssistantLevel.BASIC; break;
+            case "FULL": assistanceLevel = AssistantLevel.FULL;
         }
         stats.load(it.getChild("playerStatistics"));
     }   

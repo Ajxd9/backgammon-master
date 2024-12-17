@@ -95,7 +95,7 @@ public class Profiles {
         Iterator<Element> itStats = playerList.iterator();
         while(itStats.hasNext()){
             Element e = itStats.next();
-            Iterator<Element> itAgainst = e.getChild("playerStatistics").getChild("numGamesAgainstPlayer").getChildren("players").iterator();
+            Iterator<Element> itAgainst = e.getChild("playerStatistics").getChild("gamesAgainstPlayer").getChildren("players").iterator();
             while(itAgainst.hasNext()){
                 Element c = itAgainst.next();
                 for(int i=0; i<players.size(); i++){
