@@ -9,10 +9,6 @@ import java.awt.event.MouseListener;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import fr.ujm.tse.info4.pgammon.gui.ImageAvatar;
-import fr.ujm.tse.info4.pgammon.gui.MonochromeButton;
-import fr.ujm.tse.info4.pgammon.gui.MonochromePanel;
-
 public class AddPlayerView extends MonochromePanel {
 
     /**

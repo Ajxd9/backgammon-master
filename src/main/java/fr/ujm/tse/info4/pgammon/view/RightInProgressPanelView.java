@@ -5,9 +5,6 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import fr.ujm.tse.info4.pgammon.gui.ScoreDisplay;
-import fr.ujm.tse.info4.pgammon.gui.MonochromeIconType;
-import fr.ujm.tse.info4.pgammon.gui.MonochromeIconButton;
 import fr.ujm.tse.info4.pgammon.models.SquareColor;
 import fr.ujm.tse.info4.pgammon.models.Game;
 

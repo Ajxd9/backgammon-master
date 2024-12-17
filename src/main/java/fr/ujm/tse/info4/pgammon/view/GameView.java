@@ -3,8 +3,7 @@ package fr.ujm.tse.info4.pgammon.view;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
-import fr.ujm.tse.info4.pgammon.gui.ClockBar;
-import fr.ujm.tse.info4.pgammon.gui.MonochromeView;
+
 import fr.ujm.tse.info4.pgammon.models.SquareColor;
 import fr.ujm.tse.info4.pgammon.models.SessionState;
 import fr.ujm.tse.info4.pgammon.models.Game;
