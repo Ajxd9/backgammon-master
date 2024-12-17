@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Session127813>
+  <session id="127813">
+    <sessionState>CONFIGURATION</sessionState>
+    <maxGameId>2</maxGameId>
+    <previousGamePlayerColor>null</previousGamePlayerColor>
+    <players>
+      <blackPlayer id="127371">
+        <score>0</score>
+      </blackPlayer>
+      <whitePlayer id="127364">
+        <score>0</score>
+      </whitePlayer>
+    </players>
+    <parameters>
+      <secondsPerTurn>30000</secondsPerTurn>
+      <winningGamesCount>3</winningGamesCount>
+      <useDoubling>1</useDoubling>
+    </parameters>
+    <game>
+      <doublingCube>1</doublingCube>
+      <currentPlayer>WHITE</currentPlayer>
+      <gameId>2</gameId>
+      <diceUsed>0</diceUsed>
+      <firstPlayer>WHITE</firstPlayer>
+      <SixSidedDie />
+      <board>
+        <Squares>
+          <Square id="1">
+            <pieceColor>WHITE</pieceColor>
+            <numPieces>2</numPieces>
+          </Square>
+          <Square id="2">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="3">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="4">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="5">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="6">
+            <pieceColor>BLACK</pieceColor>
+            <numPieces>5</numPieces>
+          </Square>
+          <Square id="7">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="8">
+            <pieceColor>BLACK</pieceColor>
+            <numPieces>3</numPieces>
+          </Square>
+          <Square id="9">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="10">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="11">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="12">
+            <pieceColor>WHITE</pieceColor>
+            <numPieces>5</numPieces>
+          </Square>
+          <Square id="13">
+            <pieceColor>BLACK</pieceColor>
+            <numPieces>5</numPieces>
+          </Square>
+          <Square id="14">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="15">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="16">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="17">
+            <pieceColor>WHITE</pieceColor>
+            <numPieces>3</numPieces>
+          </Square>
+          <Square id="18">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="19">
+            <pieceColor>WHITE</pieceColor>
+            <numPieces>5</numPieces>
+          </Square>
+          <Square id="20">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="21">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="22">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="23">
+            <pieceColor>EMPTY</pieceColor>
+            <numPieces>0</numPieces>
+          </Square>
+          <Square id="24">
+            <pieceColor>BLACK</pieceColor>
+            <numPieces>2</numPieces>
+          </Square>
+        </Squares>
+        <VictorySquares>
+          <VictorySquare id="25">
+            <pieceColor>WHITE</pieceColor>
+            <numPieces>0</numPieces>
+          </VictorySquare>
+          <VictorySquare id="0">
+            <pieceColor>BLACK</pieceColor>
+            <numPieces>0</numPieces>
+          </VictorySquare>
+        </VictorySquares>
+        <BarSquares>
+          <BarSquare id="0">
+            <pieceColor>WHITE</pieceColor>
+            <numPieces>0</numPieces>
+          </BarSquare>
+          <BarSquare id="25">
+            <pieceColor>BLACK</pieceColor>
+            <numPieces>0</numPieces>
+          </BarSquare>
+        </BarSquares>
+      </board>
+      <playerTurnHistory />
+    </game>
+  </session>
+</Session127813>
