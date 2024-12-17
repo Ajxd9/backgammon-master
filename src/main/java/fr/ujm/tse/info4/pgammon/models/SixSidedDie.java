@@ -16,6 +16,8 @@ public class SixSidedDie {
     private int value;
     private boolean isUsed;
     private SquareColor dieColor;
+    private DieType dieType;  
+
     
     /* FUNCTIONS */
     public SixSidedDie() {}
