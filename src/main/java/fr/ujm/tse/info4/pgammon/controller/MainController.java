@@ -22,8 +22,10 @@ import javax.swing.JPanel;
 
 import fr.ujm.tse.info4.pgammon.models.Master;
 import fr.ujm.tse.info4.pgammon.models.GameParameters;
+import fr.ujm.tse.info4.pgammon.models.ManagerModel;
 import fr.ujm.tse.info4.pgammon.models.Session;
 import fr.ujm.tse.info4.pgammon.view.IntermediateGameView;
+import fr.ujm.tse.info4.pgammon.view.ManagerView;
 import fr.ujm.tse.info4.pgammon.view.MenuView;
 
 public class MainController implements Controller {
@@ -62,6 +64,7 @@ public class MainController implements Controller {
         listenerNewGameButton();
         listenerResumeGameButton();
         listenerAddButton();
+        listenerManageButton();
         listenerHelpButton();
     }
 
@@ -144,6 +147,30 @@ public class MainController implements Controller {
             @Override
             public void mouseClicked(MouseEvent e) {
                 frame.dispose();
+            }
+        });
+    }
+    
+    private void listenerManageButton() {
+        viewMenu.getManageButton().addMouseListener(new MouseListener() {
+            
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {}        
+            @Override
+            public void mouseExited(MouseEvent e) {}            
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                viewMenu.setVisible(false);
+                ManagerModel model = new ManagerModel();
+                ManagerView view = new ManagerView();
+                ManagerController managerController = new ManagerController(model, view);    
+                frame.setContentPane(view.getContentPane());
+                frame.validate();
+                frame.repaint();    // Repaint to ensure proper rendering
             }
         });
     }
