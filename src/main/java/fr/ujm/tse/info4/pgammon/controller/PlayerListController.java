@@ -24,15 +24,12 @@ public class PlayerListController implements Controller {
     public PlayerListController(boolean isLoaded, Controller controller) 
     {
         this.controller = controller;
-        
         profile = Profiles.getProfiles();
-        
         this.isLoaded = isLoaded;
-        
         PlayerListView = new PlayerListView();
         controller.getController().getFrame().setContentPane(PlayerListView);
 
-        AddPlayerView = PlayerListView.getAddPlayerView();
+        this.AddPlayerView = PlayerListView.getAddPlayerView();
         build();
     }
     
@@ -65,7 +62,7 @@ public class PlayerListController implements Controller {
                     if (isLoaded)
                     {
                         if (PlayerListView.getDescriptionPanel().getPlayer() != null){
-                            Player p = PlayerListView.getPanelDescription().getPlayer();
+                            Player p = PlayerListView.getDescriptionPanel().getPlayer();
                             ((IntermediateGameController)controller).back(p);
                             PlayerListView.setVisible(false);
                             profile.save();
@@ -101,7 +98,7 @@ public class PlayerListController implements Controller {
      */
     public void listenerButtonBack()
     {
-        PlayerListView.getBack().addMouseListener(new MouseListener() {
+        PlayerListView.getBackButton().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {}
             @Override
@@ -123,7 +120,7 @@ public class PlayerListController implements Controller {
      */
     public void listenerButtonAdd()
     {
-        PlayerListView.getAdd().addMouseListener(new MouseListener() {
+        PlayerListView.getAddButton().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {}
             @Override
@@ -147,7 +144,7 @@ public class PlayerListController implements Controller {
      * Button listener "Modify"
      */
     public void listenerButtonModify(){
-        PlayerListView.getPanelDescription().getModify().addMouseListener(new MouseListener() {
+        PlayerListView.getDescriptionPanel().getModifyButton().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {}
             @Override
@@ -159,7 +156,7 @@ public class PlayerListController implements Controller {
             @Override
             public void mouseReleased(MouseEvent e) {
                 PlayerListView.showEditProfile();
-                AddPlayerView.setPath(PlayerListView.getPanelDescription().getPlayer().getImageSource());
+                AddPlayerView.setPath(PlayerListView.getDescriptionPanel().getPlayer().getImageSource());
                 flag = false;
                 buildEditProfile();}
         });
@@ -169,7 +166,7 @@ public class PlayerListController implements Controller {
      * Button listener "Delete"
      */
     public void listenerButtonDelete(){
-        PlayerListView.getPanelDescription().getDelete().addMouseListener(new MouseListener() {
+        PlayerListView.getDescriptionPanel().getDeleteButton().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {}
             @Override
@@ -180,10 +177,10 @@ public class PlayerListController implements Controller {
             public void mousePressed(MouseEvent e) {}
             @Override
             public void mouseReleased(MouseEvent e) {
-                profile.delete(PlayerListView.getPanelDescription().getPlayer());
+                profile.delete(PlayerListView.getDescriptionPanel().getPlayer());
                 PlayerListView.updateList();
                 PlayerListView.updateData();
-                PlayerListView.getPanelDescription().setVisible(false);
+                PlayerListView.getDescriptionPanel().setVisible(false);
             }
         });
     }
@@ -195,7 +192,7 @@ public class PlayerListController implements Controller {
         if(flag){
             AddPlayerView.getPlayerNickname().setText("");
         }else{
-            AddPlayerView.getPlayerNickname().setText(PlayerListView.getPanelDescription().getPlayer().getNickname());
+            AddPlayerView.getPlayerNickname().setText(PlayerListView.getDescriptionPanel().getPlayer().getUsername());
         }
     }
 
@@ -203,7 +200,7 @@ public class PlayerListController implements Controller {
      * "Back" listener for EditProfile
      */
     public void listenerButtonCloseEditProfile(){
-        AddPlayerView.getBack().addMouseListener(new MouseListener() {
+        AddPlayerView.getCancelButton().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {}
             @Override
@@ -259,7 +256,7 @@ public class PlayerListController implements Controller {
                     PlayerListView.setPlayer(tmpPlayer);
                     
                 }else{
-                    PlayerListView.getDescriptionPanel().getPlayer().setNickname(AddPlayerView.getPlayerNickname().getText());
+                    PlayerListView.getDescriptionPanel().getPlayer().setUsername(AddPlayerView.getPlayerNickname().getText());
                     PlayerListView.getDescriptionPanel().getPlayer().setImageSource(PlayerListView.getAddPlayerView().getPath());
                 }
                 PlayerListView.hideEditProfile();

@@ -260,6 +260,55 @@ public class SettingsPanel extends MonochromePanel {
             }
         });
     }
+    
+    /**
+     * Getter for the number of games.
+     * @return Returns the selected number of games.
+     */
+    public int getNumberOfGames() {
+        return numberOfGames;
+    }
+
+    /**
+     * Getter for the time limit.
+     * @return Returns the selected time limit.
+     */
+    public int getTimeLimit() {
+        return timeLimit;
+    }
+
+    /**
+     * Getter for the games label.
+     * @return Returns the label for games.
+     */
+    public MonochromeLabel getGamesLabel() {
+        return gamesLabel;
+    }
+
+    /**
+     * Getter for the time label.
+     * @return Returns the label for time.
+     */
+    public MonochromeLabel getTimeLabel() {
+        return timeLabel;
+    }
+
+    /**
+     * Getter for the doubling cube checkbox.
+     * @return Returns the value of the checkbox.
+     */
+    public MonochromeCheckbox getdoublingCube() {
+        return doublingCube;
+    }
+
+    /**
+     * Setter for the doubling cube checkbox.
+     * @param doublingCubeCheckbox Updates the checkbox value.
+     */
+    public void setdoublingCube(MonochromeCheckbox doublingCube) {
+        this.doublingCube = doublingCube;
+    }
+
 
     @Override
     protected void paintComponent(Graphics g) {
