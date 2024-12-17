@@ -32,7 +32,7 @@ public class PlayerListView extends MonochromeView {
     private Profiles profile;
     private Player player;
     
-    private PlayerListViewDescriptionPanel descriptionPanel;
+    private PlayerDescriptionView descriptionPanel;
     private MonochromeList<Player> playerList;
     
     private String path = "";
@@ -99,7 +99,7 @@ public class PlayerListView extends MonochromeView {
         add(bg);
         hideEditProfile();
         
-        descriptionPanel = new PlayerListViewDescriptionPanel(player);
+        descriptionPanel = new PlayerDescriptionView(player);
         descriptionPanel.setBounds(420, 30, 330, 450);
         add(descriptionPanel);
         descriptionPanel.setVisible(false);
@@ -125,7 +125,7 @@ public class PlayerListView extends MonochromeView {
     }
     
     private void addAvatarListener() {
-        avatarList.getAdd().addActionListener(new ActionListener() {
+        avatarList.getAddButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 path = avatarList.getPath();
@@ -138,7 +138,7 @@ public class PlayerListView extends MonochromeView {
     }
     
     private void avatarChangeListener() {
-        addPlayerView.getChangeAvatar().addMouseListener(new MouseListener() {
+        addPlayerView.getChangeAvatarButton().addMouseListener(new MouseListener() {
             
             @Override
             public void mouseReleased(MouseEvent e) {}
@@ -163,7 +163,7 @@ public class PlayerListView extends MonochromeView {
         return profile;
     }
 
-    public PlayerListViewDescriptionPanel getDescriptionPanel() {
+    public PlayerDescriptionView getDescriptionPanel() {
         return descriptionPanel;
     }
 

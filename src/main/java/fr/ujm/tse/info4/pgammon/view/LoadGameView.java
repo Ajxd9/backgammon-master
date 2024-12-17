@@ -36,7 +36,7 @@ public class LoadGameView extends JPanel {
     private Collection<Session> sessionList;
     private MonochromeList<Session> sessionListView;
     private Session session;
-    private SessionSettingsPanel loadGameSettingsPanel;
+    private ParametersPanelLoadView loadGameSettingsPanel;
 
     /**
      * Constructor for the class
@@ -82,7 +82,7 @@ public class LoadGameView extends JPanel {
         setOpaque(false);
 
         //if (sessionList == 0)
-        loadGameSettingsPanel = new SessionSettingsPanel(null);
+        loadGameSettingsPanel = new ParametersPanelLoadView(null);
         loadGameSettingsPanel.setBounds(450, 20, 300, 400);
         add(loadGameSettingsPanel);
         loadGameSettingsPanel.setVisible(false);
@@ -146,7 +146,7 @@ public class LoadGameView extends JPanel {
      * Getter for the session settings view of the selected session
      * @return returns the session settings panel class
      */
-    public SessionSettingsPanel getSessionSettingsPanel() {
+    public ParametersPanelLoadView getParametersPanelLoadView() {
         return loadGameSettingsPanel;
     }
 }
