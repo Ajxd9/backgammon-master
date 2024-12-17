@@ -381,7 +381,7 @@ public class Game {
      *
      * @return
      */
-    public boolean hasPossibleMoves() {
+    public boolean hasPossibleMove() {
         for (Square pieceSquare : board.getAllSquares()) {
             if((!board.isPieceOnBar(currentPlayer) && pieceSquare.getCheckerColor() == currentPlayer)
                     || pieceSquare.isBarSquare())
@@ -396,7 +396,7 @@ public class Game {
     /**
      *
      */
-    public void cancelLastMove() {
+    public void undoLastMove() {
         Movement lastMovement;
 
         Turn lastTurn = getLastTurn();
@@ -512,7 +512,7 @@ public class Game {
         return previousMovement;
     }
 
-    public int getNumberOfStoredMovements() {
+    public int getNumberOfStoredMoves() {
         int i = 0;
         for (Turn turn : playerTurnHistory) {
             for (Movement movement : turn.getMovementList()) {

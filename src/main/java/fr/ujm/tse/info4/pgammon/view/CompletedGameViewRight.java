@@ -78,7 +78,7 @@ public class CompletedGameViewRight extends JPanel {
      * Getter for the next button.
      * @return the next button component.
      */
-    public MonochromeIconButton getNextButton() {
+    public MonochromeIconButton getNext() {
         return nextButton;
     }
 
@@ -86,7 +86,7 @@ public class CompletedGameViewRight extends JPanel {
      * Getter for the replay button.
      * @return the replay button component.
      */
-    public MonochromeIconButton getReplayButton() {
+    public MonochromeIconButton getUndo() {
         return replayButton;
     }
 
@@ -94,7 +94,7 @@ public class CompletedGameViewRight extends JPanel {
      * Getter for the interrupt button.
      * @return the interrupt button component.
      */
-    public MonochromeIconButton getInterruptButton() {
+    public MonochromeIconButton getX_white() {
         return interruptButton;
     }
 
