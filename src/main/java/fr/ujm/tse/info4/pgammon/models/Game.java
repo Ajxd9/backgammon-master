@@ -29,6 +29,8 @@ public class Game {
     private boolean gameFinished;
     private boolean turnFinished;
     private int diceUsed;
+    private GameDifficulty gameDifficulty;
+    
 
     /**
      *
@@ -610,6 +612,23 @@ public class Game {
             tmpTurn.load(i.next(), this);
             playerTurnHistory.add(tmpTurn);
         }
+    }
+    
+    public void rollDi() {
+        // Step 1: Clear the existing dice list to reset for the current turn
+        SixSidedDie = new ArrayList<SixSidedDie>();
+
+        // Step 2: Dynamically generate new dice based on the game's current difficulty level
+        // - EASY: 2 regular dice
+        // - MEDIUM: 2 regular dice + 1 question die
+        // - HARD: 2 enhanced dice + 1 question die
+        SixSidedDie.addAll(gameDifficulty.generateDice(currentPlayer));
+
+        // Step 3: Mark the current turn as active (not yet finished)
+        turnFinished = false;
+
+        // Step 4: Start the player's turn and record the dice rolled
+        beginTurn();
     }
 
     /* GETTERS AND SETTERS */

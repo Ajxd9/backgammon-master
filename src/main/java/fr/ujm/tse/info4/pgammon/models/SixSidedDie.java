@@ -46,6 +46,18 @@ public class SixSidedDie {
     
     
    
+    /* GET QUESTION DIFFICULTY BASED ON DIE VALUE */
+    public String getQuestionDifficulty() {
+        if (dieType == DieType.QUESTION) {
+            switch (value) {
+                case 1: return "Easy";
+                case 2: return "Medium";
+                case 3: return "Hard";
+                default: return "Unknown";
+            }
+        }
+        return "Not a Question Die";
+    }
 
     
     /* FUNCTIONS */
