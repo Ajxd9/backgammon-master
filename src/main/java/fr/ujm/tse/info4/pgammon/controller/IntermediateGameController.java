@@ -44,7 +44,7 @@ public class IntermediateGameController implements Controller {
     }
     
     public void listenerSessionDeletion() {
-        gameCreationView.getLoadGameView().getSessionSettingsPanel().getDeleteButton().addMouseListener(new MouseListener() {
+        gameCreationView.getLoadGameView().getParametersPanelLoadView().getDeleteButton().addMouseListener(new MouseListener() {
 
             @Override
             public void mouseClicked(MouseEvent e) {}
@@ -108,20 +108,20 @@ public class IntermediateGameController implements Controller {
             @Override
             public void mouseReleased(MouseEvent e) {    
                 
-                int time = gameCreationView.getNewSessionView().getParameterPanel().getTimeAmount() * 1000;
-                int numGames = gameCreationView.getNewSessionView().getParameterPanel().getNumGames();
-                boolean doubling = gameCreationView.getNewSessionView().getParameterPanel().getDoubling().isSelected();
+                int time = gameCreationView.getNewSessionView().getSettingsPanel().getTimeLimit() * 1000;
+                int numGames = gameCreationView.getNewSessionView().getSettingsPanel().getNumberOfGames();
+                boolean doubling = gameCreationView.getNewSessionView().getSettingsPanel().getdoublingCube().isSelected();
                 
-                Player whitePlayer = gameCreationView.getNewSessionView().getPlayer1Panel().getPlayer();
+                Player whitePlayer = gameCreationView.getNewSessionView().getSettingsPanel().getPlayer();
                 Player blackPlayer = gameCreationView.getNewSessionView().getPlayer2Panel().getPlayer();
                 
                 if(whitePlayer == null || blackPlayer == null) {
-                    gameCreationView.showRequestWindow("Oops!", "Please choose players!");
+                    gameCreationView.displayRequestWindow("Oops!", "Please choose players!");
                     return;
                 }
                 
                 if(whitePlayer == blackPlayer) {
-                    gameCreationView.showRequestWindow("Oops!", "Players chosen are the same!");
+                    gameCreationView.displayRequestWindow("Oops!", "Players chosen are the same!");
                     return;
                 }
                 // Creation of game parameters
@@ -146,7 +146,7 @@ public class IntermediateGameController implements Controller {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if(gameCreationView.getLoadGameView().getSession() == null) {
-                    gameCreationView.showRequestWindow("Oops!", "No session selected");
+                    gameCreationView.displayRequestWindow("Oops!", "No session selected");
                 }
                 else {
                     gameCreationView.setVisible(false);
@@ -171,7 +171,7 @@ public class IntermediateGameController implements Controller {
             public void mouseReleased(MouseEvent e) {
                 gameCreationView.setVisible(false);
                 playerListController = new PlayerListController(true, intermediateGameController);
-                playerBeingModified = CaseColor.WHITE;
+                playerBeingModified = SquareColor.WHITE;
             }
         });
     }
@@ -191,7 +191,7 @@ public class IntermediateGameController implements Controller {
             public void mouseReleased(MouseEvent e) {
                 gameCreationView.setVisible(false);
                 playerListController = new PlayerListController(true, intermediateGameController);
-                playerBeingModified = CaseColor.BLACK;
+                playerBeingModified = SquareColor.BLACK;
             }
         });
     }
@@ -215,7 +215,7 @@ public class IntermediateGameController implements Controller {
     public void back(Player p) {
         getFrame().setContentPane(gameCreationView);
         gameCreationView.setVisible(true);
-        if (playerBeingModified == CaseColor.WHITE)
+        if (playerBeingModified == SquareColor.WHITE)
             gameCreationView.getNewSessionView().setPlayer1(p);
         else
             gameCreationView.getNewSessionView().setPlayer2(p);
