@@ -24,8 +24,8 @@ public class MenuView extends MonochromeView {
     private MonochromeButton playerListButton;
     private MonochromeButton rulesButton;
     private MonochromeButton quitButton;
-    
     private ImageIcon icon;
+    private MonochromeButton manageButton;
     
     public MenuView(){
         build();
@@ -71,9 +71,8 @@ public class MenuView extends MonochromeView {
         rulesButton = new MonochromeButton("Rules");
         buttonContainer.add(rulesButton);
         
-        JPanel emptyPanel = new JPanel();
-        emptyPanel.setOpaque(false);
-        buttonContainer.add(emptyPanel);
+        manageButton = new MonochromeButton("Manager");
+        buttonContainer.add(manageButton);
         
         quitButton = new MonochromeButton("Quit");
         buttonContainer.add(quitButton);
@@ -122,8 +121,12 @@ public class MenuView extends MonochromeView {
     public MonochromeButton getQuitButton() {
         return quitButton;
     }
+    
+    public MonochromeButton getManageButton() {
+		return manageButton;
+	}
 
-    @Override
+	@Override
     protected void paintComponent(Graphics g) {
         
         g.drawImage(icon.getImage(), 0, 0, this);
