@@ -21,7 +21,7 @@ import fr.ujm.tse.info4.pgammon.gui.PlayerCellRenderer;
 import fr.ujm.tse.info4.pgammon.gui.MonochromeButton;
 import fr.ujm.tse.info4.pgammon.gui.MonochromeList;
 import fr.ujm.tse.info4.pgammon.gui.MonochromeView;
-import fr.ujm.tse.info4.pgammon.gui.OpaqueBG;
+import fr.ujm.tse.info4.pgammon.gui.OpaqueBackground;
 import fr.ujm.tse.info4.pgammon.models.Player;
 import fr.ujm.tse.info4.pgammon.models.Profiles;
 
@@ -41,7 +41,7 @@ public class PlayerListView extends MonochromeView {
     private MonochromeButton addButton;
     private MonochromeButton selectButton;
     private MonochromeButton backButton;
-    private OpaqueBG bg;
+    private OpaqueBackground bg;
     
     private AvatarList avatarList;
     
@@ -86,7 +86,7 @@ public class PlayerListView extends MonochromeView {
         
         player = null;
         
-        bg = new OpaqueBG();
+        bg = new OpaqueBackground();
         
         avatarList = new AvatarList();
         avatarList.setBounds(0, 0, 800, 600);
