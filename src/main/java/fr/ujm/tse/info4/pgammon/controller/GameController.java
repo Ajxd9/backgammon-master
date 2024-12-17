@@ -26,7 +26,7 @@ import org.jdom2.JDOMException;
 
 import fr.ujm.tse.info4.pgammon.models.Square;
 import fr.ujm.tse.info4.pgammon.models.SquareColor;
-import fr.ujm.tse.info4.pgammon.models.Move;
+import fr.ujm.tse.info4.pgammon.models.Movement;
 import fr.ujm.tse.info4.pgammon.models.SessionState;
 import fr.ujm.tse.info4.pgammon.models.SessionManager;
 import fr.ujm.tse.info4.pgammon.models.AssistantLevel;
@@ -69,8 +69,8 @@ public class GameController implements Controller
         build();
 
         boardController = new BoardController(session.getCurrentGame(), gameView, this);
-        gameView.getInProgressViewBottom().updateScore(session.getScores().get(session.getSessionParameters().getWhitePlayer()),
-                                                      session.getScores().get(session.getSessionParameters().getBlackPlayer()));
+        gameView.getInProgressViewBottomPanel().updateScore(session.getScores().get(session.getGameParameters().getWhitePlayer()),
+                                                      session.getScores().get(session.getGameParameters().getBlackPlayer()));
     }
 
     private void build() {
@@ -105,9 +105,9 @@ public class GameController implements Controller
                         gameReviewPosition++;
                     }
 
-                Move move = session.getCurrentGame().NextMove(gameReviewPosition);
+                Movement move = session.getCurrentGame().getNextMovement(gameReviewPosition);
                 if (move != null)
-                    gameView.getCompletedViewBottom().getReplayBar().goTo(move, isForwardDirection);
+                    gameView.getFinishedViewBottomPanel().getReplayBar().goTo(move, isForwardDirection);
                 }
                 else
                 {
@@ -121,7 +121,7 @@ public class GameController implements Controller
     }
 
     private void listenerHelpButton() {
-        gameView.getInProgressViewBottom().getHelp().addMouseListener(new MouseListener() {
+        gameView.getInProgressViewBottomPanel().getHelpButton().addMouseListener(new MouseListener() {
             @Override
             public void mouseReleased(MouseEvent e) {}
             @Override
@@ -144,7 +144,7 @@ public class GameController implements Controller
 
     public void listenerGameReviewButtons()
     {
-        gameView.getCompletedViewBottom().getReplayBar().getEndBtn().addMouseListener(new MouseListener(){
+        gameView.getFinishedViewBottomPanel().getReplayBar().getEndButton().addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent e) {}
             @Override
@@ -162,19 +162,19 @@ public class GameController implements Controller
                 for(int i = gameReviewPosition; i < session.getCurrentGame().getNumberOfStoredMoves(); i++)
                 {
                     gameReviewPosition++;
-                    Move move = session.getCurrentGame().NextMove(gameReviewPosition);
+                    Movement move = session.getCurrentGame().getNextMovement(gameReviewPosition);
                     if (move != null)
-                        gameView.getCompletedViewBottom().getReplayBar().goTo(move, isForwardDirection);
+                        gameView.getFinishedViewBottomPanel().getReplayBar().goTo(move, isForwardDirection);
                 }
 
-                gameView.getCompletedViewBottom().getReplayBar().goEnd();
+                gameView.getFinishedViewBottomPanel().getReplayBar().goToEnd();
                 gameView.updateUI();
                 gameView.getBoardView().updateUI();
                 gameView.getBoardView().updateDice();
             }
         });
 
-        gameView.getCompletedViewBottom().getReplayBar().getBeginBtn().addMouseListener(new MouseListener(){
+        gameView.getFinishedViewBottomPanel().getReplayBar().getStartButton().addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent e) {}
             @Override
@@ -190,7 +190,7 @@ public class GameController implements Controller
                 gameReviewPosition = 0;
                 isForwardDirection = true;
 
-                gameView.getCompletedViewBottom().getReplayBar().goBegin();
+                gameView.getFinishedViewBottomPanel().getReplayBar().goToStart();
                 session.getCurrentGame().getBoard().resetSquares();
                 gameView.updateUI();
                 gameView.getBoardView().updateUI();
@@ -198,7 +198,7 @@ public class GameController implements Controller
             }
         });
 
-        gameView.getCompletedViewBottom().getReplayBar().getNextBtn().addMouseListener(new MouseListener(){
+        gameView.getFinishedViewBottomPanel().getReplayBar().getNextButton().addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent e) {}
             @Override
@@ -222,9 +222,9 @@ public class GameController implements Controller
                         gameReviewPosition++;
                     }
 
-                Move move = session.getCurrentGame().NextMove(gameReviewPosition);
+                Movement move = session.getCurrentGame().getNextMovement(gameReviewPosition);
                 if (move != null)
-                    gameView.getCompletedViewBottom().getReplayBar().goTo(move, isForwardDirection);
+                    gameView.getFinishedViewBottomPanel().getReplayBar().goTo(move, isForwardDirection);
                 }
                 gameView.updateUI();
                 gameView.getBoardView().updateUI();
@@ -232,7 +232,7 @@ public class GameController implements Controller
             }
         });
 
-        gameView.getCompletedViewBottom().getReplayBar().getPrevBtn().addMouseListener(new MouseListener(){
+        gameView.getFinishedViewBottomPanel().getReplayBar().getPreviousButton().addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent e) {}
             @Override
@@ -255,10 +255,10 @@ public class GameController implements Controller
                     {
                         gameReviewPosition--;
                     }
-                    Move move = session.getCurrentGame().PreviousMove(gameReviewPosition);
+                    Movement move = session.getCurrentGame().getPreviousMovement(gameReviewPosition);
 
                     if (move != null)
-                        gameView.getCompletedViewBottom().getReplayBar().goTo(move, isForwardDirection);
+                        gameView.getFinishedViewBottomPanel().getReplayBar().goTo(move, isForwardDirection);
                 }
                 gameView.updateUI();
                 gameView.getBoardView().updateUI();
@@ -285,7 +285,7 @@ public class GameController implements Controller
                     gameReviewPosition = 0;
                     isForwardDirection = true;
                     gameView.setState(SessionState.REPLAY);
-                    gameView.getCompletedViewBottom().getReplayBar().setTurns(session.getCurrentGame().getPlayerTurnHistory());
+                    gameView.getFinishedViewBottomPanel().getReplayBar().setTurns(session.getCurrentGame().getPlayerTurnHistory());
                     session.getCurrentGame().getBoard().resetSquares();
                     gameView.updateUI();
                     gameView.getBoardView().updateUI();
@@ -302,7 +302,7 @@ public class GameController implements Controller
 
     public void listenerBack()
     {
-        gameView.getRightPanelInProgress().getBack().addMouseListener(new MouseListener(){
+        gameView.getRightPanelInProgress().getBackButton().addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent arg0) {}
             @Override
@@ -353,7 +353,7 @@ public class GameController implements Controller
 
     public void listenerGetPossibleMovesPlayer1()
     {
-        gameView.getPlayer1Panel().getPossibleMove().addMouseListener(new MouseListener() {
+        gameView.getPlayerPanel1().getPossibleMove().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {}
             @Override
@@ -366,7 +366,7 @@ public class GameController implements Controller
             public void mouseReleased(MouseEvent arg0) {
                 if(session.getCurrentGame().getGameParameters().getWhitePlayer().getAssistantLevel() == AssistantLevel.NOT_USED)
                 {
-                    session.getCurrentGame().getGameParameters().getWhitePlayer().setAssistantLevel(AssistantLevel.SIMPLE);
+                    session.getCurrentGame().getGameParameters().getWhitePlayer().setAssistantLevel(AssistantLevel.BASIC);
                 }
                 else
                 {
@@ -374,14 +374,14 @@ public class GameController implements Controller
                     gameView.getBoardView().setPossibleMoves(null);
                     gameView.getBoardView().updateUI();
                 }
-                gameView.getPlayer1Panel().updateData();
+                gameView.getPlayerPanel1().updateData();
             }
         });
     }
 
     public void listenerGetPossibleMovesPlayer2()
     {
-        gameView.getPlayer2Panel().getPossibleMove().addMouseListener(new MouseListener() {
+        gameView.getPlayerPanel2().getPossibleMove().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {}
             @Override
@@ -394,7 +394,7 @@ public class GameController implements Controller
             public void mouseReleased(MouseEvent arg0) {
                 if(session.getCurrentGame().getGameParameters().getBlackPlayer().getAssistantLevel() == AssistantLevel.NOT_USED)
                 {
-                    session.getCurrentGame().getGameParameters().getBlackPlayer().setAssistantLevel(AssistantLevel.SIMPLE);
+                    session.getCurrentGame().getGameParameters().getBlackPlayer().setAssistantLevel(AssistantLevel.BASIC);
                 }
                 else
                 {
@@ -402,14 +402,14 @@ public class GameController implements Controller
                     gameView.getBoardView().setPossibleMoves(new ArrayList<Square>());
                     gameView.getBoardView().updateUI();
                 }
-                gameView.getPlayer2Panel().updateData();
+                gameView.getPlayerPanel2().updateData();
             }
         });
     }
 
     public void listenerDoubleStakeButton()
     {
-        if (!session.getSessionParameters().isUsingDoubling())
+        if (!session.getGameParameters().isUsingDoubling())
         {
             gameView.getRightPanelInProgress().getDoubling().setEnabled(false);
         }
@@ -614,8 +614,8 @@ public class GameController implements Controller
         session.endGame();
 
         gameView.getInProgressViewBottom().updateScore(
-                session.getScores().get(session.getSessionParameters().getWhitePlayer()),
-                session.getScores().get(session.getSessionParameters().getBlackPlayer())
+                session.getScores().get(session.getGameParameters().getWhitePlayer()),
+                session.getScores().get(session.getGameParameters().getBlackPlayer())
         );
 
         if(session.checkSessionEnd())

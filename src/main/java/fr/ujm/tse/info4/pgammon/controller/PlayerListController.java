@@ -7,8 +7,8 @@ import javax.swing.JFrame;
 
 import fr.ujm.tse.info4.pgammon.models.Player;
 import fr.ujm.tse.info4.pgammon.models.Profiles;
-import fr.ujm.tse.info4.pgammon.views.ViewAddPlayer;
-import fr.ujm.tse.info4.pgammon.views.ViewPlayerList;
+import fr.ujm.tse.info4.pgammon.view.ViewAddPlayer;
+import fr.ujm.tse.info4.pgammon.view.ViewPlayerList;
 
 public class PlayerListController implements Controller {
 

@@ -91,7 +91,7 @@ public class RightInProgressPanelView extends JPanel {
      * Getter for the dice button
      * @return returns the dice button component
      */
-    public MonochromeIconButton getDiceButton() {
+    public MonochromeIconButton getDices() {
         return diceButton;
     }
     
