@@ -18,8 +18,13 @@ import fr.ujm.tse.info4.pgammon.gui.MonochromeIconButton;
 import fr.ujm.tse.info4.pgammon.gui.MonochromeIconType;
 import fr.ujm.tse.info4.pgammon.gui.PlayerPanel;
 import fr.ujm.tse.info4.pgammon.gui.SettingsPanel;
+import fr.ujm.tse.info4.pgammon.models.GameDifficulty;
 import fr.ujm.tse.info4.pgammon.models.Player;
 import fr.ujm.tse.info4.pgammon.models.SquareColor;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
 
 
 
@@ -41,6 +46,7 @@ public class NewSessionView extends JPanel {
     
     private Player p1;
     private Player p2;
+    private JTextField game_level;
 
     /**
      * Constructor for the class/view
@@ -52,22 +58,33 @@ public class NewSessionView extends JPanel {
     /**
      * Method to render the view and insert all necessary elements
      */
-    private void build() {        
-        // This is done to move panels inside the main panel
-        setLayout(null);
+    private void build() {
         
         p1 = null;
         p2 = null;
         
         playerPanel1 = new PlayerPanel(p1, SquareColor.WHITE);
+        playerPanel1.setBounds(37, 35, 332, 141);
         playerPanel2 = new PlayerPanel(p2, SquareColor.BLACK);
+        playerPanel2.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
+        playerPanel2.setBounds(37, 245, 332, 141);
         settingsPanel = new SettingsPanel();
+        settingsPanel.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
+        settingsPanel.setBounds(453, 57, 344, 352);
         
         startButton = new MonochromeButton("Start");
+        startButton.setBounds(195, 420, 380, 58);
          
         changeColorButton = new MonochromeIconButton(MonochromeIconType.SWITCH, "MonochromeIconButton", "BLACK");
+        changeColorButton.setBounds(175, 190, 55, 55);
         changeColorButton.setSizeBig();
-        changeColorButton.setBounds(10, 34, changeColorButton.getPreferredSize().width, changeColorButton.getPreferredSize().height);
+        setLayout(null);
         add(changeColorButton);
          
         changeWhitePlayerButton = new MonochromeButton("Change");
@@ -78,18 +95,22 @@ public class NewSessionView extends JPanel {
         changeBlackPlayerButton.setBounds(250, 285, 105, 50);
         add(changeBlackPlayerButton);
          
-        playerPanel1.setBounds(37, 35, 332, 141);
-        playerPanel2.setBounds(37, 245, 332, 141);
-        settingsPanel.setBounds(420, 35, 344, 352);
-         
-        startButton.setBounds(200, 420, 380, 58);
-        changeColorButton.setBounds(175, 190, 55, 55);
-         
         add(playerPanel1);
         add(playerPanel2);
         add(settingsPanel);
         add(startButton);
         add(changeColorButton);
+        
+     // Populate the comboBox_GameLevel with enum values
+        JComboBox<GameDifficulty> comboBox_GameLevel = new JComboBox<>(GameDifficulty.values());
+        comboBox_GameLevel.setBounds(240, 201, 105, 44);
+        add(comboBox_GameLevel);
+        
+        game_level = new JTextField();
+        game_level.setText("Choose the level game ");
+        game_level.setBounds(39, 201, 126, 44);
+        add(game_level);
+        game_level.setColumns(10);
          
         listenerChangeColorButton();
     }

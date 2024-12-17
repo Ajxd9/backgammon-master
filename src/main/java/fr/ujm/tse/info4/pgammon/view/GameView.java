@@ -54,7 +54,7 @@ public class GameView extends MonochromeView {
 		setOpaque(false);
 
 		setLayout(null);
-		boardView.setBounds(173, 5, 547, 446);
+		boardView.setBounds(154, -2, 547, 446);
 		add(boardView);
 
 		state = SessionState.IN_PROGRESS;

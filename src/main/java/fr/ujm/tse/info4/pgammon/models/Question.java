@@ -1,5 +1,6 @@
 package fr.ujm.tse.info4.pgammon.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -49,17 +50,7 @@ public class Question {
 			this.difficulty = 3;
 	}  
 	
-	// converting int to String in difficulty level
-	public String getDifficulty (int difficulty) {
-		if (difficulty == 1)
-			return "Easy";
-		if (difficulty == 2)
-			return "Medium";
-		if (difficulty == 3)
-			return "Hard";
-		else 
-			return "";	
-	}
+	
 	public Question(String question, List<String> answers, int correctAns, int difficulty) {
 		super();
 		this.question = question;
@@ -68,6 +59,9 @@ public class Question {
 		this.difficulty = difficulty;
 	}
     
+	
+	
+	
     
 
 }

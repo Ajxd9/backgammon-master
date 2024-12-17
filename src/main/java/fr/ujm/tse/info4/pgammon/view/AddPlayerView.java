@@ -12,6 +12,8 @@ import javax.swing.JTextField;
 import fr.ujm.tse.info4.pgammon.gui.ImageAvatar;
 import fr.ujm.tse.info4.pgammon.gui.MonochromeButton;
 import fr.ujm.tse.info4.pgammon.gui.MonochromePanel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AddPlayerView extends MonochromePanel {
 
@@ -64,6 +66,10 @@ public class AddPlayerView extends MonochromePanel {
         add(playerImage);
 
         changeAvatarButton = new MonochromeButton("Add Avatar");
+        changeAvatarButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
         changeAvatarButton.setBounds(150, 130, 230, 40);
         add(changeAvatarButton);
 

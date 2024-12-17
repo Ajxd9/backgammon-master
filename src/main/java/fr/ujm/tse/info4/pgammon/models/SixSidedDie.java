@@ -9,6 +9,8 @@
 
 package fr.ujm.tse.info4.pgammon.models;
 
+import java.util.Random;
+
 import org.jdom2.Element;
 
 public class SixSidedDie {
@@ -17,6 +19,33 @@ public class SixSidedDie {
     private boolean isUsed;
     private SquareColor dieColor;
     private DieType dieType;  
+    
+    /* FUNCTIONS */
+    public SixSidedDie(DieType dieType, SquareColor squareColor) {
+        this.isUsed = false;
+        this.dieType = dieType;
+        this.dieColor = squareColor;
+        roll(); // Automatically roll when created
+    }
+
+    
+    public void roll() {
+        Random rand = new Random();
+        switch (dieType) {
+            case REGULAR:
+                value = rand.nextInt(6) + 1; // Values 1-6
+                break;
+            case ENHANCED:
+                value = rand.nextInt(10) - 3; // Values -3 to 6
+                break;
+            default:
+                value = 0; // For QUESTION die, handled separately
+                break;
+        }
+    }
+    
+    
+   
 
     
     /* FUNCTIONS */
