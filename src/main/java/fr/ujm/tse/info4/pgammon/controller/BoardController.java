@@ -91,10 +91,10 @@ public class BoardController implements Controller {
                                 if (game.areDiceUsed()) {    
                                     changeTurn();    
                                 }
-                                else if(!game.hasPossibleMoves()) {
+                                else if(!game.hasPossibleMove()) {
                                     changeTurn();
                                     game.rollDice();
-                                    if(!game.hasPossibleMoves()) {
+                                    if(!game.hasPossibleMove()) {
                                         gameView.displayRequestWindow("No possible move", "");
                                         changeTurn();
                                     }
@@ -150,7 +150,7 @@ public class BoardController implements Controller {
                     if (game.areDiceUsed()) {    
                         changeTurn();            
                     }
-                    else if(!game.hasPossibleMoves()) {
+                    else if(!game.hasPossibleMove()) {
                         gameView.displayRequestWindow("No possible move", "");
                         changeTurn();
                     }    
