@@ -309,7 +309,6 @@ public class SettingsPanel extends MonochromePanel {
         this.doublingCube = doublingCube;
     }
 
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

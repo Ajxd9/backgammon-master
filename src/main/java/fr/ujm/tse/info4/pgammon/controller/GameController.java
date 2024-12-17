@@ -340,7 +340,7 @@ public class GameController implements Controller
                         boardController.getClock().restart();
                     if(!session.getCurrentGame().hasPossibleMove())
                     {
-                        gameView.showRequestDialog("No possible move", "");
+                        gameView.displayRequestWindow("No possible move", "");
                         boardController.changeTurn();
                     }
                 }
@@ -432,7 +432,7 @@ public class GameController implements Controller
                         SortedSet<String> options = new ConcurrentSkipListSet<>();
                         options.add("No");
                         options.add("Yes");
-                        gameView.showRequestDialog("Do you accept the doubling cube ?", options).addActionListener(new ActionListener() {
+                        gameView.displayRequestWindow("Do you accept the doubling cube ?", options).addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 String action = e.getActionCommand();
@@ -471,7 +471,7 @@ public class GameController implements Controller
                 options.add("Finish");
                 options.add("Cancel");
                 options.add("Save");
-                gameView.showRequestDialog("What do you want to do ?", options).addActionListener(new ActionListener() {
+                gameView.displayRequestWindow("What do you want to do ?", options).addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         String action = e.getActionCommand();
@@ -526,7 +526,7 @@ public class GameController implements Controller
                 options.add("Finish");
                 options.add("Cancel");
                 options.add("Save");
-                gameView.showRequestDialog("What do you want to do ?", options).addActionListener(new ActionListener() {
+                gameView.displayRequestWindow("What do you want to do ?", options).addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         String action = e.getActionCommand();
@@ -622,15 +622,14 @@ public class GameController implements Controller
         {
             session.endSession();
             gameView.getRightPanelReview().getNextLabel().setText("<html>Finish<br>Session</html>");
-            gameView.showRequestDialog(
+            gameView.displayRequestWindow(
                     session.getCurrentGame().getGameParameters().getPlayer(session.getCurrentGame().getCurrentPlayer()).getUsername(),
                     " wins the session!"
             );
         }
         else
         {
-            gameView.showRequestDialog(
-                    session.getCurrentGame().getGameParameters().getPlayer(session.getCurrentGame().getCurrentPlayer()).getUsername(),
+            gameView.displayRequestWindow(session.getCurrentGame().getGameParameters().getPlayer(session.getCurrentGame().getCurrentPlayer()).getUsername(),
                     " wins the game!"
             );
         }
