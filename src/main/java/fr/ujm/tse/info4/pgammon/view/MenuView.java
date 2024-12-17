@@ -27,7 +27,6 @@ public class MenuView extends MonochromeView {
     private MonochromeButton rulesButton;
     private MonochromeButton quitButton;
     private ImageIcon icon;
-    private MonochromeButton ManegarButton_1;
     private MonochromeButton manageButton;
     
     public MenuView(){
@@ -53,7 +52,7 @@ public class MenuView extends MonochromeView {
         GridLayout gl = new GridLayout(6, 1); // To arrange buttons in a column
         
         // Settings for the grid container
-        gridContainer.setBounds(198, 146, 400, 400); // Relative positioning of the container with its dimensions
+        gridContainer.setBounds(200, 150, 400, 400); // Relative positioning of the container with its dimensions
         gridContainer.setOpaque(false);
         
         // Settings for the button container
@@ -74,18 +73,6 @@ public class MenuView extends MonochromeView {
         rulesButton = new MonochromeButton("Rules");
         buttonContainer.add(rulesButton);
         
-        JPanel emptyPanel = new JPanel();
-        emptyPanel.setOpaque(false);
-        buttonContainer.add(emptyPanel);
-        emptyPanel.setLayout(null);
-        
-        ManegarButton_1 = new MonochromeButton("Manegar");
-        ManegarButton_1.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        	}
-        });
-        ManegarButton_1.setBounds(0, 5, 390, 45);
-        emptyPanel.add(ManegarButton_1);
         manageButton = new MonochromeButton("Manager");
         buttonContainer.add(manageButton);
         
