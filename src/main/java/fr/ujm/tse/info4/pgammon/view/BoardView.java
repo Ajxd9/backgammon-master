@@ -199,29 +199,47 @@ public class BoardView extends JPanel {
     }
 
     public void updateDice() {
+        // Retrieve the list of dice from the game
         List<SixSidedDie> dice = game.getSixSidedDie();
-        
+
+        // Remove existing DieButtons if they exist
         if (dieButtons != null) {
             for (DieButton dieBtn : dieButtons) {
                 remove(dieBtn);
             }
         }
+
+        // Reset the dieButtons list
         dieButtons = new ArrayList<>();
-        
-        int size = dice.size();
+
+        int size = dice.size(); // Total number of dice
         int i = 0;
+
+        // Dynamically create and position buttons for each die
         if (size > 0) {
             for (SixSidedDie die : dice) {
-                DieButton btn = new DieButton(die);
+                DieButton btn = new DieButton(die); // Create DieButton for the current die
+
+                // Adjust the Y-position to display dice vertically
                 int y = (int) (252 + 40 * ((float) i - size / 2));
+
+                // Set button position on the GUI
                 btn.setBounds(427 - 173, y,
                         btn.getPreferredSize().width, btn.getPreferredSize().height);
+
+                // Add the button to the display
                 add(btn);
                 dieButtons.add(btn);
+
                 i++;
             }
         }
+
+        // Refresh the GUI to ensure the updated dice are displayed
+        revalidate();
+        repaint();
     }
+
 
     public Collection<CaseButton> getSquareButtons() {
         return SquareButtons.values();

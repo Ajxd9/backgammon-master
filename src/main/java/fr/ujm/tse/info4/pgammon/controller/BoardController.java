@@ -124,47 +124,62 @@ public class BoardController implements Controller {
     
     private void buildClock() {
         if (game.getGameParameters().getSecondsPerTurn() != 0) {
+            // Initialize the clock with the time per turn
             Clock = new Clock(game.getGameParameters().getSecondsPerTurn());
+
+            // Add a listener to manage clock events
             Clock.addListener(new ClockEventListener() {
                 @Override
-                public void updateClock(ClockEvent Clock) {}
-                
+                public void updateClock(ClockEvent evt) {
+                    // Optional: Update clock display or logic here if needed
+                }
+
                 @Override
                 public void clockEnd(ClockEvent evt) {
                     try {
-                        // Random movement for remaining dice
+                        // Count remaining unused dice
                         int unusedDiceCount = 0;
                         for (SixSidedDie die : game.getSixSidedDie()) {
-                            if(!die.isUsed())
+                            if (!die.isUsed()) {
                                 unusedDiceCount++;
+                            }
                         }
-                        for(int i = 0; i < unusedDiceCount; i++) {
+
+                        // Perform random moves for remaining unused dice
+                        for (int i = 0; i < unusedDiceCount; i++) {
                             game.randomMove();
                         }
+
                     } catch (TurnNotPlayableException e) {
+                        // If no moves can be played, force a turn change
                         changeTurn();
                     }
+
+                    // Clear candidate moves and update board state
                     boardView.unCandidateAll();
                     boardView.setPossible(new ArrayList<Square>());
-                    
-                    if (game.areDiceUsed()) {    
-                        changeTurn();            
-                    }
-                    else if(!game.hasPossibleMove()) {
+
+                    // Logic to handle dice usage and possible moves
+                    if (game.areDiceUsed()) {
+                        changeTurn();
+                    } else if (!game.hasPossibleMove()) {
                         gameView.displayRequestWindow("No possible move", "");
                         changeTurn();
-                    }    
-                    
+                    }
+
+                    // Refresh the board and dice views
                     boardView.updateUI();
                     boardView.updateDice();
                 }
             });
+        } else {
+            Clock = null; // If no time limit is set, disable the clock
         }
-        else {
-            Clock = null;    
-        }
+
+        // Attach the clock to the game view's clock bar
         gameView.getClockBar().setClock(Clock);
     }
+
 
     /**
      * Returns the Clock

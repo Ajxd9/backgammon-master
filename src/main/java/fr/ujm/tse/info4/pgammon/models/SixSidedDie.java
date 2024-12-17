@@ -124,6 +124,10 @@ public class SixSidedDie {
     public boolean isUsed() {
         return isUsed;
     }
+    
+    public DieType getDieType() {
+        return dieType;
+    }
 
     public SquareColor getDieColor() {
         return dieColor;
