@@ -103,7 +103,7 @@ public class MenuView extends MonochromeView {
      * Getter for the player list button
      * @return Returns the player list button
      */
-    public MonochromeButton getPlayerListButton() {
+    public MonochromeButton getAddButton() {
         return playerListButton;
     }
 
@@ -111,7 +111,7 @@ public class MenuView extends MonochromeView {
      * Getter for the rules button
      * @return Returns the rules button
      */
-    public MonochromeButton getRulesButton() {
+    public MonochromeButton getHelpButton() {
         return rulesButton;
     }
     

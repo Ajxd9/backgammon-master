@@ -18,22 +18,23 @@ import java.io.IOException;
 import java.net.URI;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import fr.ujm.tse.info4.pgammon.models.Master;
-import fr.ujm.tse.info4.pgammon.models.GameParameter;
+import fr.ujm.tse.info4.pgammon.models.GameParameters;
 import fr.ujm.tse.info4.pgammon.models.Session;
-import fr.ujm.tse.info4.pgammon.views.GameIntermediateView;
-import fr.ujm.tse.info4.pgammon.views.MenuView;
+import fr.ujm.tse.info4.pgammon.view.IntermediateGameView;
+import fr.ujm.tse.info4.pgammon.view.MenuView;
 
 public class MainController implements Controller {
 
-    private MenuView menuView;
+    private MenuView viewMenu;
     private Session session;
     private Master master;
     private JFrame frame;
-    private GameIntermediateView gameCreation;
+    private IntermediateGameView gameCreation;
     private MainController mainController;
-    protected GameIntermediateController gameIntermediateController;
+    protected IntermediateGameController gameIntermediateController;
     protected PlayerListController playerListController;
     
     public MainController(Master master) {
@@ -48,8 +49,8 @@ public class MainController implements Controller {
         Container panel = frame.getContentPane();
         panel.setLayout(new FlowLayout());
 
-        menuView = new MenuView();
-        frame.setContentPane(menuView);
+        viewMenu = new MenuView();
+        frame.setContentPane(viewMenu);
     
         frame.setVisible(true);
 
@@ -68,7 +69,7 @@ public class MainController implements Controller {
      * Listener for "New Session" button
      */
     private void listenerNewGameButton() {
-        menuView.getNewGameButton().addMouseListener(new MouseListener() {
+        viewMenu.getNewSessionButton().addMouseListener(new MouseListener() {
             
             @Override
             public void mouseReleased(MouseEvent e) {}
@@ -80,14 +81,14 @@ public class MainController implements Controller {
             public void mouseEntered(MouseEvent e) {}
             @Override
             public void mouseClicked(MouseEvent e) {
-                menuView.setVisible(false);
-                gameIntermediateController = new GameIntermediateController(true, mainController);    
+                viewMenu.setVisible(false);
+                gameIntermediateController = new IntermediateGameController(true, mainController);    
             }
         });
     }
     
     private void listenerResumeGameButton() {
-        menuView.getResumeGameButton().addMouseListener(new MouseListener() {
+        viewMenu.getLoadSessionButton().addMouseListener(new MouseListener() {
             
             @Override
             public void mouseReleased(MouseEvent e) {}
@@ -99,14 +100,14 @@ public class MainController implements Controller {
             public void mouseEntered(MouseEvent e) {}
             @Override
             public void mouseClicked(MouseEvent e) {
-                menuView.setVisible(false);
-                gameIntermediateController = new GameIntermediateController(false, mainController);
+                viewMenu.setVisible(false);
+                gameIntermediateController = new IntermediateGameController(false, mainController);
             }
         });
     }
     
     private void listenerAddButton() {
-        menuView.getAddButton().addMouseListener(new MouseListener() {
+        viewMenu.getAddButton().addMouseListener(new MouseListener() {
             
             @Override
             public void mouseReleased(MouseEvent e) {}
@@ -118,7 +119,7 @@ public class MainController implements Controller {
             public void mouseEntered(MouseEvent e) {}
             @Override
             public void mouseClicked(MouseEvent e) {
-                menuView.setVisible(false);
+                viewMenu.setVisible(false);
                 playerListController = new PlayerListController(false, mainController);    
             }
         });
@@ -130,7 +131,7 @@ public class MainController implements Controller {
      * 
      */
     private void listenerQuitButton() {
-        menuView.getQuitButton().addMouseListener(new MouseListener() {
+        viewMenu.getQuitButton().addMouseListener(new MouseListener() {
 
             @Override
             public void mouseReleased(MouseEvent e) {}
@@ -148,7 +149,7 @@ public class MainController implements Controller {
     }
     
     private void listenerHelpButton() {
-        menuView.getHelpButton().addMouseListener(new MouseListener() {
+        viewMenu.getHelpButton().addMouseListener(new MouseListener() {
             
             @Override
             public void mouseReleased(MouseEvent e) {}
@@ -178,11 +179,11 @@ public class MainController implements Controller {
     
     @Override
     public void back() {
-        frame.setContentPane(menuView);
-        menuView.setVisible(true);
+        frame.setContentPane(viewMenu);
+        viewMenu.setVisible(true);
     }
     
-    public void newSession(GameParameter gameParameter) {
+    public void newSession(GameParameters gameParameter) {
         master.launchSession(gameParameter);
         session = master.getSession();
         session.StartGame();
@@ -214,11 +215,11 @@ public class MainController implements Controller {
         return this;
     }
 
-    public GameIntermediateView getGameCreation() {
+    public IntermediateGameView getGameCreation() {
         return gameCreation;
     }
 
-    public void setGameCreation(GameIntermediateView gameCreation) {
+    public void setGameCreation(IntermediateGameView gameCreation) {
         this.gameCreation = gameCreation;
     }
 }
