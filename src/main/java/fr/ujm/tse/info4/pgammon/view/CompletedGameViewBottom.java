@@ -3,6 +3,8 @@ package fr.ujm.tse.info4.pgammon.view;
 import java.awt.Color;
 import javax.swing.JPanel;
 
+import fr.ujm.tse.info4.pgammon.gui.ReplayBar;
+
 public class CompletedGameViewBottom extends JPanel {
     /**
      * This class displays the game replay by calling the replay bar.

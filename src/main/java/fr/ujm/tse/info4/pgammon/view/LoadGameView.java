@@ -17,6 +17,9 @@ import javax.swing.event.ListSelectionListener;
 
 import org.jdom2.JDOMException;
 
+import fr.ujm.tse.info4.pgammon.gui.MonochromeButton;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeList;
+import fr.ujm.tse.info4.pgammon.gui.SessionCellRenderer;
 import fr.ujm.tse.info4.pgammon.models.SessionManager;
 import fr.ujm.tse.info4.pgammon.models.Session;
 

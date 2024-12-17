@@ -13,6 +13,11 @@ import java.awt.geom.Point2D;
 
 import javax.swing.JPanel;
 
+import fr.ujm.tse.info4.pgammon.gui.MonochromeButton;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeIconButton;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeIconType;
+import fr.ujm.tse.info4.pgammon.gui.PlayerPanel;
+import fr.ujm.tse.info4.pgammon.gui.SettingsPanel;
 import fr.ujm.tse.info4.pgammon.models.Player;
 import fr.ujm.tse.info4.pgammon.models.SquareColor;
 

@@ -15,6 +15,13 @@ import java.awt.geom.Point2D;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import fr.ujm.tse.info4.pgammon.gui.AvatarList;
+import fr.ujm.tse.info4.pgammon.gui.ImageAvatar;
+import fr.ujm.tse.info4.pgammon.gui.PlayerCellRenderer;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeButton;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeList;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeView;
+import fr.ujm.tse.info4.pgammon.gui.OpaqueBackground;
 import fr.ujm.tse.info4.pgammon.models.Player;
 import fr.ujm.tse.info4.pgammon.models.Profiles;
 

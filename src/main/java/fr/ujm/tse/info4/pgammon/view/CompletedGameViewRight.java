@@ -10,6 +10,9 @@ import java.awt.geom.Point2D;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import fr.ujm.tse.info4.pgammon.gui.MonochromeIconType;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeIconButton;
+
 public class CompletedGameViewRight extends JPanel {
     /**
      * This class manages the right view at the end of a game.

@@ -7,6 +7,11 @@ import java.awt.Graphics;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import fr.ujm.tse.info4.pgammon.gui.ScoreDisplay;
+import fr.ujm.tse.info4.pgammon.gui.ImageAvatar;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeButton;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeLabel;
+import fr.ujm.tse.info4.pgammon.gui.MonochromePanel;
 import fr.ujm.tse.info4.pgammon.models.SquareColor;
 import fr.ujm.tse.info4.pgammon.models.Session;
 

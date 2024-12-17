@@ -6,6 +6,9 @@ import java.awt.GridLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import fr.ujm.tse.info4.pgammon.gui.MonochromeButton;
+import fr.ujm.tse.info4.pgammon.gui.MonochromeView;
+
 
 public class MenuView extends MonochromeView {
 

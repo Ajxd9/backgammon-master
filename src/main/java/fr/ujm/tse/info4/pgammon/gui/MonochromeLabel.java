@@ -1,4 +1,4 @@
-package fr.ujm.tse.info4.pgammon.view;
+package fr.ujm.tse.info4.pgammon.gui;
 
 import javax.swing.JLabel;
 
