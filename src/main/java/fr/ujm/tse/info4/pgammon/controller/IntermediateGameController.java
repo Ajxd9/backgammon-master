@@ -8,11 +8,11 @@ import javax.swing.JFrame;
 
 import org.jdom2.JDOMException;
 
-import fr.ujm.tse.info4.pgammon.models.CaseColor;
-import fr.ujm.tse.info4.pgammon.models.SessionManagement;
+import fr.ujm.tse.info4.pgammon.models.SquareColor;
+import fr.ujm.tse.info4.pgammon.models.SessionManager;
 import fr.ujm.tse.info4.pgammon.models.Player;
 import fr.ujm.tse.info4.pgammon.models.GameParameters;
-import fr.ujm.tse.info4.pgammon.views.IntermediateGameView;
+import fr.ujm.tse.info4.pgammon.view.IntermediateGameView;
 
 public class IntermediateGameController implements Controller {
 
@@ -21,7 +21,7 @@ public class IntermediateGameController implements Controller {
     private boolean isNewGame;
     private IntermediateGameView gameCreationView;
     private JFrame frame;
-    private CaseColor playerBeingModified;
+    private SquareColor playerBeingModified;
     protected PlayerListController playerListController;
     
     public IntermediateGameController(boolean isNewGame, MainController mainController) {
@@ -44,7 +44,7 @@ public class IntermediateGameController implements Controller {
     }
     
     public void listenerSessionDeletion() {
-        gameCreationView.getLoadGameView().getLoadViewParametersPanel().getDeleteButton().addMouseListener(new MouseListener() {
+        gameCreationView.getLoadGameView().getSessionSettingsPanel().getDeleteButton().addMouseListener(new MouseListener() {
 
             @Override
             public void mouseClicked(MouseEvent e) {}
@@ -61,7 +61,7 @@ public class IntermediateGameController implements Controller {
             @Override
             public void mouseReleased(MouseEvent e) {
                 try {
-                    SessionManagement management = SessionManagement.getSessionManagement();
+                    SessionManager management = SessionManager.getSessionManager();
                     management.deleteSession(gameCreationView.getLoadGameView().getSession().getSessionId());
                     management.save();
                     gameCreationView.getLoadGameView().updateData();
@@ -69,7 +69,7 @@ public class IntermediateGameController implements Controller {
 
                 } catch (IOException | JDOMException e1) {
                     e1.printStackTrace();
-                    gameCreationView.showRequestWindow("Small issue", "Sessions were not loaded");
+                    gameCreationView.displayRequestWindow("Small issue", "Sessions were not loaded");
                 }
             }
         });
