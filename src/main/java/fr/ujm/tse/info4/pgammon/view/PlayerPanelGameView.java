@@ -131,7 +131,7 @@ public class PlayerPanelGameView extends JPanel {
      * Getter for the "Show possible moves" checkbox.
      * @return returns the checkbox.
      */
-    public MonochromeCheckbox getShowPossibleMovesCheckbox() {
+    public MonochromeCheckbox getShowPossibleMoves() {
         return showPossibleMovesCheckbox;
     }
 
@@ -139,7 +139,7 @@ public class PlayerPanelGameView extends JPanel {
      * Setter for the "Show possible moves" checkbox.
      * @param showPossibleMovesCheckbox updates the checkbox value.
      */
-    public void setShowPossibleMovesCheckbox(MonochromeCheckbox showPossibleMovesCheckbox) {
+    public void setPossibleMoves(MonochromeCheckbox showPossibleMovesCheckbox) {
         this.showPossibleMovesCheckbox = showPossibleMovesCheckbox;
     }
 
