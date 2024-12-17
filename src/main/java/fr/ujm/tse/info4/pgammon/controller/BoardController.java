@@ -17,8 +17,8 @@ import fr.ujm.tse.info4.pgammon.models.ClockEventListener;
 import fr.ujm.tse.info4.pgammon.models.AssistantLevel;
 import fr.ujm.tse.info4.pgammon.models.Game;
 import fr.ujm.tse.info4.pgammon.models.Board;
-import fr.ujm.tse.info4.pgammon.views.GameView;
-import fr.ujm.tse.info4.pgammon.views.BoardView;
+import fr.ujm.tse.info4.pgammon.view.GameView;
+import fr.ujm.tse.info4.pgammon.view.BoardView;
 
 public class BoardController implements Controller {
     private Board board;
@@ -39,7 +39,7 @@ public class BoardController implements Controller {
     
         build();
         boardView.updateDice();
-        gameView.showTransition(game.getGameParameters().getPlayer(game.getCurrentPlayer()).getNickname(), "Player" + game.getCurrentPlayer().toString());    
+        gameView.displayTransition(game.getGameParameters().getPlayer(game.getCurrentPlayer()).getUsername(), "Player" + game.getCurrentPlayer().toString());    
     }
 
     private void build() {
@@ -48,7 +48,7 @@ public class BoardController implements Controller {
     }
     
     private void listenerCaseButton() {
-        Collection<CaseButton> cases = boardView.getCasesButtons();
+        Collection<CaseButton> cases = boardView.getSquareButtons();
         for (CaseButton caseButton : cases) {
             caseButton.addMouseListener(new MouseListener() {
                 @Override
@@ -65,24 +65,24 @@ public class BoardController implements Controller {
                     CaseButton caseButton = (CaseButton) e.getSource();
                     if (!game.isTurnFinished() && !game.isGameFinished())
                         if(boardView.getCandidate() == null 
-                                && game.getCurrentPlayer() == caseButton.getCase().getPieceColor()) {
-                            if (caseButton.getCase().getPieceCount() != 0 
-                                    && (!board.isPieceInBar(game.getCurrentPlayer()) 
-                                            || caseButton.getCase().isBar())
-                                            && caseButton.getCase().getPieceColor() == game.getCurrentPlayer()) {
+                                && game.getCurrentPlayer() == caseButton.getCase().getCheckerColor()) {
+                            if (caseButton.getCase().getNumCheckers() != 0 
+                                    && (!board.isPieceOnBar(game.getCurrentPlayer()) 
+                                            || caseButton.getCase().isBarSquare())
+                                            && caseButton.getCase().getCheckerColor() == game.getCurrentPlayer()) {
                                 boardView.setCandidate(caseButton);
-                                if(game.getGameParameters().getPlayer(game.getCurrentPlayer()).getAssistantLevel() == AssistantLevel.SIMPLE
-                                        || game.getGameParameters().getPlayer(game.getCurrentPlayer()).getAssistantLevel() == AssistantLevel.COMPLETE)
-                                    boardView.setPossibleMoves(game.getPossibleMoves(caseButton.getCase()));
+                                if(game.getGameParameters().getPlayer(game.getCurrentPlayer()).getAssistantLevel() == AssistantLevel.BASIC
+                                        || game.getGameParameters().getPlayer(game.getCurrentPlayer()).getAssistantLevel() == AssistantLevel.FULL)
+                                    boardView.setPossible(game.getPossibleMoves(caseButton.getCase()));
                             }
-                            else if (board.isPieceInBar(game.getCurrentPlayer())) {
-                                gameView.showRequestWindow("Warning!", "Remove hit pieces before playing.");
+                            else if (board.isPieceOnBar(game.getCurrentPlayer())) {
+                                gameView.displayRequestWindow("Warning!", "Remove hit pieces before playing.");
                             }
                         }
                         else if (boardView.getCandidate() != null) {
                             if (game.playMove(boardView.getCandidate().getCase(), caseButton.getCase())) {
-                                boardView.uncandidateAll();
-                                boardView.setPossibleMoves(new ArrayList<Case>());
+                                boardView.unCandidateAll();
+                                boardView.setPossible(new ArrayList<Square>());
                                 
                                 if(game.isGameFinished()) {
                                     gameController.endGame();
@@ -91,18 +91,18 @@ public class BoardController implements Controller {
                                 if (game.areDiceUsed()) {    
                                     changeTurn();    
                                 }
-                                else if(!game.hasValidMove()) {
+                                else if(!game.hasPossibleMoves()) {
                                     changeTurn();
                                     game.rollDice();
-                                    if(!game.hasValidMove()) {
-                                        gameView.showRequestWindow("No possible move", "");
+                                    if(!game.hasPossibleMoves()) {
+                                        gameView.displayRequestWindow("No possible move", "");
                                         changeTurn();
                                     }
                                 }
                             }
                             else {
-                                boardView.uncandidateAll();
-                                boardView.setPossibleMoves(new ArrayList<Case>());
+                                boardView.unCandidateAll();
+                                boardView.setPossible(new ArrayList<Square>());
                             }
                         }
 
@@ -119,7 +119,7 @@ public class BoardController implements Controller {
             Clock.setValue(0);
         }
         game.changeTurn();
-        gameView.showTransition(game.getGameParameters().getPlayer(game.getCurrentPlayer()).getNickname(), "Player" + game.getCurrentPlayer().toString());
+        gameView.displayTransition(game.getGameParameters().getPlayer(game.getCurrentPlayer()).getUsername(), "Player" + game.getCurrentPlayer().toString());
     }
     
     private void buildClock() {
@@ -130,7 +130,7 @@ public class BoardController implements Controller {
                 public void updateClock(ClockEvent Clock) {}
                 
                 @Override
-                public void endClock(ClockEvent evt) {
+                public void clockEnd(ClockEvent evt) {
                     try {
                         // Random movement for remaining dice
                         int unusedDiceCount = 0;
@@ -141,17 +141,17 @@ public class BoardController implements Controller {
                         for(int i = 0; i < unusedDiceCount; i++) {
                             game.randomMove();
                         }
-                    } catch (UnplayableTurnException e) {
+                    } catch (TurnNotPlayableException e) {
                         changeTurn();
                     }
-                    boardView.uncandidateAll();
-                    boardView.setPossibleMoves(new ArrayList<Case>());
+                    boardView.unCandidateAll();
+                    boardView.setPossible(new ArrayList<Square>());
                     
                     if (game.areDiceUsed()) {    
                         changeTurn();            
                     }
-                    else if(!game.hasValidMove()) {
-                        gameView.showRequestWindow("No possible move", "");
+                    else if(!game.hasPossibleMoves()) {
+                        gameView.displayRequestWindow("No possible move", "");
                         changeTurn();
                     }    
                     
