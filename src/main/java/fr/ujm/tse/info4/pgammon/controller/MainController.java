@@ -24,7 +24,7 @@ import fr.ujm.tse.info4.pgammon.models.Master;
 import fr.ujm.tse.info4.pgammon.models.GameParameters;
 import fr.ujm.tse.info4.pgammon.models.Session;
 import fr.ujm.tse.info4.pgammon.view.IntermediateGameView;
-import fr.ujm.tse.info4.pgammon.view.LoginView;
+import fr.ujm.tse.info4.pgammon.view.ManagerView;
 import fr.ujm.tse.info4.pgammon.view.MenuView;
 
 public class MainController implements Controller {
@@ -37,8 +37,9 @@ public class MainController implements Controller {
     private MainController mainController;
     protected IntermediateGameController gameIntermediateController;
     protected PlayerListController playerListController;
-    private static LoginView mainView;
     private static ManagerController managerController;
+    private static ManagerView managerView;
+    private static ManagerModel managerModel;
 
     public MainController(Master master) {
         this.master = master;
@@ -154,9 +155,9 @@ public class MainController implements Controller {
 
 
 
+
     private void listenerManageButton() {
         viewMenu.getManageButton().addMouseListener(new MouseListener() {
-
             @Override
             public void mouseReleased(MouseEvent e) {}
             @Override
@@ -168,14 +169,10 @@ public class MainController implements Controller {
             @Override
             public void mouseClicked(MouseEvent e) {
                 viewMenu.setVisible(false);
-                if (mainView == null) {
-                    ManagerModel model = new ManagerModel();
-                    mainView = new LoginView();
-                    managerController = new ManagerController(model, mainView, viewMenu);
-                }
-                mainView.setVisible(true);
-                frame.validate();
-                frame.repaint();    // Repaint to ensure proper rendering
+                managerModel = new ManagerModel();
+                managerView = new ManagerView();
+                managerController = new ManagerController(managerModel, managerView);
+                managerView.setVisible(true);
             }
         });
     }

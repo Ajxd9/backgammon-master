@@ -1,3 +1,4 @@
+// Path: com/questioneditor/model/Question.java
 package fr.ujm.tse.info4.pgammon.models;
 
 public class Question {

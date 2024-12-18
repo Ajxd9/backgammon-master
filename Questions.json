@@ -1,16 +1,5 @@
 {"questions": [
   {
-    "difficulty": "4",
-    "question": "test",
-    "answers": [
-      "test2",
-      "test3",
-      "test4",
-      "tes5"
-    ],
-    "correct_ans": "3"
-  },
-  {
     "difficulty": "2",
     "question": "What is the primary goal of continuous integration in Agile testing?",
     "answers": [
