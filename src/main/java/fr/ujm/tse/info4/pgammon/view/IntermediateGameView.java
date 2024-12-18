@@ -15,8 +15,6 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 
-import fr.ujm.tse.info4.pgammon.gui.MonochromeButton;
-import fr.ujm.tse.info4.pgammon.gui.MonochromeView;
 import fr.ujm.tse.info4.pgammon.models.Session;
 
 public class IntermediateGameView extends MonochromeView {

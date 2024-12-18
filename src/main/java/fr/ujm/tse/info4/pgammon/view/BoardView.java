@@ -20,10 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import fr.ujm.tse.info4.pgammon.gui.BarCaseButton;
-import fr.ujm.tse.info4.pgammon.gui.CaseButton;
-import fr.ujm.tse.info4.pgammon.gui.DieButton;
-import fr.ujm.tse.info4.pgammon.gui.TriangleCaseButton;
 import fr.ujm.tse.info4.pgammon.models.Square;
 import fr.ujm.tse.info4.pgammon.models.SquareColor;
 import fr.ujm.tse.info4.pgammon.models.SixSidedDie;

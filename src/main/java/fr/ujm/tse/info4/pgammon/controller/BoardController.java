@@ -8,7 +8,7 @@ import java.util.Collection;
 import javax.swing.JFrame;
 
 import fr.ujm.tse.info4.pgammon.exception.TurnNotPlayableException;
-import fr.ujm.tse.info4.pgammon.gui.CaseButton;
+import fr.ujm.tse.info4.pgammon.view.CaseButton;
 import fr.ujm.tse.info4.pgammon.models.Square;
 import fr.ujm.tse.info4.pgammon.models.SixSidedDie;
 import fr.ujm.tse.info4.pgammon.models.Clock;

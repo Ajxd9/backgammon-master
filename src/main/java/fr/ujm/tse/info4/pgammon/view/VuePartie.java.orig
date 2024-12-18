@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import fr.ujm.tse.info4.pgammon.gui.IconMonochromeType;
-import fr.ujm.tse.info4.pgammon.gui.MonochromeIconButton;
+import fr.ujm.tse.info4.pgammon.view.MonochromeIconButton;
 import fr.ujm.tse.info4.pgammon.models.Game;
 
 public class GameView extends JPanel {

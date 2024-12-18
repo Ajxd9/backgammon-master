@@ -8,6 +8,8 @@
       <element id="module-output" name="project-gammon" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/json/json/20231013/json-20231013.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jdom/jdom/2.0.2/jdom-2.0.2.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$PROJECT_DIR$/images" />
+      <element id="file-copy" path="$PROJECT_DIR$/Questions.json" />
     </root>
   </artifact>
 </component>

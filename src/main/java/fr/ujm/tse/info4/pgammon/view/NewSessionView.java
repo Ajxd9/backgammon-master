@@ -14,11 +14,6 @@ import java.awt.geom.Point2D;
 
 import javax.swing.JPanel;
 
-import fr.ujm.tse.info4.pgammon.gui.MonochromeButton;
-import fr.ujm.tse.info4.pgammon.gui.MonochromeIconButton;
-import fr.ujm.tse.info4.pgammon.gui.MonochromeIconType;
-import fr.ujm.tse.info4.pgammon.gui.PlayerPanel;
-import fr.ujm.tse.info4.pgammon.gui.SettingsPanel;
 import fr.ujm.tse.info4.pgammon.models.GameDifficulty;
 import fr.ujm.tse.info4.pgammon.models.Player;
 import fr.ujm.tse.info4.pgammon.models.SquareColor;
@@ -26,8 +21,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-
 
 
 public class NewSessionView extends JPanel {
