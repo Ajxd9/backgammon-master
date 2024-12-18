@@ -53,7 +53,6 @@ public class BoardController implements Controller {
             caseButton.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {}
-
                 @Override
                 public void mouseEntered(MouseEvent e) {}
                 @Override
@@ -179,7 +178,6 @@ public class BoardController implements Controller {
         // Attach the clock to the game view's clock bar
         gameView.getClockBar().setClock(Clock);
     }
-
 
     /**
      * Returns the Clock

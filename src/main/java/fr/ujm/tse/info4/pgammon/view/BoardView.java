@@ -3,6 +3,7 @@ package fr.ujm.tse.info4.pgammon.view;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
@@ -12,9 +13,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import fr.ujm.tse.info4.pgammon.gui.BarCaseButton;
 import fr.ujm.tse.info4.pgammon.gui.CaseButton;
@@ -37,13 +41,19 @@ public class BoardView extends JPanel {
     private HashMap<Square, CaseButton> SquareButtons;
     private CaseButton candidate;
     private List<DieButton> dieButtons;
+    private JLabel[] marks; // Labels for "?" and "!"
 
     public BoardView(Game game) {
         this.game = game;
         this.board = game.getBoard();
         this.SquareButtons = new HashMap<>();
+        marks = new JLabel[4]; // Three '?' and one '!'
+        setLayout(null);
+        setOpaque(false);
+        setPreferredSize(new Dimension(550, 450));
         this.setCandidate(null);  
         build();
+        addMarksToTriangles();
     }
 
     public CaseButton getCandidate() {
@@ -98,6 +108,49 @@ public class BoardView extends JPanel {
             createVictorySquares(c);
         }
         updateDice();
+    }
+    
+    private void addMarksToTriangles() {
+        Random random = new Random();
+        String[] texts = {"?", "?", "?", "!"};
+
+        // X-coordinates for top and bottom row triangles
+        int[] topRowX = {25, 58, 91, 124, 157, 190, 285, 318, 351, 384, 417, 450}; // Top row
+        int[] bottomRowX = {450, 417, 384, 351, 318, 285, 190, 157, 124, 91, 58, 25}; // Bottom row
+
+        // Adjusted Y-coordinates
+        int topY = 200;    // Y-position for top row (slightly below triangle tip)
+        int bottomY = 410; // Y-position for bottom row (higher for perfect alignment)
+
+        int[][] positions = new int[4][2]; // Holds positions for all 4 markers
+
+        // Randomly pick unique triangle positions for the markers
+        boolean[] usedIndices = new boolean[12];
+        for (int i = 0; i < 4; i++) {
+            int row = random.nextBoolean() ? 0 : 1; // Randomly choose top or bottom row
+            int index;
+
+            // Ensure each marker is in a unique position
+            do {
+                index = random.nextInt(12);
+            } while (usedIndices[index]);
+            usedIndices[index] = true;
+
+            // Set position based on row
+            positions[i][0] = (row == 0) ? topRowX[index] : bottomRowX[index]; // X-coordinate
+            positions[i][1] = (row == 0) ? topY : bottomY;                     // Adjusted Y-coordinate
+        }
+
+        // Add and position the markers
+        for (int i = 0; i < marks.length; i++) {
+            marks[i] = new JLabel(texts[i], SwingConstants.CENTER);
+            marks[i].setFont(new Font("Arial", Font.BOLD, 18));
+            marks[i].setForeground(Color.GREEN);
+
+            // Place the marker
+            marks[i].setBounds(positions[i][0], positions[i][1], 30, 30);
+            add(marks[i]);
+        }
     }
 
     private void createVictorySquares(Square c) {
