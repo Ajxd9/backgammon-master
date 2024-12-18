@@ -17,11 +17,13 @@ public class GameParameters {
     private boolean useDoubling;
     public Player whitePlayer;
     public Player blackPlayer;
+    private GameDifficulty difficulty;
     
-    public GameParameters(int secondsPerTurn, int winningGamesCount, boolean useDoubling, Player whitePlayer, Player blackPlayer) {
+    public GameParameters(int secondsPerTurn, int winningGamesCount, boolean useDoubling, GameDifficulty difficulty, Player whitePlayer, Player blackPlayer) {
         this.secondsPerTurn = secondsPerTurn;
         this.winningGamesCount = winningGamesCount;
         this.useDoubling = useDoubling;
+        this.difficulty = difficulty;
         this.whitePlayer = whitePlayer;
         this.blackPlayer = blackPlayer;
     }
@@ -86,5 +88,9 @@ public class GameParameters {
 
     public void setWhitePlayer(Player whitePlayer) {
         this.whitePlayer = whitePlayer;
+    }
+    
+    public GameDifficulty getDifficulty() {
+        return difficulty;
     }
 }

@@ -11,6 +11,7 @@ import org.jdom2.JDOMException;
 import fr.ujm.tse.info4.pgammon.models.SquareColor;
 import fr.ujm.tse.info4.pgammon.models.SessionManager;
 import fr.ujm.tse.info4.pgammon.models.Player;
+import fr.ujm.tse.info4.pgammon.models.GameDifficulty;
 import fr.ujm.tse.info4.pgammon.models.GameParameters;
 import fr.ujm.tse.info4.pgammon.view.IntermediateGameView;
 
@@ -111,6 +112,7 @@ public class IntermediateGameController implements Controller {
                 int time = gameCreationView.getNewSessionView().getSettingsPanel().getTimeLimit() * 1000;
                 int numGames = gameCreationView.getNewSessionView().getSettingsPanel().getNumberOfGames();
                 boolean doubling = gameCreationView.getNewSessionView().getSettingsPanel().getdoublingCube().isSelected();
+                GameDifficulty selectedDifficulty = gameCreationView.getNewSessionView().getSelectedDifficulty();
                 
                 Player whitePlayer = gameCreationView.getNewSessionView().getPlayerPanel1().getPlayer();
                 Player blackPlayer = gameCreationView.getNewSessionView().getPlayerPanel2().getPlayer();
@@ -125,7 +127,7 @@ public class IntermediateGameController implements Controller {
                     return;
                 }
                 // Creation of game parameters
-                GameParameters params = new GameParameters(time, numGames, doubling, whitePlayer, blackPlayer);
+                GameParameters params = new GameParameters(time, numGames, doubling, selectedDifficulty, whitePlayer, blackPlayer);
                 gameCreationView.setVisible(false);
                 mainController.newSession(params);
             }

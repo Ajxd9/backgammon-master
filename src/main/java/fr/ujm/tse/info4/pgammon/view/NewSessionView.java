@@ -2,6 +2,7 @@ package fr.ujm.tse.info4.pgammon.view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
@@ -24,6 +25,7 @@ import fr.ujm.tse.info4.pgammon.models.SquareColor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 
@@ -46,7 +48,7 @@ public class NewSessionView extends JPanel {
     
     private Player p1;
     private Player p2;
-    private JTextField game_level;
+    private JComboBox<GameDifficulty> difficultySelector;
 
     /**
      * Constructor for the class/view
@@ -102,15 +104,17 @@ public class NewSessionView extends JPanel {
         add(changeColorButton);
         
      // Populate the comboBox_GameLevel with enum values
-        JComboBox<GameDifficulty> comboBox_GameLevel = new JComboBox<>(GameDifficulty.values());
-        comboBox_GameLevel.setBounds(240, 201, 105, 44);
-        add(comboBox_GameLevel);
+        difficultySelector = new JComboBox<>(GameDifficulty.values());
+        difficultySelector.setBounds(262, 201, 105, 44);
+        add(difficultySelector);
         
-        game_level = new JTextField();
-        game_level.setText("Choose the level game ");
-        game_level.setBounds(39, 201, 126, 44);
-        add(game_level);
-        game_level.setColumns(10);
+        JLabel difficultyLabel = new JLabel();
+        difficultyLabel.setForeground(Color.WHITE);
+        difficultyLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        difficultyLabel.setText("Select Difficulty:");
+        difficultyLabel.setBounds(39, 201, 126, 44);
+        add(difficultyLabel);
+        
          
         listenerChangeColorButton();
     }
@@ -211,6 +215,10 @@ public class NewSessionView extends JPanel {
      */
     public SettingsPanel getSettingsPanel() {
         return settingsPanel;
+    }
+    
+    public GameDifficulty getSelectedDifficulty() {
+        return (GameDifficulty) difficultySelector.getSelectedItem();
     }
 
     @Override
