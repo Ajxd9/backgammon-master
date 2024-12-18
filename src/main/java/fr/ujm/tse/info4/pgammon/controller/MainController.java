@@ -18,14 +18,13 @@ import java.io.IOException;
 import java.net.URI;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
+import fr.ujm.tse.info4.pgammon.models.ManagerModel;
 import fr.ujm.tse.info4.pgammon.models.Master;
 import fr.ujm.tse.info4.pgammon.models.GameParameters;
-import fr.ujm.tse.info4.pgammon.models.ManagerModel;
 import fr.ujm.tse.info4.pgammon.models.Session;
 import fr.ujm.tse.info4.pgammon.view.IntermediateGameView;
-import fr.ujm.tse.info4.pgammon.view.ManagerView;
+import fr.ujm.tse.info4.pgammon.view.LoginView;
 import fr.ujm.tse.info4.pgammon.view.MenuView;
 
 public class MainController implements Controller {
@@ -38,7 +37,9 @@ public class MainController implements Controller {
     private MainController mainController;
     protected IntermediateGameController gameIntermediateController;
     protected PlayerListController playerListController;
-    
+    private static LoginView mainView;
+    private static ManagerController managerController;
+
     public MainController(Master master) {
         this.master = master;
         mainController = this;
@@ -150,25 +151,29 @@ public class MainController implements Controller {
             }
         });
     }
-    
+
+
+
     private void listenerManageButton() {
         viewMenu.getManageButton().addMouseListener(new MouseListener() {
-            
+
             @Override
             public void mouseReleased(MouseEvent e) {}
             @Override
-            public void mousePressed(MouseEvent e) {}        
+            public void mousePressed(MouseEvent e) {}
             @Override
-            public void mouseExited(MouseEvent e) {}            
+            public void mouseExited(MouseEvent e) {}
             @Override
             public void mouseEntered(MouseEvent e) {}
             @Override
             public void mouseClicked(MouseEvent e) {
                 viewMenu.setVisible(false);
-                ManagerModel model = new ManagerModel();
-                ManagerView view = new ManagerView();
-                ManagerController managerController = new ManagerController(model, view);    
-                frame.setContentPane(view.getContentPane());
+                if (mainView == null) {
+                    ManagerModel model = new ManagerModel();
+                    mainView = new LoginView();
+                    managerController = new ManagerController(model, mainView, viewMenu);
+                }
+                mainView.setVisible(true);
                 frame.validate();
                 frame.repaint();    // Repaint to ensure proper rendering
             }
