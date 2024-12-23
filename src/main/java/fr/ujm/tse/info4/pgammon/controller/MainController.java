@@ -191,7 +191,7 @@ public class MainController implements Controller {
             @Override
             public void mouseClicked(MouseEvent e) {
                
-                URI uri = URI.create("http://www.google.fr/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0CEoQFjAA&url=http%3A%2F%2Ffr.wikipedia.org%2Fwiki%2FBackgammon&ei=R0XUUM6YL4yHhQelkYHYBQ&usg=AFQjCNEOHnc7riItGN_di3jAPILrXp9twA&sig2=uesTfMvnLMwYI8reGb-vWw&bvm=bv.1355534169,d.ZG4&cad=rja");
+                URI uri = URI.create("https://en.wikipedia.org/wiki/Backgammon#Board");
                 try {
                     Desktop.getDesktop().browse(uri);
                 } catch (IOException e1) {
