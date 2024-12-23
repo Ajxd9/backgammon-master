@@ -15,6 +15,7 @@ public class Square {
     private SquareColor checkerColor;
     private int numCheckers;
     private int position;
+    private SquareType squareType;
 
     public Square(SquareColor color, int numCheckers, int position) {
         this.checkerColor = color;
