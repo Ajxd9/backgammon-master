@@ -96,7 +96,7 @@ public class NewSessionView extends JPanel {
         add(startButton);
         add(changeColorButton);
         
-     // Populate the comboBox_GameLevel with enum values
+        // Populate the comboBox_GameLevel with enum values
         difficultySelector = new JComboBox<>(GameDifficulty.values());
         difficultySelector.setBounds(262, 201, 105, 44);
         add(difficultySelector);
@@ -211,6 +211,7 @@ public class NewSessionView extends JPanel {
     }
     
     public GameDifficulty getSelectedDifficulty() {
+    	System.out.println("Game difficulty: " + difficultySelector.getSelectedItem());
         return (GameDifficulty) difficultySelector.getSelectedItem();
     }
 

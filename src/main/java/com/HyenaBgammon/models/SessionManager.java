@@ -36,6 +36,7 @@ public class SessionManager {
      * @throws IOException
      * @throws JDOMException
      */
+    
     public static SessionManager getSessionManager() throws IOException, JDOMException {
         if(sessionManager == null) {
             sessionManager = new SessionManager();  
@@ -47,8 +48,10 @@ public class SessionManager {
     /**
      * Save all sessions in the "savedSessions" folder as XML
      */
+    
     public void save() {
         try {
+        	
             for(int i = 0; i < sessionList.size(); i++) {
                 String tmpName = "Session" + String.valueOf(sessionList.get(i).getSessionId());
                 Element root = new Element(tmpName);

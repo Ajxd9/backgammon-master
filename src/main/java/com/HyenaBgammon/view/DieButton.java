@@ -133,15 +133,15 @@ public class DieButton extends JButton {
             }
         } else {       	
 	        switch (die.getValue()) {
-            case -3:
-                iconRef = BLACK_DIE_Min3;
-                break;
-            case -2:
-                iconRef = BLACK_DIE_Min2;
-                break;
-            case -1:
-                iconRef = BLACK_DIE_Min1;
-                break;
+	            case -3:
+	                iconRef = BLACK_DIE_Min3;
+	                break;
+	            case -2:
+	                iconRef = BLACK_DIE_Min2;
+	                break;
+	            case -1:
+	                iconRef = BLACK_DIE_Min1;
+	                break;
 	        }
         }
         icon = new ImageIcon(iconRef);

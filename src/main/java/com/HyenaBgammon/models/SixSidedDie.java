@@ -1,12 +1,3 @@
-// 
-//
-//  @ Project: Project Gammon
-//  @ File: SixSidedDie.java
-//  @ Date: 12/12/2012
-//  @ Authors: DONG Chuan, BONNETTO Benjamin, FRANCON Adrien, POTHELUNE Jean-Michel
-//
-//
-
 package com.HyenaBgammon.models;
 
 import java.util.Random;
