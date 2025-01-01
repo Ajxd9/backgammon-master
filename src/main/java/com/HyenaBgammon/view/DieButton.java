@@ -13,6 +13,8 @@ import com.HyenaBgammon.models.SquareColor;
 
 public class DieButton extends JButton {
     private static final long serialVersionUID = 2520612785614004478L;
+    
+    /*Normal dices*/
     private static final String WHITE_DIE_1 = "images/des/de_blanc_1.png";
     private static final String WHITE_DIE_2 = "images/des/de_blanc_2.png";
     private static final String WHITE_DIE_3 = "images/des/de_blanc_3.png";
@@ -25,6 +27,21 @@ public class DieButton extends JButton {
     private static final String BLACK_DIE_4 = "images/des/de_noir_4.png";
     private static final String BLACK_DIE_5 = "images/des/de_noir_5.png";
     private static final String BLACK_DIE_6 = "images/des/de_noir_6.png";
+    
+    /*Advanced dices*/
+    private static final String WHITE_DIE_0 = "images/des/0.png";
+    private static final String WHITE_DIE_Min1 = "images/des/de_blanc_-1.png";
+    private static final String WHITE_DIE_Min2 = "images/des/de_blanc_-2.png";
+    private static final String WHITE_DIE_Min3 = "images/des/de_blanc_-3.png";
+    private static final String BLACK_DIE_0 = "images/des/de_noir_0.png";
+    private static final String BLACK_DIE_Min1 = "images/des/de_noir_-1.png";
+    private static final String BLACK_DIE_Min2 = "images/des/de_noir_-2.png";
+    private static final String BLACK_DIE_Min3 = "images/des/de_noir_-3.png";
+    
+    /*Difficulty dices*/
+    private static final String Easy_DIE = "images/des/Easy.png";
+    private static final String Medium_DIE = "images/des/Med.png";
+    private static final String Hard_DIE = "images/des/Hard.png";
 
     private SixSidedDie die;
     private ImageIcon icon;
@@ -50,6 +67,18 @@ public class DieButton extends JButton {
         String iconRef = WHITE_DIE_1;
         if (die.getDieColor() == SquareColor.WHITE) {
             switch (die.getValue()) {
+	            case -3:
+	                iconRef = WHITE_DIE_Min3;
+	                break;
+	            case -2:
+	                iconRef = WHITE_DIE_Min2;
+	                break;
+	            case -1:
+	                iconRef = WHITE_DIE_Min1;
+	                break;
+	            case 0:
+	                iconRef = WHITE_DIE_0;
+	                break;
                 case 1:
                     iconRef = WHITE_DIE_1;
                     break;
@@ -69,8 +98,20 @@ public class DieButton extends JButton {
                     iconRef = WHITE_DIE_6;
                     break;
             }
-        } else {
+        } else if (die.getDieColor() == SquareColor.BLACK) {
             switch (die.getValue()) {
+	            case -3:
+	                iconRef = BLACK_DIE_Min3;
+	                break;
+	            case -2:
+	                iconRef = BLACK_DIE_Min2;
+	                break;
+	            case -1:
+	                iconRef = BLACK_DIE_Min1;
+	                break;
+	            case 0:
+	                iconRef = BLACK_DIE_0;
+	                break;  
                 case 1:
                     iconRef = BLACK_DIE_1;
                     break;
@@ -90,6 +131,18 @@ public class DieButton extends JButton {
                     iconRef = BLACK_DIE_6;
                     break;
             }
+        } else {       	
+	        switch (die.getValue()) {
+            case -3:
+                iconRef = BLACK_DIE_Min3;
+                break;
+            case -2:
+                iconRef = BLACK_DIE_Min2;
+                break;
+            case -1:
+                iconRef = BLACK_DIE_Min1;
+                break;
+	        }
         }
         icon = new ImageIcon(iconRef);
         updateUI();
