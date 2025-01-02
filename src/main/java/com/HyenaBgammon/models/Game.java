@@ -27,6 +27,7 @@ public class Game {
      *
      * @param p
      */
+    
     public Game(GameParameters p) {
         gameParameters = p;
         board = new Board();
@@ -39,8 +40,6 @@ public class Game {
         //these variables track the game state
         turnFinished = true;
         gameFinished = false;
-        
-        System.out.println("this game is: "+this.gameDifficulty);
     }
 
     /**
@@ -62,7 +61,7 @@ public class Game {
         turnFinished = true;
         gameFinished = false;
         
-        System.out.println("this game is222: "+this.gameParameters.getDifficulty());
+        System.out.println("The game you just started is: "+this.gameParameters.getDifficulty());
     }
 
     /**
@@ -325,6 +324,7 @@ public class Game {
         	
 	        SixSidedDie.add(new SixSidedDie(DieType.REGULAR,currentPlayer));
 	        SixSidedDie.add(new SixSidedDie(DieType.REGULAR,currentPlayer));
+	        SixSidedDie.add(new SixSidedDie(DieType.QUESTION,currentPlayer));
 	        if (SixSidedDie.get(0).getValue() == SixSidedDie.get(1).getValue()) {
 	            SixSidedDie.add(new SixSidedDie(SixSidedDie.get(0).getValue(), currentPlayer, DieType.REGULAR));
 	            SixSidedDie.add(new SixSidedDie(SixSidedDie.get(0).getValue(), currentPlayer, DieType.REGULAR));
@@ -335,6 +335,7 @@ public class Game {
         } else if(this.gameParameters.getDifficulty().equals(GameDifficulty.HARD)) {
 	        SixSidedDie.add(new SixSidedDie(DieType.ENHANCED,currentPlayer));
 	        SixSidedDie.add(new SixSidedDie(DieType.ENHANCED,currentPlayer));
+	        SixSidedDie.add(new SixSidedDie(DieType.QUESTION,currentPlayer));
 	        if (SixSidedDie.get(0).getValue() == SixSidedDie.get(1).getValue()) {
 	            SixSidedDie.add(new SixSidedDie(SixSidedDie.get(0).getValue(), currentPlayer, DieType.ENHANCED));
 	            SixSidedDie.add(new SixSidedDie(SixSidedDie.get(0).getValue(), currentPlayer, DieType.ENHANCED));

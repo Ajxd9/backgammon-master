@@ -7,6 +7,7 @@ import org.jdom2.Element;
 public class SixSidedDie {
     /* VARIABLES */
     private int value;
+    private int diffValue;
     private boolean isUsed;
     private SquareColor dieColor;
     private DieType dieType;  
@@ -29,8 +30,13 @@ public class SixSidedDie {
             case ENHANCED:
                 value = rand.nextInt(10) - 3; // Values -3 to 6
                 break;
+            case QUESTION:
+            	value = 0;
+            	diffValue = rand.nextInt(3) + 1; // Values 1 for Easy, 2 for Medium, 3 for Hard
+            	System.out.println("q value is: "+ diffValue);
+            	break;
             default:
-                value = 0; // For QUESTION die, handled separately
+                System.out.println("invalid InPut!"); // For QUESTION die, handled separately
                 break;
         }
     }
@@ -137,4 +143,9 @@ public class SixSidedDie {
     public SquareColor getDieColor() {
         return dieColor;
     }
+
+	public int getDiffValue() {
+		return diffValue;
+	}
+
 }

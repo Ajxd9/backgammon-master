@@ -70,7 +70,7 @@ public class DieButton extends JButton {
 
         // Handle QUESTION dice
         if (die.getDieType() == DieType.QUESTION) {
-            switch (die.getValue()) {
+            switch (die.getDiffValue()) {
                 case 1:
                     iconRef = Easy_DIE; // Easy question
                     break;
@@ -114,7 +114,7 @@ public class DieButton extends JButton {
                     break;
                 case 6:
                     iconRef = WHITE_DIE_6;
-                    break;
+                    break;           
             }
         } 
         // Handle BLACK dice (regular and enhanced)
