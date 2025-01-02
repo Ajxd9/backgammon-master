@@ -24,6 +24,7 @@ import com.HyenaBgammon.models.Square;
 import com.HyenaBgammon.models.SquareColor;
 import com.HyenaBgammon.models.SixSidedDie;
 import com.HyenaBgammon.models.Game;
+import com.HyenaBgammon.controller.BoardController;
 import com.HyenaBgammon.models.Board;
 
 public class BoardView extends JPanel {
@@ -38,6 +39,8 @@ public class BoardView extends JPanel {
     private CaseButton candidate;
     private List<DieButton> dieButtons;
     private JLabel[] marks; // Labels for "?" and "!"
+    private BoardController boardController;
+
 
     public BoardView(Game game) {
         this.game = game;
@@ -48,6 +51,20 @@ public class BoardView extends JPanel {
         setOpaque(false);
         setPreferredSize(new Dimension(550, 450));
         this.setCandidate(null);  
+        build();
+        addMarksToTriangles();
+    }
+    
+    public BoardView(Game game, BoardController boardController) {
+        this.game = game;
+        this.board = game.getBoard();
+        this.boardController = boardController; // Save reference to the controller
+        this.SquareButtons = new HashMap<>();
+        marks = new JLabel[4]; // Three '?' and one '!'
+        setLayout(null);
+        setOpaque(false);
+        setPreferredSize(new Dimension(550, 450));
+        this.setCandidate(null);
         build();
         addMarksToTriangles();
     }
@@ -247,7 +264,7 @@ public class BoardView extends JPanel {
         g2.dispose(); 
     }
 
-    public void updateDice() {
+/*    public void updateDice() {
         // Retrieve the list of dice from the game
         List<SixSidedDie> dice = game.getSixSidedDie();
 
@@ -284,11 +301,46 @@ public class BoardView extends JPanel {
             }
         }
 
+        
+    
         // Refresh the GUI to ensure the updated dice are displayed
         revalidate();
         repaint();
     }
+*/
+    
+    
+    public void updateDice() {
+        List<SixSidedDie> dice = game.getSixSidedDie();
 
+        if (dieButtons != null) {
+            for (DieButton dieBtn : dieButtons) {
+                remove(dieBtn);
+            }
+        }
+
+        dieButtons = new ArrayList<>();
+        int size = dice.size();
+        int i = 0;
+
+        for (SixSidedDie die : dice) {
+            DieButton btn = new DieButton(die);
+            int y = (int) (252 + 40 * ((float) i - size / 2));
+            btn.setBounds(427 - 173, y, btn.getPreferredSize().width, btn.getPreferredSize().height);
+
+            btn.addActionListener(e -> {
+                boardController.handleDicePress(die);
+            });
+            
+            add(btn);
+            dieButtons.add(btn);
+            i++;
+        }
+
+        revalidate();
+        repaint();
+    }
+    
 
     public Collection<CaseButton> getSquareButtons() {
         return SquareButtons.values();

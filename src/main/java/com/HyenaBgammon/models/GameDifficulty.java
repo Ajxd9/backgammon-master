@@ -43,7 +43,7 @@ public enum GameDifficulty {
      * @param playerColor - The color of the dice for this player
      * @return List<SixSidedDie>
      */
-    public List<SixSidedDie> generateDice(SquareColor playerColor) {
+/*    public List<SixSidedDie> generateDice(SquareColor playerColor) {
         List<SixSidedDie> diceList = new ArrayList<>();
 
         // Add regular dice
@@ -62,7 +62,32 @@ public enum GameDifficulty {
         }
 
         return diceList;
+    }*/
+    
+    public List<SixSidedDie> generateDice(SquareColor playerColor) {
+        List<SixSidedDie> diceList = new ArrayList<>();
+
+        // Add regular dice
+        for (int i = 0; i < regularDiceCount; i++) {
+            diceList.add(new SixSidedDie(DieType.REGULAR, playerColor));
+        }
+
+        // Add question dice
+        for (int i = 0; i < questionDiceCount; i++) {
+            // Create a question die with predefined face values: 1 (Easy), 2 (Medium), 3 (Hard)
+            SixSidedDie questionDie = new SixSidedDie(DieType.QUESTION, playerColor);
+            questionDie.setValue((int) (Math.random() * 3) + 1); // Randomly assign 1-3
+            diceList.add(questionDie);
+        }
+
+        // Add enhanced dice
+        for (int i = 0; i < enhancedDiceCount; i++) {
+            diceList.add(new SixSidedDie(DieType.ENHANCED, playerColor));
+        }
+
+        return diceList;
     }
+
 
     @Override
     public String toString() {

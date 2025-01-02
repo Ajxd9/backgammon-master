@@ -8,6 +8,8 @@ import java.awt.RenderingHints;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
+import com.HyenaBgammon.models.DieType;
 import com.HyenaBgammon.models.SixSidedDie;
 import com.HyenaBgammon.models.SquareColor;
 
@@ -64,21 +66,37 @@ public class DieButton extends JButton {
     }
 
     private void update() {
-        String iconRef = WHITE_DIE_1;
-        if (die.getDieColor() == SquareColor.WHITE) {
+        String iconRef = WHITE_DIE_1; // Default icon for white dice with value 1
+
+        // Handle QUESTION dice
+        if (die.getDieType() == DieType.QUESTION) {
             switch (die.getValue()) {
-	            case -3:
-	                iconRef = WHITE_DIE_Min3;
-	                break;
-	            case -2:
-	                iconRef = WHITE_DIE_Min2;
-	                break;
-	            case -1:
-	                iconRef = WHITE_DIE_Min1;
-	                break;
-	            case 0:
-	                iconRef = WHITE_DIE_0;
-	                break;
+                case 1:
+                    iconRef = Easy_DIE; // Easy question
+                    break;
+                case 2:
+                    iconRef = Medium_DIE; // Medium question
+                    break;
+                case 3:
+                    iconRef = Hard_DIE; // Hard question
+                    break;
+            }
+        } 
+        // Handle WHITE dice (regular and enhanced)
+        else if (die.getDieColor() == SquareColor.WHITE) {
+            switch (die.getValue()) {
+                case -3:
+                    iconRef = WHITE_DIE_Min3;
+                    break;
+                case -2:
+                    iconRef = WHITE_DIE_Min2;
+                    break;
+                case -1:
+                    iconRef = WHITE_DIE_Min1;
+                    break;
+                case 0:
+                    iconRef = WHITE_DIE_0;
+                    break;
                 case 1:
                     iconRef = WHITE_DIE_1;
                     break;
@@ -98,20 +116,22 @@ public class DieButton extends JButton {
                     iconRef = WHITE_DIE_6;
                     break;
             }
-        } else if (die.getDieColor() == SquareColor.BLACK) {
+        } 
+        // Handle BLACK dice (regular and enhanced)
+        else if (die.getDieColor() == SquareColor.BLACK) {
             switch (die.getValue()) {
-	            case -3:
-	                iconRef = BLACK_DIE_Min3;
-	                break;
-	            case -2:
-	                iconRef = BLACK_DIE_Min2;
-	                break;
-	            case -1:
-	                iconRef = BLACK_DIE_Min1;
-	                break;
-	            case 0:
-	                iconRef = BLACK_DIE_0;
-	                break;  
+                case -3:
+                    iconRef = BLACK_DIE_Min3;
+                    break;
+                case -2:
+                    iconRef = BLACK_DIE_Min2;
+                    break;
+                case -1:
+                    iconRef = BLACK_DIE_Min1;
+                    break;
+                case 0:
+                    iconRef = BLACK_DIE_0;
+                    break;
                 case 1:
                     iconRef = BLACK_DIE_1;
                     break;
@@ -131,22 +151,13 @@ public class DieButton extends JButton {
                     iconRef = BLACK_DIE_6;
                     break;
             }
-        } else {       	
-	        switch (die.getValue()) {
-	            case -3:
-	                iconRef = BLACK_DIE_Min3;
-	                break;
-	            case -2:
-	                iconRef = BLACK_DIE_Min2;
-	                break;
-	            case -1:
-	                iconRef = BLACK_DIE_Min1;
-	                break;
-	        }
         }
+
+        // Update the button's icon based on the resolved reference
         icon = new ImageIcon(iconRef);
-        updateUI();
+        updateUI(); // Trigger a UI refresh
     }
+
 
     @Override
     protected void paintComponent(Graphics g) {

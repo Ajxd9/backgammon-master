@@ -14,6 +14,7 @@ import com.HyenaBgammon.models.SixSidedDie;
 import com.HyenaBgammon.models.Clock;
 import com.HyenaBgammon.models.ClockEvent;
 import com.HyenaBgammon.models.ClockEventListener;
+import com.HyenaBgammon.models.DieType;
 import com.HyenaBgammon.models.AssistantLevel;
 import com.HyenaBgammon.models.Game;
 import com.HyenaBgammon.models.Board;
@@ -120,6 +121,25 @@ public class BoardController implements Controller {
         game.changeTurn();
         gameView.displayTransition(game.getGameParameters().getPlayer(game.getCurrentPlayer()).getUsername(), "Player" + game.getCurrentPlayer().toString());
     }
+    
+    
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////////to do q
+    public void handleDicePress(SixSidedDie die) {
+        if (die.getDieType() == DieType.QUESTION) {
+            String questionDifficulty = die.getQuestionDifficulty();
+            gameView.displayRequestWindow("Question Difficulty", "Answer a " + questionDifficulty + " question!");
+
+            // Add logic to fetch and display the question in the future
+        } else {
+            gameView.displayRequestWindow("Dice Value", "Move pieces based on dice value: " + die.getValue());
+        }
+
+        die.use();
+        boardView.updateDice(); // Refresh dice state
+    }
+    
     
     private void buildClock() {
         if (game.getGameParameters().getSecondsPerTurn() != 0) {

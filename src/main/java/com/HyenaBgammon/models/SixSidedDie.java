@@ -37,7 +37,12 @@ public class SixSidedDie {
     
     
    
-    /* GET QUESTION DIFFICULTY BASED ON DIE VALUE */
+    public void setValue(int value) {
+		this.value = value;
+	}
+
+
+	/* GET QUESTION DIFFICULTY BASED ON DIE VALUE */
     public String getQuestionDifficulty() {
         if (dieType == DieType.QUESTION) {
             switch (value) {
