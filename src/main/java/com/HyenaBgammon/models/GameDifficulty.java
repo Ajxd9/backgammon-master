@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum GameDifficulty {
-    EASY("Easy", 2, 0, 0),     // 2 regular dice
-    MEDIUM("Medium", 2, 1, 0), // 2 regular dice, 1 question die
-    HARD("Hard", 0, 1, 2);     // 2 enhanced dice, 1 question die
+    EASY("EASY", 2, 0, 0),     // 2 regular dice
+    MEDIUM("MEDIUM", 2, 1, 0), // 2 regular dice, 1 question die
+    HARD("HARD", 0, 1, 2);     // 2 enhanced dice, 1 question die
 
     private final String difficultyName;
     private final int regularDiceCount;

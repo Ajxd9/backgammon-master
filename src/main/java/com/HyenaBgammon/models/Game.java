@@ -535,6 +535,10 @@ public class Game {
         Element gameIdXML = new Element("gameId");
         gameIdXML.setText(String.valueOf(gameId));
         game.addContent(gameIdXML);
+        
+        Element diffIdXML = new Element("gameDifficulty");
+        diffIdXML.setText(String.valueOf(this.gameDifficulty));
+        game.addContent(diffIdXML);
 
         Element diceUsedXML = new Element("diceUsed");
         diceUsedXML.setText(String.valueOf(diceUsed));
@@ -575,6 +579,7 @@ public class Game {
         }
 
         gameId = Integer.valueOf(game.getChildText("gameId"));
+        gameDifficulty = GameDifficulty.valueOf(game.getChildText("gameDifficulty"));
         diceUsed = Integer.valueOf(game.getChildText("diceUsed"));
 
         switch(game.getChildText("firstPlayer")) {
@@ -626,6 +631,10 @@ public class Game {
 
     public GameParameters getGameParameters() {
         return gameParameters;
+    }
+    
+    public GameDifficulty getGameDiff() {
+    	return this.gameParameters.getDifficulty();
     }
 
     public void setGameParameters(GameParameters gameParameters) {

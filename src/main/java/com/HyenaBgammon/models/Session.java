@@ -1,12 +1,3 @@
-// 
-//
-//  @ Project : Project Backgammon
-//  @ File : Session.java
-//  @ Date : 12/12/2012
-//  @ Authors : DONG Chuan, BONNETTO Benjamin, FRANCON Adrien, POTHELUNE Jean-Michel
-//
-//
-
 package com.HyenaBgammon.models;
 
 import java.util.HashMap;
@@ -114,6 +105,10 @@ public class Session {
         sessionStateXML.setText(String.valueOf(sessionState));
         session.addContent(sessionStateXML);
         
+        Element gameDiffXML = new Element("gameDifficulty");
+        gameDiffXML.setText(String.valueOf(gameParameters.getDifficulty()));
+        session.addContent(gameDiffXML);
+        
         Element maxGameIdXML = new Element("maxGameId");
         maxGameIdXML.setText(String.valueOf(maxGameId));
         session.addContent(maxGameIdXML);
@@ -166,6 +161,8 @@ public class Session {
             case "BLACK": previousGamePlayerColor = SquareColor.BLACK; break;
             case "EMPTY": previousGamePlayerColor = SquareColor.EMPTY;
         }
+        
+        GameDifficulty tmpGameDiff = GameDifficulty.valueOf(root.getChild("session").getChildText("gameDifficulty"));
             
         int tmpID = Integer.valueOf(root.getChild("session").getChild("players").getChild("blackPlayer").getAttributeValue("id"));
             
@@ -175,7 +172,6 @@ public class Session {
         Player blackPlayer = profiles.getPlayer(tmpID);
         if (blackPlayer == null)
             return false;
-        
         scores.put(blackPlayer, Integer.valueOf(root.getChild("session").getChild("players").getChild("blackPlayer").getChildText("score")));
             
         tmpID = Integer.valueOf(root.getChild("session").getChild("players").getChild("whitePlayer").getAttributeValue("id"));
@@ -189,6 +185,7 @@ public class Session {
         gameParameters.load(root.getChild("session").getChild("parameters"));
         gameParameters.setWhitePlayer(whitePlayer);
         gameParameters.setBlackPlayer(blackPlayer);
+        gameParameters.setDifficulty(tmpGameDiff);
             
         currentGame = new Game(gameParameters);
         currentGame.load(root.getChild("session").getChild("game"));

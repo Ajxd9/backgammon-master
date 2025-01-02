@@ -1,8 +1,11 @@
 package com.HyenaBgammon.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 import com.HyenaBgammon.models.SquareColor;
 import com.HyenaBgammon.models.SessionState;
@@ -17,8 +20,8 @@ public class GameView extends MonochromeView {
 	private static final long serialVersionUID = 2417367501490643145L;
 	
 	// Retrieve background image
-	public static final ImageIcon backgroundImage = new ImageIcon("images/game_background.png");
-	public static final ImageIcon bigArrowImage = new ImageIcon("images/big_arrows.png");
+	public static final ImageIcon backgroundImage = new ImageIcon("images/fond_partie.png");
+	public static final ImageIcon bigArrowImage = new ImageIcon("images/fleche_big.png");
 
 	private Game game;
 	private BoardView boardView;
@@ -31,6 +34,7 @@ public class GameView extends MonochromeView {
 	private PlayerPanelGameView playerPanel1;
 	private PlayerPanelGameView playerPanel2;
 	private ClockBar clockBar;
+	private JLabel diffLabel;
 	
 	/**
 	 * Constructor for the GameView class.
@@ -49,11 +53,11 @@ public class GameView extends MonochromeView {
 	 * Method to construct the elements of the view and call all the game views.
 	 */
 	private void build() {
-		setPreferredSize(new Dimension(800,600));
+		setPreferredSize(new Dimension(1000,800));
 		setOpaque(false);
 
 		setLayout(null);
-		boardView.setBounds(154, -2, 547, 446);
+		boardView.setBounds(150, 5, 550, 450);
 		add(boardView);
 
 		state = SessionState.IN_PROGRESS;
@@ -86,6 +90,14 @@ public class GameView extends MonochromeView {
 		playerPanel2 = new PlayerPanelGameView(game.getGameParameters().getBlackPlayer(), SquareColor.BLACK);
 		playerPanel2.setBounds(10, 235, 150, 215);
 		add(playerPanel2);
+		
+		diffLabel = new JLabel("Difficulty: " + game.getGameParameters().getDifficulty().name());
+		diffLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		diffLabel.setForeground(Color.WHITE);
+		diffLabel.setBounds(750, 50, 200, 30); // Adjust position as needed
+		add(diffLabel);
+		revalidate();
+		repaint();
 
 		setState(getState());
 	}

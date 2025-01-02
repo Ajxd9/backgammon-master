@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-
 public class MenuView extends MonochromeView {
 
     /**
