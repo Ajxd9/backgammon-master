@@ -38,4 +38,33 @@ public class Question {
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
+    
+    
+ // converting int to String in difficulty level
+ 	public String getDifficulty (int difficulty) {
+ 		if (difficulty == 1)
+ 			return "Easy";
+ 		if (difficulty == 2)
+ 			return "Medium";
+ 		if (difficulty == 3)
+ 			return "Hard";
+ 		else 
+ 			return "";	
+ 	}
+ 	
+ 	
+
+public Question() {
+	super();
+}
+
+public Question(String question, String[] answers, String correctAns, String difficulty) {
+	super();
+	this.question = question;
+	this.answers = answers;
+	this.correctAns = correctAns;
+	this.difficulty = difficulty;
+}
+ 
+ 	
 }

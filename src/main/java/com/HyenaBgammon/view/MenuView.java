@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MenuView extends MonochromeView {
 
@@ -67,10 +69,15 @@ public class MenuView extends MonochromeView {
         rulesButton = new MonochromeButton("Rules");
         buttonContainer.add(rulesButton);
         
-        manageButton = new MonochromeButton("Manager");
+        manageButton = new MonochromeButton("Questions");
         buttonContainer.add(manageButton);
         
+        
         quitButton = new MonochromeButton("Quit");
+        quitButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
         buttonContainer.add(quitButton);
         
         add(gridContainer);
