@@ -39,6 +39,8 @@ public class Game {
         //these variables track the game state
         turnFinished = true;
         gameFinished = false;
+        
+        System.out.println("this game is: "+this.gameDifficulty);
     }
 
     /**
@@ -59,6 +61,8 @@ public class Game {
         //these variables track the game state
         turnFinished = true;
         gameFinished = false;
+        
+        System.out.println("this game is222: "+this.gameParameters.getDifficulty());
     }
 
     /**
@@ -306,14 +310,38 @@ public class Game {
      */
     public void rollDice() {
         SixSidedDie = new ArrayList<SixSidedDie>();
-        SixSidedDie.add(new SixSidedDie(currentPlayer));
-        SixSidedDie.add(new SixSidedDie(currentPlayer));
-        if (SixSidedDie.get(0).getValue() == SixSidedDie.get(1).getValue()) {
-            SixSidedDie.add(new SixSidedDie(currentPlayer, SixSidedDie.get(0).getValue()));
-            SixSidedDie.add(new SixSidedDie(currentPlayer, SixSidedDie.get(0).getValue()));
+        if(this.gameParameters.getDifficulty().equals(GameDifficulty.EASY)) {
+        	
+	        SixSidedDie.add(new SixSidedDie(DieType.REGULAR,currentPlayer));
+	        SixSidedDie.add(new SixSidedDie(DieType.REGULAR,currentPlayer));
+	        if (SixSidedDie.get(0).getValue() == SixSidedDie.get(1).getValue()) {
+	            SixSidedDie.add(new SixSidedDie(SixSidedDie.get(0).getValue(), currentPlayer, DieType.REGULAR));
+	            SixSidedDie.add(new SixSidedDie(SixSidedDie.get(0).getValue(), currentPlayer, DieType.REGULAR));
+	        }
+	        turnFinished = false;
+	        beginTurn();
+	        
+        } else if(this.gameParameters.getDifficulty().equals(GameDifficulty.MEDIUM)) {
+        	
+	        SixSidedDie.add(new SixSidedDie(DieType.REGULAR,currentPlayer));
+	        SixSidedDie.add(new SixSidedDie(DieType.REGULAR,currentPlayer));
+	        if (SixSidedDie.get(0).getValue() == SixSidedDie.get(1).getValue()) {
+	            SixSidedDie.add(new SixSidedDie(SixSidedDie.get(0).getValue(), currentPlayer, DieType.REGULAR));
+	            SixSidedDie.add(new SixSidedDie(SixSidedDie.get(0).getValue(), currentPlayer, DieType.REGULAR));
+	        }
+	        turnFinished = false;
+	        beginTurn();
+	        
+        } else if(this.gameParameters.getDifficulty().equals(GameDifficulty.HARD)) {
+	        SixSidedDie.add(new SixSidedDie(DieType.ENHANCED,currentPlayer));
+	        SixSidedDie.add(new SixSidedDie(DieType.ENHANCED,currentPlayer));
+	        if (SixSidedDie.get(0).getValue() == SixSidedDie.get(1).getValue()) {
+	            SixSidedDie.add(new SixSidedDie(SixSidedDie.get(0).getValue(), currentPlayer, DieType.ENHANCED));
+	            SixSidedDie.add(new SixSidedDie(SixSidedDie.get(0).getValue(), currentPlayer, DieType.ENHANCED));
+	        }
+	        turnFinished = false;
+	        beginTurn();
         }
-        turnFinished = false;
-        beginTurn();
     }
 
     public void doubleDoublingCube() {

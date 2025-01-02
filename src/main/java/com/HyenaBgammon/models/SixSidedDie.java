@@ -71,7 +71,16 @@ public class SixSidedDie {
         this.dieColor = squareColor;
     }
     
-    public void use() {
+    public SixSidedDie(int value, SquareColor dieColor, DieType dieType) {
+		super();
+		isUsed = false;
+		this.value = value;
+		this.dieColor = dieColor;
+		this.dieType = dieType;
+	}
+
+
+	public void use() {
         isUsed = true;
     }
     
