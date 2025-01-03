@@ -1,10 +1,15 @@
 package com.HyenaBgammon.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -31,6 +36,14 @@ public class MenuView extends MonochromeView {
     }
     
     private void build() {
+    	
+    	// Title Label
+    	JLabel titleLabel = new JLabel("Hyena Backgammon");
+    	titleLabel.setFont(new Font("Verdana", Font.BOLD, 30)); // Set custom font
+    	titleLabel.setForeground(Color.WHITE);
+    	titleLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center-align text
+    	titleLabel.setBounds(200, 80, 400, 50); // Position at the top-center
+    	add(titleLabel);
         
         // Retrieve the image
         try{
