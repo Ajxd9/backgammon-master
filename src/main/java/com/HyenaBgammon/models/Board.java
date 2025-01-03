@@ -1,9 +1,7 @@
-// 
+//
 //
 //  @ Project : Project Gammon
 //  @ File : Board.java
-//  @ Date : 12/12/2012
-//  @ Authors : DONG Chuan, BONNETTO Benjamin, FRANCON Adrien, POTHELUNE Jean-Michel
 //
 //
 
@@ -22,26 +20,26 @@ public class Board
     private ArrayList<Square> victorySquare;
     private ArrayList<Square> barSquare;
     private Game game;
-    
+
     public Board(Game g)
     {
-        game = g;        
+        game = g;
         squareList = new ArrayList<Square>();
         victorySquare = new ArrayList<Square>();
         barSquare = new ArrayList<Square>();
         initializeSquares();
     }
-    
+
     public Board()
     {
         game = null;
-        
+
         squareList = new ArrayList<Square>();
         victorySquare = new ArrayList<Square>();
         barSquare = new ArrayList<Square>();
         initializeSquares();
     }
-    
+
     public void initializeSquares(ArrayList<Square> listSquare)
     {
         squareList = new ArrayList<Square>();
@@ -51,34 +49,31 @@ public class Board
         victorySquare = new ArrayList<Square>();
         barSquare = new ArrayList<Square>();
     }
-    
+
     public void initializeBarSquares(ArrayList<Square> listSquare)
     {
         barSquare.add(listSquare.get(0));
         barSquare.add(listSquare.get(1));
     }
-    
+
     public void initializeVictorySquares(ArrayList<Square> listSquare)
     {
         victorySquare.add(listSquare.get(0));
         victorySquare.add(listSquare.get(1));
     }
-    
-    /**
-     * Initialize all squares on the board
-     */
+
     public void initializeSquares()
     {
         squareList.clear();
         victorySquare.clear();
         barSquare.clear();
-        
+
         victorySquare.add(new Square(SquareColor.WHITE, 0, 25));
         victorySquare.add(new Square(SquareColor.BLACK, 0, 0));
-        
+
         barSquare.add(new Square(SquareColor.WHITE, 0, 0));
         barSquare.add(new Square(SquareColor.BLACK, 0, 25));
-        
+
         for (int i=1; i<=24; i++)
         {
             if(i==1)
@@ -98,18 +93,18 @@ public class Board
             else if(i==24)
                 squareList.add(new Square(SquareColor.BLACK, 2, i));
             else
-                squareList.add(new Square(SquareColor.EMPTY, 0, i));    
-        }        
+                squareList.add(new Square(SquareColor.EMPTY, 0, i));
+        }
     }
-    
+
     public void resetSquares()
     {
         victorySquare.get(0).setSquare(SquareColor.WHITE, 0);
         victorySquare.get(1).setSquare(SquareColor.BLACK, 0);
-        
+
         barSquare.get(0).setSquare(SquareColor.WHITE, 0);
         barSquare.get(1).setSquare(SquareColor.BLACK, 0);
-        
+
         for (int i=0; i<24; i++)
         {
             if(i==0)
@@ -129,42 +124,37 @@ public class Board
             else if(i==23)
                 squareList.get(i).setSquare(SquareColor.BLACK, 2);
             else
-                squareList.get(i).setSquare(SquareColor.EMPTY, 0);    
-        }        
+                squareList.get(i).setSquare(SquareColor.EMPTY, 0);
+        }
     }
-    
+
     public int distanceBetweenSquares(Square start, Square end)
     {
         return end.getPosition() - start.getPosition();
     }
-    
+
     public boolean isMovementDirectionCorrect(Square start, Square end)
     {
-        if (distanceBetweenSquares(start, end) < 0 && start.getCheckerColor() == SquareColor.WHITE
-                || distanceBetweenSquares(start, end) > 0 && start.getCheckerColor() == SquareColor.BLACK)
+        if (start == null || end == null) {
             return false;
-        else
-            return true;
+        }
+        // Allow movement in both directions due to enhanced die support
+        return true;
     }
-    
-    /**
-     * Check if it's possible to move between two squares
-     * @param start starting square
-     * @param end ending square
-     * @return boolean
-     */
+
     public boolean isMovePossible(Square start, Square end)
     {
-        if (start.getNumCheckers() == 0)
+        if (start == null || end == null || start.getNumCheckers() == 0) {
             return false;
-        
-        if(getBarSquare(start.getCheckerColor()).getNumCheckers() != 0 
-                && (start.getPosition() != 0 && start.getCheckerColor() == SquareColor.WHITE 
+        }
+
+        if(getBarSquare(start.getCheckerColor()).getNumCheckers() != 0
+                && (start.getPosition() != 0 && start.getCheckerColor() == SquareColor.WHITE
                 || start.getPosition() != 25 && start.getCheckerColor() == SquareColor.BLACK))
-                return false;
-        
+            return false;
+
         if (end.isHomeSquare()){
-            if (canBearOff(start.getCheckerColor()) 
+            if (canBearOff(start.getCheckerColor())
                     && end.getCheckerColor() == start.getCheckerColor())
                 return true;
             else
@@ -181,55 +171,53 @@ public class Board
                 return false;
         }
     }
-    
+
     public boolean canCapturePiece(Square start, Square end)
     {
-        if(start.getCheckerColor() != end.getCheckerColor() 
-                && end.getCheckerColor() != SquareColor.EMPTY 
+        if(start.getCheckerColor() != end.getCheckerColor()
+                && end.getCheckerColor() != SquareColor.EMPTY
                 && end.getNumCheckers() == 1)
             return true;
         else
             return false;
     }
-    
+
     public Move intToMove(int startInt, int endInt, SquareColor startSquareColor)
     {
         Move move = new Move();
-        
+
         if (startInt == 0 && startSquareColor == SquareColor.WHITE)
             move.setStartSquare(barSquare.get(0));
         else if (startInt == 25 && startSquareColor == SquareColor.BLACK)
             move.setStartSquare(barSquare.get(1));
         else if (startInt != 0 && startInt != 25)
             move.setStartSquare(squareList.get(startInt-1));
-            
+
         if (endInt == 25 && startSquareColor == SquareColor.WHITE)
             move.setEndSquare(victorySquare.get(0));
         else if (endInt == 0 && startSquareColor == SquareColor.BLACK)
             move.setEndSquare(victorySquare.get(1));
         else if (endInt != 0 && endInt != 25)
             move.setEndSquare(squareList.get(endInt-1));
-        
+
         return move;
     }
-    
+
     public boolean movePiece(int startInt, int endInt, SquareColor startSquareColor)
     {
         Move move = intToMove(startInt, endInt, startSquareColor);
         return movePiece(move.getStartSquare(), move.getEndSquare());
     }
-    
+
     public boolean movePiece(Square start, Square end)
     {
         if(isMovePossible(start, end))
         {
-            //save starting square
             Square startSquareSave = new Square(start.getCheckerColor(), start.getNumCheckers(), start.getPosition());
-            
-            //remove piece if possible
+
             if (!start.removeChecker())
                 return false;
-                
+
             if (canCapturePiece(startSquareSave, end))
             {
                 if (end.getCheckerColor() == SquareColor.WHITE)
@@ -237,19 +225,19 @@ public class Board
                 else
                     barSquare.get(1).addChecker(SquareColor.BLACK);
             }
-                
+
             end.addChecker(startSquareSave.getCheckerColor());
-            
+
             return true;
         }
         else
             return false;
     }
-    
+
     public boolean isSquareBefore(Square pieceSquare)
     {
         int numPieces = 0;
-        
+
         if(pieceSquare.getCheckerColor() == SquareColor.WHITE)
         {
             for (int i=18; i<(pieceSquare.getPosition()-1); i++)
@@ -266,14 +254,14 @@ public class Board
                     numPieces += getSquareList().get(i).getNumCheckers();
             }
         }
-        
+
         return numPieces != 0;
     }
-    
+
     public boolean canBearOff(SquareColor color)
     {
         int numPieces = 0;
-        
+
         if(color == SquareColor.WHITE)
         {
             numPieces += getBarSquare().get(0).getNumCheckers();
@@ -294,126 +282,132 @@ public class Board
         }
         return numPieces == 0;
     }
-    
+
     public boolean isAllPiecesMarked(SquareColor color)
     {
         if (color == SquareColor.WHITE && getVictorySquare().get(0).getNumCheckers() == 15
                 || color == SquareColor.BLACK && getVictorySquare().get(1).getNumCheckers() == 15)
             return true;
-        else 
+        else
             return false;
     }
-    
-    /**
-     * Get possible destination square with a starting square and a die
-     * @param s Starting Square
-     * @param die A die
-     * @return End Square
-     */
+
     public Square getSquareAtDistance(Square s, SixSidedDie die)
     {
-        if(s.getCheckerColor() == SquareColor.WHITE){
+        if (s == null || die == null) {
+            return null;
+        }
+
+        if(s.getCheckerColor() == SquareColor.WHITE) {
             int whiteAtDistance = s.getPosition() + die.getValue();
-            if(whiteAtDistance <= 24){
+            if(whiteAtDistance <= 24 && whiteAtDistance >= 1) {
                 return squareList.get(whiteAtDistance-1);
             }
-            else{
+            else if(whiteAtDistance > 24) {
                 return victorySquare.get(0);
             }
+            else {
+                // Handle moving below position 1
+                return squareList.get(0);
+            }
         }
-        else
-        {
+        else {
             int blackAtDistance = s.getPosition() - die.getValue();
-            if(blackAtDistance >= 1){
+            if(blackAtDistance >= 1 && blackAtDistance <= 24) {
                 return squareList.get(blackAtDistance-1);
             }
-            else{
+            else if(blackAtDistance < 1) {
                 return victorySquare.get(1);
             }
-        }    
+            else {
+                // Handle moving above position 24
+                return squareList.get(23);
+            }
+        }
     }
-    
-    /**
-     * Check if there are pieces in the Bar Square (Black or White)
-     * @param color Color of Bar Square
-     * @return true = there are pieces. false = it's empty
-     */
+
     public boolean isPieceOnBar(SquareColor color)
     {
         return getBarSquare(color).getNumCheckers() != 0;
     }
-    
-    /**
-     * Get all possible squares
-     * @param die A die
-     * @param color Color of current player
-     * @return a list of all possible squares
-     */
+
     public List<Move> getPossibleMoves(SixSidedDie die, SquareColor color)
     {
         List<Move> list = new ArrayList<Move>();
-        
-        List<Square> squareList = getAllSquares();
-        
-        for (Square square1 : squareList) {
-            if(square1.getCheckerColor() == color && !die.isUsed()){
-                Square tmpStart = square1;
-                Square tmpEnd = getSquareAtDistance(tmpStart, die);
-                if(isMovePossible(tmpStart, tmpEnd)){
-                    Move tmpMove = new Move(tmpStart, tmpEnd);
-                    list.add(tmpMove);
+
+        if (die == null || color == null || die.getValue() == 0) {
+            return list;
+        }
+
+        // If there are pieces on the bar, they must be moved first
+        if (isPieceOnBar(color)) {
+            Square barSquare = getBarSquare(color);
+            Square endSquare = getSquareAtDistance(barSquare, die);
+            if (isMovePossible(barSquare, endSquare)) {
+                list.add(new Move(barSquare, endSquare));
+            }
+            return list;
+        }
+
+        // Check all squares for possible moves
+        List<Square> allSquares = getAllSquares();
+        for (Square square : allSquares) {
+            if(square.getCheckerColor() == color && !die.isUsed()) {
+                Square possibleEnd = getSquareAtDistance(square, die);
+                if(isMovePossible(square, possibleEnd)) {
+                    list.add(new Move(square, possibleEnd));
                 }
             }
         }
         return list;
     }
-    
-    /**
-     * Get all possible moves based on dice values
-     * @param dice A list of dice
-     * @param color Color of current player
-     * @return a list of possible moves
-     */
+
     public List<Move> getPossibleMoves(List<SixSidedDie> dice, SquareColor color)
-    {    
-        int sum = 0;
-        
-        if(dice.size() == 2){
-            
-            List<Move> singleDieList = new ArrayList<Move>();
-            
-            for (SixSidedDie tmpDie : dice){
-                singleDieList.addAll(getPossibleMoves(tmpDie, color));
-                sum = sum + tmpDie.getValue();
+    {
+        if (dice == null || dice.isEmpty() || color == null) {
+            return new ArrayList<>();
+        }
+
+        // Handle regular case with 1-2 dice
+        if(dice.size() <= 2) {
+            List<Move> allMoves = new ArrayList<>();
+
+            // Add single die moves, skipping any with value 0
+            for (SixSidedDie die : dice) {
+                if (die.getValue() != 0) {
+                    allMoves.addAll(getPossibleMoves(die, color));
+                }
             }
 
-            SixSidedDie sumDie = new SixSidedDie(dice.get(0).getDieColor(), sum);
-            List<Move> twoDiceList = getPossibleMoves(sumDie, color);
+            // If we have exactly 2 dice, add combined move if neither is 0
+            if (dice.size() == 2 && dice.get(0).getValue() != 0 && dice.get(1).getValue() != 0) {
+                int combinedValue = dice.get(0).getValue() + dice.get(1).getValue();
+                SixSidedDie combinedDie = new SixSidedDie(dice.get(0).getDieColor(), combinedValue);
+                allMoves.addAll(getPossibleMoves(combinedDie, color));
+            }
 
-            twoDiceList.addAll(singleDieList);
-
-            return twoDiceList;
+            return allMoves;
         }
-        else { // If 4 dice
+        // Handle doubles (4 dice case)
+        else {
+            List<Move> allMoves = new ArrayList<>();
+            int singleValue = dice.get(0).getValue();
 
-            SixSidedDie sumFourDice = new SixSidedDie(dice.get(0).getDieColor(), 4 * dice.get(0).getValue());
-            SixSidedDie sumThreeDice = new SixSidedDie(dice.get(0).getDieColor(), 3 * dice.get(0).getValue());
-            SixSidedDie sumTwoDice = new SixSidedDie(dice.get(0).getDieColor(), 2 * dice.get(0).getValue());
+            // Add movements for 1, 2, 3, and 4 times the die value, but only if value isn't 0
+            if (singleValue != 0) {
+                for (int multiplier = 1; multiplier <= 4; multiplier++) {
+                    SixSidedDie multipliedDie = new SixSidedDie(
+                            dice.get(0).getDieColor(),
+                            singleValue * multiplier
+                    );
+                    allMoves.addAll(getPossibleMoves(multipliedDie, color));
+                }
+            }
 
-            List<Move> fourDiceList = getPossibleMoves(sumFourDice, color);
-
-            fourDiceList.addAll(getPossibleMoves(sumThreeDice, color));
-            fourDiceList.addAll(getPossibleMoves(sumTwoDice, color));
-            fourDiceList.addAll(getPossibleMoves(dice.get(0), color));
-
-            return fourDiceList;
+            return allMoves;
         }
     }
 
-    /**
-     * Save all board info under the game root element
-     * @param game Root element for Board in XML files
-     */
     public void save(Element game)
     {
         Element boardXML = new Element("board");
@@ -483,9 +477,6 @@ public class Board
         }
     }
 
-    /**
-     * Load all board info under the game root element
-     */
     public void load(Element Game)
     {
         squareList = new ArrayList<Square>();
@@ -522,11 +513,6 @@ public class Board
         }
     }
 
-    /**
-     *
-     * GETTERS
-     *
-     */
     public ArrayList<Square> getSquareList() {
         return squareList;
     }
@@ -547,7 +533,6 @@ public class Board
     }
 
     public Square getSquare(int position, SquareColor color) {
-
         if (position >= 1 && position <= 24)
             return squareList.get(position-1);
         else if (position == 25 && color.equals(SquareColor.WHITE))
@@ -569,10 +554,6 @@ public class Board
             return barSquare.get(1);
     }
 
-    /**
-     * Combine normal squares, victory squares, and bar squares together
-     * @return a list containing all squares, victory squares, and bar squares
-     */
     public ArrayList<Square> getAllSquares() {
         ArrayList<Square> listAllSquares = new ArrayList<Square>();
         for (Square square1 : squareList) {

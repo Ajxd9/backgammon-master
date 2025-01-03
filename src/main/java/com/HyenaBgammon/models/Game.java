@@ -95,7 +95,8 @@ public class Game {
     }
 
     /**
-     *
+
+     Abed Note: here I can add the option for Surprise Stations
      */
     public void changeTurn() {
         if (board.isAllPiecesMarked(currentPlayer))
