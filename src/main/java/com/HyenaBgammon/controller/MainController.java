@@ -29,6 +29,7 @@ import com.HyenaBgammon.models.Session;
 import com.HyenaBgammon.view.IntermediateGameView;
 import com.HyenaBgammon.view.ManagerView;
 import com.HyenaBgammon.view.MenuView;
+import com.HyenaBgammon.view.RulesView;
 import com.HyenaBgammon.view.HistoryView;
 
 public class MainController implements Controller {
@@ -166,7 +167,7 @@ public class MainController implements Controller {
                 frame.setContentPane(new HistoryView(new ActionListener() {
                 	@Override
                     public void actionPerformed(ActionEvent e) {
-                        frame.setContentPane(viewMenu); // Navigate back to the menu
+                        frame.setContentPane(viewMenu);
                         frame.revalidate();
                         frame.repaint();
                     }
@@ -221,13 +222,13 @@ public class MainController implements Controller {
             public void mouseEntered(MouseEvent e) {}
             @Override
             public void mouseClicked(MouseEvent e) {
-               
-                URI uri = URI.create("https://en.wikipedia.org/wiki/Backgammon#Board");
-                try {
-                    Desktop.getDesktop().browse(uri);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+            	frame.setContentPane(new RulesView(event -> {
+                    frame.setContentPane(viewMenu); // Navigate back to the menu
+                    frame.revalidate();
+                    frame.repaint();
+                }));
+                frame.revalidate();
+                frame.repaint();
             }
         });
     }
