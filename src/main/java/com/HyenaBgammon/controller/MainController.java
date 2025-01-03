@@ -12,10 +12,13 @@ package com.HyenaBgammon.controller;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 
@@ -26,6 +29,7 @@ import com.HyenaBgammon.models.Session;
 import com.HyenaBgammon.view.IntermediateGameView;
 import com.HyenaBgammon.view.ManagerView;
 import com.HyenaBgammon.view.MenuView;
+import com.HyenaBgammon.view.HistoryView;
 
 public class MainController implements Controller {
 
@@ -68,6 +72,7 @@ public class MainController implements Controller {
         listenerAddButton();
         listenerManageButton();
         listenerHelpButton();
+        listenerHistoryButton();
     }
 
     /**
@@ -152,10 +157,36 @@ public class MainController implements Controller {
             }
         });
     }
+    
+    private void listenerHistoryButton() {
+        viewMenu.getHistoryButton().addMouseListener(new MouseListener() {
 
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                frame.setContentPane(new HistoryView(new ActionListener() {
+                	@Override
+                    public void actionPerformed(ActionEvent e) {
+                        frame.setContentPane(viewMenu); // Navigate back to the menu
+                        frame.revalidate();
+                        frame.repaint();
+                    }
+                }));
+                frame.revalidate();
+                frame.repaint();
+            }
 
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+        });
+    }
 
-
+    
     private void listenerManageButton() {
         viewMenu.getManageButton().addMouseListener(new MouseListener() {
             @Override
@@ -251,4 +282,6 @@ public class MainController implements Controller {
     public void setGameCreation(IntermediateGameView gameCreation) {
         this.gameCreation = gameCreation;
     }
+    
+    
 }

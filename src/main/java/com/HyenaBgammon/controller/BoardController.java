@@ -121,10 +121,7 @@ public class BoardController implements Controller {
         game.changeTurn();
         gameView.displayTransition(game.getGameParameters().getPlayer(game.getCurrentPlayer()).getUsername(), "Player" + game.getCurrentPlayer().toString());
     }
-    
-    
-    
-    
+      
     ////////////////////////////////////////////////////////////////////////////////////to do q
     public void handleDicePress(SixSidedDie die) {
         if (die.getDieType() == DieType.QUESTION) {
