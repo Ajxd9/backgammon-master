@@ -47,7 +47,7 @@ public class BoardController implements Controller {
         buildClock();
         listenerCaseButton();
     }
-    
+    	
     private void listenerCaseButton() {
         Collection<CaseButton> cases = boardView.getSquareButtons();
         for (CaseButton caseButton : cases) {
@@ -64,43 +64,45 @@ public class BoardController implements Controller {
                 public void mouseReleased(MouseEvent e) {
                     CaseButton caseButton = (CaseButton) e.getSource();
                     if (!game.isTurnFinished() && !game.isGameFinished())
-                        if(boardView.getCandidate() == null 
+                        if (boardView.getCandidate() == null 
                                 && game.getCurrentPlayer() == caseButton.getCase().getCheckerColor()) {
                             if (caseButton.getCase().getNumCheckers() != 0 
                                     && (!board.isPieceOnBar(game.getCurrentPlayer()) 
                                             || caseButton.getCase().isBarSquare())
-                                            && caseButton.getCase().getCheckerColor() == game.getCurrentPlayer()) {
+                                    && caseButton.getCase().getCheckerColor() == game.getCurrentPlayer()) {
                                 boardView.setCandidate(caseButton);
-                                if(game.getGameParameters().getPlayer(game.getCurrentPlayer()).getAssistantLevel() == AssistantLevel.BASIC
+                                if (game.getGameParameters().getPlayer(game.getCurrentPlayer()).getAssistantLevel() == AssistantLevel.BASIC
                                         || game.getGameParameters().getPlayer(game.getCurrentPlayer()).getAssistantLevel() == AssistantLevel.FULL)
                                     boardView.setPossible(game.getPossibleMoves(caseButton.getCase()));
-                            }
-                            else if (board.isPieceOnBar(game.getCurrentPlayer())) {
+                            } else if (board.isPieceOnBar(game.getCurrentPlayer())) {
                                 gameView.displayRequestWindow("Warning!", "Remove hit pieces before playing.");
                             }
-                        }
-                        else if (boardView.getCandidate() != null) {
+                        } else if (boardView.getCandidate() != null) {
                             if (game.playMove(boardView.getCandidate().getCase(), caseButton.getCase())) {
+                                // Check the type of the triangle where the piece was moved
+                                String triangleType = boardView.getTriangleType(caseButton.getCase());
+                                if (!triangleType.equals("NORMAL")) {
+                                    System.out.println("This is a " + triangleType + " triangle.");
+                                }
+
                                 boardView.unCandidateAll();
                                 boardView.setPossible(new ArrayList<Square>());
-                                
-                                if(game.isGameFinished()) {
+
+                                if (game.isGameFinished()) {
                                     gameController.endGame();
                                 }
-                                
+
                                 if (game.areDiceUsed()) {    
                                     changeTurn();    
-                                }
-                                else if(!game.hasPossibleMove()) {
+                                } else if (!game.hasPossibleMove()) {
                                     changeTurn();
                                     game.rollDice();
-                                    if(!game.hasPossibleMove()) {
+                                    if (!game.hasPossibleMove()) {
                                         gameView.displayRequestWindow("No possible move", "");
                                         changeTurn();
                                     }
                                 }
-                            }
-                            else {
+                            } else {
                                 boardView.unCandidateAll();
                                 boardView.setPossible(new ArrayList<Square>());
                             }
@@ -112,6 +114,8 @@ public class BoardController implements Controller {
             });
         }
     }
+
+
     
     public void changeTurn() {
         if (Clock != null) {
@@ -198,7 +202,30 @@ public class BoardController implements Controller {
         // Attach the clock to the game view's clock bar
         gameView.getClockBar().setClock(Clock);
     }
+    // check player , player position ! so i can see if it , what type of the tringle , 
+    public void checkPlayerPosition(Square playerSquare) {
+        if (playerSquare == null) {
+            System.out.println("Player is not on a valid square.");
+            return;
+        }
 
+        String triangleType = boardView.getTriangleType(playerSquare);
+
+        switch (triangleType) {
+            case "QUESTION":
+                System.out.println("Player is in a Question Mark triangle!");
+                break;
+            case "SURPRISE":
+                System.out.println("Player is in a Surprise triangle!");
+                break;
+            default:
+                System.out.println("Player is in a normal triangle.");
+                break;
+        }
+    }
+
+
+    
     /**
      * Returns the Clock
      * @return Clock
@@ -215,6 +242,9 @@ public class BoardController implements Controller {
     @Override
     public JFrame getFrame() {
         return frame;
+    }
+    public void refreshMarkers() {
+        boardView.updateMarkers();
     }
 
     @Override

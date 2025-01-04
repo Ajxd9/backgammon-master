@@ -46,6 +46,12 @@ public class Square {
         
         numCheckers = Integer.valueOf(square.getChildText("numCheckers"));
     }
+    public Square(SquareColor color, int numCheckers, int position, SquareType squareType) {
+        this.checkerColor = color;
+        this.numCheckers = numCheckers;
+        this.position = position;
+        this.squareType = squareType; // Assign type
+    }
 
     public boolean isHomeSquare() {
         return (position == 25 && checkerColor == SquareColor.WHITE) || 
@@ -103,6 +109,12 @@ public class Square {
     public void setCheckerColor(SquareColor color) {
         checkerColor = color;
     }
+    public SquareType getSquareType() {
+        return squareType;
+    }
+    public void setSquareType(SquareType squareType) {
+        this.squareType = squareType;
+    }
     
     public void setNumCheckers(int num) {
         numCheckers = num;
@@ -115,5 +127,14 @@ public class Square {
     public void setSquare(SquareColor color, int numCheckers) {
         this.checkerColor = color;
         this.numCheckers = numCheckers;
+    }
+    @Override
+    public String toString() {
+        return "Square{" +
+               "checkerColor=" + checkerColor +
+               ", numCheckers=" + numCheckers +
+               ", position=" + position +
+               ", squareType=" + squareType +
+               '}';
     }
 }
