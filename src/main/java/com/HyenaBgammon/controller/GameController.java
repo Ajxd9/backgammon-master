@@ -34,6 +34,8 @@ import com.HyenaBgammon.models.Game;
 import com.HyenaBgammon.models.Profiles;
 import com.HyenaBgammon.models.Session;
 import com.HyenaBgammon.view.GameView;
+import com.HyenaBgammon.view.RulesDialog;
+import com.HyenaBgammon.view.RulesView;
 
 public class GameController implements Controller
 {
@@ -132,12 +134,8 @@ public class GameController implements Controller
             public void mouseEntered(MouseEvent e) {}
             @Override
             public void mouseClicked(MouseEvent e) {
-                URI uri = URI.create("https://en.wikipedia.org/wiki/Backgammon#Board");
-                try {
-                    Desktop.getDesktop().browse(uri);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+            	RulesDialog rulesDialog = new RulesDialog(frame);
+                rulesDialog.setVisible(true);
             }
         });
     }

@@ -1,10 +1,15 @@
 package com.HyenaBgammon.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -24,12 +29,21 @@ public class MenuView extends MonochromeView {
     private MonochromeButton quitButton;
     private ImageIcon icon;
     private MonochromeButton manageButton;
+    private MonochromeButton historyButton;
     
     public MenuView(){
         build();
     }
     
     private void build() {
+    	
+    	// Title Label
+    	JLabel titleLabel = new JLabel("Hyena Backgammon");
+    	titleLabel.setFont(new Font("Verdana", Font.BOLD, 30)); // Set custom font
+    	titleLabel.setForeground(Color.WHITE);
+    	titleLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center-align text
+    	titleLabel.setBounds(200, 80, 400, 50); // Position at the top-center
+    	add(titleLabel);
         
         // Retrieve the image
         try{
@@ -45,7 +59,7 @@ public class MenuView extends MonochromeView {
         JPanel gridContainer = new JPanel();
         JPanel buttonContainer = new JPanel();
         
-        GridLayout gl = new GridLayout(6, 1); // To arrange buttons in a column
+        GridLayout gl = new GridLayout(7, 1); // To arrange buttons in a column
         
         // Settings for the grid container
         gridContainer.setBounds(200, 150, 400, 400); // Relative positioning of the container with its dimensions
@@ -65,6 +79,9 @@ public class MenuView extends MonochromeView {
         
         playerListButton = new MonochromeButton("Player List");
         buttonContainer.add(playerListButton);
+        
+        historyButton = new MonochromeButton("Game History");
+        buttonContainer.add(historyButton);
         
         rulesButton = new MonochromeButton("Rules");
         buttonContainer.add(rulesButton);
@@ -128,6 +145,10 @@ public class MenuView extends MonochromeView {
     public MonochromeButton getManageButton() {
 		return manageButton;
 	}
+    
+    public MonochromeButton getHistoryButton() {
+        return historyButton;
+    }
 
 	@Override
     protected void paintComponent(Graphics g) {
