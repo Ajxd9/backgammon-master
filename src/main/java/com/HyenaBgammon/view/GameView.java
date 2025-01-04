@@ -236,6 +236,7 @@ public class GameView extends MonochromeView {
 	 * Returns the ClockBar component of the view.
 	 * @return clockBar : The ClockBar component
 	 */
+	
 	public ClockBar getClockBar() {
 		return clockBar;
 	}
