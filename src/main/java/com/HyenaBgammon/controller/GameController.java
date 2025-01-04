@@ -39,6 +39,7 @@ import com.HyenaBgammon.view.RulesView;
 
 public class GameController implements Controller
 {
+	
     private Session session;
     private GameView gameView;
     private BoardController boardController;

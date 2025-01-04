@@ -22,6 +22,7 @@ public class Game {
     private int diceUsed;
     private GameDifficulty gameDifficulty;
     
+    private boolean skipNextTurn = false; // Tracks if the next turn should be skipped
 
     /**
      *
@@ -729,5 +730,13 @@ public class Game {
 
     public SquareColor getFirstPlayer() {
         return firstPlayer;
+    }
+    public boolean shouldSkipNextTurn() {
+        return skipNextTurn;
+    }
+
+    // Setter for skipNextTurn
+    public void setSkipNextTurn(boolean skipNextTurn) {
+        this.skipNextTurn = skipNextTurn;
     }
 }

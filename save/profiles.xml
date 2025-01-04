@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <profiles>
   <players id="128430">
-    <username>oo</username>
-    <imageSource />
-    <assistanceLevel>NOT_USED</assistanceLevel>
+    <username>player 1</username>
+    <imageSource>images/avatars/asleep_renard.png</imageSource>
+    <assistanceLevel>BASIC</assistanceLevel>
     <playerStatistics>
       <gamesPlayed>0</gamesPlayed>
       <winCount>0</winCount>
@@ -13,9 +13,9 @@
     </playerStatistics>
   </players>
   <players id="128438">
-    <username>11</username>
-    <imageSource />
-    <assistanceLevel>NOT_USED</assistanceLevel>
+    <username>player2</username>
+    <imageSource>images/avatars/escargot.png</imageSource>
+    <assistanceLevel>BASIC</assistanceLevel>
     <playerStatistics>
       <gamesPlayed>0</gamesPlayed>
       <winCount>0</winCount>
