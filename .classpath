@@ -26,6 +26,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry exported="true" kind="lib" path="Path"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
