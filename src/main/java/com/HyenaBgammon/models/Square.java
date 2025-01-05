@@ -16,7 +16,8 @@ public class Square {
     private int numCheckers;
     private int position;
     private SquareType squareType;
-
+    private boolean isSurpriseTriangle;
+    private boolean isActivated;
     public Square(SquareColor color, int numCheckers, int position) {
         this.checkerColor = color;
         this.numCheckers = numCheckers;
@@ -123,10 +124,29 @@ public class Square {
     public void setPosition(int pos) {
         position = pos;
     }
-    
+    public Square(boolean isSurpriseTriangle) {
+        this.isSurpriseTriangle = isSurpriseTriangle;
+        this.isActivated = false;
+    }
     public void setSquare(SquareColor color, int numCheckers) {
         this.checkerColor = color;
         this.numCheckers = numCheckers;
+    }
+
+    public boolean isSurpriseTriangle() {
+        return isSurpriseTriangle;
+    }
+
+    public void setSurpriseTriangle(boolean isSurpriseTriangle) {
+        this.isSurpriseTriangle = isSurpriseTriangle;
+    }
+
+    public boolean isActivated() {
+        return isActivated;
+    }
+
+    public void activate() {
+        this.isActivated = true;
     }
     @Override
     public String toString() {

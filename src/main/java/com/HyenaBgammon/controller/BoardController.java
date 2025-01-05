@@ -81,9 +81,22 @@ public class BoardController implements Controller {
                             if (game.playMove(boardView.getCandidate().getCase(), caseButton.getCase())) {
                                 // Check the type of the triangle where the piece was moved
                                 String triangleType = boardView.getTriangleType(caseButton.getCase());
+                                
+                                if (triangleType.equals("SURPRISE") && !caseButton.getCase().isActivated() && !game.isSurpriseStationHit()) {
+                                    // Activate the surprise station
+                                    game.setSurpriseStationEnabled(true); // Enable extra turn for the same player
+                                    game.setSurpriseStationHit(true);    // Ensure it triggers only once
+
+                                    // Notify the player
+                                    System.out.println("Surprise station triggered! Extra turn will be granted.");
+                                    gameView.displayRequestWindow("Surprise Station!", "You earned an extra turn!");
+                                }
+
+
                                 if (!triangleType.equals("NORMAL")) {
                                     System.out.println("This is a " + triangleType + " triangle.");
                                 }
+                                
 
                                 boardView.unCandidateAll();
                                 boardView.setPossible(new ArrayList<Square>());

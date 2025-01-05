@@ -21,7 +21,9 @@ public class Game {
     private boolean turnFinished;
     private int diceUsed;
     private GameDifficulty gameDifficulty;
-    
+    private boolean surpriseStationEnabled = false; // Tracks if a surprise station is active
+    private boolean surpriseStationHit = false;    // Ensures surprise station is triggered only once
+
     private boolean skipNextTurn = false; // Tracks if the next turn should be skipped
 
     /**
@@ -100,18 +102,32 @@ public class Game {
      Abed Note: here I can add the option for Surprise Stations
      */
     public void changeTurn() {
-        if (board.isAllPiecesMarked(currentPlayer))
+        
+        if (board.isAllPiecesMarked(currentPlayer)) {
             endGame();
-        else {
-            if (currentPlayer == SquareColor.WHITE)
-                currentPlayer = SquareColor.BLACK;
-            else
+        }else if (surpriseStationEnabled) {
+        	 surpriseStationEnabled = false; // Reset the surprise station flag
+             turnFinished = false;  
+        	if (currentPlayer == SquareColor.WHITE) {
                 currentPlayer = SquareColor.WHITE;
+            } else {
+                currentPlayer = SquareColor.BLACK;
+            }
+        }
+
+        else {
+            // Normal turn change
+            if (currentPlayer == SquareColor.WHITE) {
+                currentPlayer = SquareColor.BLACK;
+            } else {
+                currentPlayer = SquareColor.WHITE;
+            }
         }
 
         SixSidedDie = new ArrayList<SixSidedDie>();
         turnFinished = true;
     }
+
 
     /**
      *
@@ -738,5 +754,23 @@ public class Game {
     // Setter for skipNextTurn
     public void setSkipNextTurn(boolean skipNextTurn) {
         this.skipNextTurn = skipNextTurn;
+    }
+    public boolean isSurpriseStationEnabled() {
+        return surpriseStationEnabled;
+    }
+
+    // Setter for surpriseStationEnabled
+    public void setSurpriseStationEnabled(boolean surpriseStationEnabled) {
+        this.surpriseStationEnabled = surpriseStationEnabled;
+    }
+
+    // Getter for surpriseStationHit
+    public boolean isSurpriseStationHit() {
+        return surpriseStationHit;
+    }
+
+    // Setter for surpriseStationHit
+    public void setSurpriseStationHit(boolean surpriseStationHit) {
+        this.surpriseStationHit = surpriseStationHit;
     }
 }
