@@ -38,7 +38,12 @@ public class ManagerModel {
         }
     }
 
-    public void saveQuestions() throws IOException, JSONException {
+    public ManagerModel(List<Question> questions) {
+		super();
+		this.questions = questions;
+	}
+
+	public void saveQuestions() throws IOException, JSONException {
         JSONObject root = new JSONObject();
         JSONArray questionsArray = new JSONArray();
 
