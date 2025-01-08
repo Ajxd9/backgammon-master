@@ -1,12 +1,27 @@
-// Path: com/questioneditor/model/Question.java
 package com.HyenaBgammon.models;
 
-public class Question {
-    private String question;
-    private String[] answers;
-    private String correctAns;
-    private String difficulty;
+import java.util.Arrays;
 
+public class Question {
+    private String question;       // The text of the question
+    private String[] answers;      // Array of possible answers
+    private String correctAns;     // The correct answer
+    private String difficulty;     // Difficulty level (e.g., "Easy", "Medium", "Hard")
+
+    // Default Constructor
+    public Question() {
+        // Empty constructor for flexibility
+    }
+
+    // Parameterized Constructor
+    public Question(String question, String[] answers, String correctAns, String difficulty) {
+        this.question = question;
+        this.answers = answers;
+        this.correctAns = correctAns;
+        this.difficulty = difficulty;
+    }
+
+    // Getters and Setters
     public String getQuestion() {
         return question;
     }
@@ -38,33 +53,33 @@ public class Question {
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
-    
-    
- // converting int to String in difficulty level
- 	public String getDifficulty (int difficulty) {
- 		if (difficulty == 1)
- 			return "Easy";
- 		if (difficulty == 2)
- 			return "Medium";
- 		if (difficulty == 3)
- 			return "Hard";
- 		else 
- 			return "";	
- 	}
- 	
- 	
 
-public Question() {
-	super();
-}
+    // Static Utility Method for Difficulty Conversion
+    public static String convertDifficulty(int difficulty) {
+        switch (difficulty) {
+            case 1:
+                return "Easy";
+            case 2:
+                return "Medium";
+            case 3:
+                return "Hard";
+            default:
+                return "Unknown";
+        }
+    }
 
-public Question(String question, String[] answers, String correctAns, String difficulty) {
-	super();
-	this.question = question;
-	this.answers = answers;
-	this.correctAns = correctAns;
-	this.difficulty = difficulty;
-}
- 
- 	
+    // Validates if the given answer is correct
+    public boolean isCorrect(String userAnswer) {
+        return correctAns != null && correctAns.equals(userAnswer);
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "question='" + question + '\'' +
+                ", answers=" + Arrays.toString(answers) +
+                ", correctAns='" + correctAns + '\'' +
+                ", difficulty='" + difficulty + '\'' +
+                '}';
+    }
 }

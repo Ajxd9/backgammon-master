@@ -17,6 +17,8 @@ import com.HyenaBgammon.models.ClockEventListener;
 import com.HyenaBgammon.models.DieType;
 import com.HyenaBgammon.models.AssistantLevel;
 import com.HyenaBgammon.models.Game;
+import com.HyenaBgammon.models.Question;
+import com.HyenaBgammon.models.QuestionManager;
 import com.HyenaBgammon.models.Board;
 import com.HyenaBgammon.view.GameView;
 import com.HyenaBgammon.view.BoardView;
@@ -30,6 +32,7 @@ public class BoardController implements Controller {
     
     private GameController gameController;
     private JFrame frame;
+    private QuestionManager questionManager; // Added QuestionManager
 
     public BoardController(Game game, GameView gameView, GameController gameController) {
         this.game = game;
@@ -37,7 +40,8 @@ public class BoardController implements Controller {
         this.gameView = gameView;
         this.boardView = gameView.getBoardView();
         this.gameController = gameController;
-    
+        this.questionManager = new QuestionManager(); // Use default constructor
+
         build();
         boardView.updateDice();
         gameView.displayTransition(game.getGameParameters().getPlayer(game.getCurrentPlayer()).getUsername(), "Player" + game.getCurrentPlayer().toString());    
@@ -91,6 +95,9 @@ public class BoardController implements Controller {
                                     System.out.println("Surprise station triggered! Extra turn will be granted.");
                                     gameView.displayRequestWindow("Surprise Station!", "You earned an extra turn!");
                                 }
+                                if (triangleType.equals("QUESTION")) {
+                                    handleQuestionTriangle(caseButton);
+                                }
 
 
                                 if (!triangleType.equals("NORMAL")) {
@@ -130,15 +137,7 @@ public class BoardController implements Controller {
 
 
     
-    public void changeTurn() {
-        if (Clock != null) {
-            Clock.stop();
-            Clock.setValue(0);
-        }
-        game.changeTurn();
-        gameView.displayTransition(game.getGameParameters().getPlayer(game.getCurrentPlayer()).getUsername(), "Player" + game.getCurrentPlayer().toString());
-    }
-    
+ 
     
     
     
@@ -156,7 +155,36 @@ public class BoardController implements Controller {
         die.use();
         boardView.updateDice(); // Refresh dice state
     }
-    
+    private void handleQuestionTriangle(CaseButton caseButton) {
+        // Lock the game while displaying the question
+        lockGame();
+
+        // Fetch a random question
+        Question question = questionManager.getRandomQuestion();
+
+        if (question == null) {
+            // Handle the case where no questions are available
+            gameView.displayRequestWindow("No Question Available", "Continue your turn.");
+            unlockGame();
+            return;
+        }
+
+        // Pass the question object to GameView for display
+        gameView.displayQuestion(question, 30, (isCorrect) -> {
+            if (isCorrect) {
+                // Notify the player they answered correctly with green text
+                gameView.displayColoredRequestWindow("Correct!", "You answered correctly. Continue your turn.", "green");
+                unlockGame(); // Unlock the game so the player can continue their turn
+            } else {
+                // Notify the player they answered incorrectly or timed out with red text
+                gameView.displayColoredRequestWindow("Wrong!", "Time's up or wrong answer. Turn finished.", "red");
+                changeTurn(); // End the turn
+                unlockGame(); // Unlock the game after ending the turn
+            }
+        });
+    }
+
+
     
     private void buildClock() {
         if (game.getGameParameters().getSecondsPerTurn() != 0) {
@@ -236,7 +264,25 @@ public class BoardController implements Controller {
                 break;
         }
     }
+    public void changeTurn() {
+        if (Clock != null) {
+            Clock.stop();
+            Clock.setValue(0);
+        }
+        game.changeTurn();
+        gameView.displayTransition(game.getGameParameters().getPlayer(game.getCurrentPlayer()).getUsername(), "Player" + game.getCurrentPlayer().toString());
+    }
+    
 
+    private void lockGame() {
+        boardView.setEnabled(false); // Disable the board interaction
+        gameView.lockInputs();      // Assume lockInputs disables all UI components
+    }
+
+    private void unlockGame() {
+        boardView.setEnabled(true);  // Enable the board interaction
+        gameView.unlockInputs();     // Assume unlockInputs re-enables all UI components
+    }
 
     
     /**
