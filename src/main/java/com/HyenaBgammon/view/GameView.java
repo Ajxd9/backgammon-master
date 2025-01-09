@@ -156,11 +156,13 @@ public class GameView extends MonochromeView {
         JPanel answersPanel = new JPanel(new GridLayout(0, 1));
         ButtonGroup answerGroup = new ButtonGroup();
 
+        int index = 0;
         for (String answer : question.getAnswers()) {
             JRadioButton answerButton = new JRadioButton(answer);
-            answerButton.setActionCommand(answer); // Set the action command to the answer
+            answerButton.setActionCommand(String.valueOf(index + 1)); // Use index as action command
             answerGroup.add(answerButton);
             answersPanel.add(answerButton);
+            index++;
         }
         questionDialog.add(answersPanel, BorderLayout.CENTER);
 
@@ -170,7 +172,7 @@ public class GameView extends MonochromeView {
             String selectedAnswer = answerGroup.getSelection() != null ? answerGroup.getSelection().getActionCommand() : null;
 
             // Validate the selected answer
-            boolean isCorrect = question.isCorrect(selectedAnswer); // Use the Question class's validation method
+            boolean isCorrect = question.isCorrect(selectedAnswer);
             callback.accept(isCorrect);
             questionDialog.dispose();
         });
@@ -178,17 +180,28 @@ public class GameView extends MonochromeView {
 
         // Add a timer for automatic submission
         Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 callback.accept(false); // Time's up
                 questionDialog.dispose();
             }
-        }, timeLimit * 1000);
+        };
+
+        timer.schedule(task, timeLimit * 1000);
+
+        // Cancel the timer when the dialog is closed
+        questionDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                timer.cancel();
+            }
+        });
 
         questionDialog.setVisible(true);
         timer.cancel(); // Cancel the timer if the dialog is closed
     }
+
 
 
     /**

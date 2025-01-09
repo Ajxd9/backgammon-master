@@ -70,8 +70,15 @@ public class Question {
 
     // Validates if the given answer is correct
     public boolean isCorrect(String userAnswer) {
-        return correctAns != null && correctAns.equals(userAnswer);
+        if (correctAns == null || userAnswer == null) {
+            System.err.println("Invalid input: correctAns or userAnswer is null.");
+            return false;
+        }
+        System.out.println("Comparing correctAns: " + correctAns + " with userAnswer: " + userAnswer);
+        return correctAns.trim().equals(userAnswer.trim());
     }
+
+
 
     @Override
     public String toString() {

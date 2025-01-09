@@ -102,20 +102,16 @@ public class Game {
      Abed Note: here I can add the option for Surprise Stations
      */
     public void changeTurn() {
-        
         if (board.isAllPiecesMarked(currentPlayer)) {
             endGame();
-        }else if (surpriseStationEnabled) {
-        	 surpriseStationEnabled = false; // Reset the surprise station flag
-             turnFinished = false;  
-        	if (currentPlayer == SquareColor.WHITE) {
-                currentPlayer = SquareColor.WHITE;
-            } else {
-                currentPlayer = SquareColor.BLACK;
-            }
+            return; // Exit to prevent further changes after the game ends
         }
 
-        else {
+        if (surpriseStationHit && surpriseStationEnabled) {
+            // Keep the current player if the surprise station grants an extra turn
+            surpriseStationEnabled = false; // Reset the extra turn flag
+            turnFinished = false; // Reset the turn finished flag
+        } else {
             // Normal turn change
             if (currentPlayer == SquareColor.WHITE) {
                 currentPlayer = SquareColor.BLACK;

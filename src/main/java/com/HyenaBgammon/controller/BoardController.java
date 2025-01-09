@@ -29,7 +29,8 @@ public class BoardController implements Controller {
     private BoardView boardView;
     private GameView gameView;
     private Clock Clock;
-    
+    private boolean turnChanged = false; // Add a flag to track turn changes
+
     private GameController gameController;
     private JFrame frame;
     private QuestionManager questionManager; // Added QuestionManager
@@ -66,10 +67,13 @@ public class BoardController implements Controller {
                 public void mousePressed(MouseEvent e) {}
                 @Override
                 public void mouseReleased(MouseEvent e) {
+                    turnChanged = false; // Reset the flag at the start of the turn
+
                     CaseButton caseButton = (CaseButton) e.getSource();
                     if (!game.isTurnFinished() && !game.isGameFinished())
                         if (boardView.getCandidate() == null 
                                 && game.getCurrentPlayer() == caseButton.getCase().getCheckerColor()) {
+                        	
                             if (caseButton.getCase().getNumCheckers() != 0 
                                     && (!board.isPieceOnBar(game.getCurrentPlayer()) 
                                             || caseButton.getCase().isBarSquare())
@@ -97,6 +101,7 @@ public class BoardController implements Controller {
                                 }
                                 if (triangleType.equals("QUESTION")) {
                                     handleQuestionTriangle(caseButton);
+                                    turnChanged=true; 
                                 }
 
 
@@ -111,18 +116,22 @@ public class BoardController implements Controller {
                                 if (game.isGameFinished()) {
                                     gameController.endGame();
                                 }
-
+                                if(!turnChanged) {
                                 if (game.areDiceUsed()) {    
-                                    changeTurn();    
+                                    changeTurn(); 
+                                    turnChanged= true; 
                                 } else if (!game.hasPossibleMove()) {
                                     changeTurn();
+                                    turnChanged=true;
                                     game.rollDice();
                                     if (!game.hasPossibleMove()) {
                                         gameView.displayRequestWindow("No possible move", "");
                                         changeTurn();
+                                        turnChanged =true; 
                                     }
                                 }
-                            } else {
+                            }
+                            }else {
                                 boardView.unCandidateAll();
                                 boardView.setPossible(new ArrayList<Square>());
                             }
@@ -174,10 +183,12 @@ public class BoardController implements Controller {
             if (isCorrect) {
                 // Notify the player they answered correctly with green text
                 gameView.displayColoredRequestWindow("Correct!", "You answered correctly. Continue your turn.", "green");
+                System.out.print("Test to correct");
                 unlockGame(); // Unlock the game so the player can continue their turn
             } else {
                 // Notify the player they answered incorrectly or timed out with red text
                 gameView.displayColoredRequestWindow("Wrong!", "Time's up or wrong answer. Turn finished.", "red");
+                System.out.print("Test to  notttttttt correct");
                 changeTurn(); // End the turn
                 unlockGame(); // Unlock the game after ending the turn
             }
@@ -269,9 +280,20 @@ public class BoardController implements Controller {
             Clock.stop();
             Clock.setValue(0);
         }
+
+        // Change the current player in the game
         game.changeTurn();
-        gameView.displayTransition(game.getGameParameters().getPlayer(game.getCurrentPlayer()).getUsername(), "Player" + game.getCurrentPlayer().toString());
+
+        // Log the current player for debugging
+        System.out.println("Turn changed to Player: " + game.getCurrentPlayer());
+
+        // Update the game view with the new player's turn
+        gameView.displayTransition(
+            game.getGameParameters().getPlayer(game.getCurrentPlayer()).getUsername(),
+            "Player " + game.getCurrentPlayer().toString()
+        );
     }
+
     
 
     private void lockGame() {
