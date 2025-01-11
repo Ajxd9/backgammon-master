@@ -68,7 +68,10 @@ public class BoardController implements Controller {
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     turnChanged = false; // Reset the flag at the start of the turn
-
+                    if (game.isQuestionRequiredAtTurnStart()) {
+                    	checkTurnStartLogic();
+                        return; // Don't proceed until the question is answered
+                    }
                     CaseButton caseButton = (CaseButton) e.getSource();
                     if (!game.isTurnFinished() && !game.isGameFinished())
                         if (boardView.getCandidate() == null 
@@ -164,6 +167,47 @@ public class BoardController implements Controller {
         die.use();
         boardView.updateDice(); // Refresh dice state
     }
+    
+    private void handleTurnStartQuestion() {
+        lockGame(); // Lock the game while the question is displayed
+
+        // Fetch a random question
+        Question question = questionManager.getRandomQuestion();
+        if (question == null) {
+            gameView.displayRequestWindow("No Question Available", "Continue your turn.");
+            game.setQuestionRequiredAtTurnStart(false); // Allow the turn to proceed
+            unlockGame(); // Unlock inputs if no question is available
+            return;
+        }
+
+        // Display the question and handle the result
+        gameView.displayQuestion(question, 30, (isCorrect) -> {
+            if (isCorrect) {
+                gameView.displayColoredRequestWindow("Correct!", "You answered correctly. Begin your turn.", "green");
+                game.setQuestionRequiredAtTurnStart(false); // Allow the turn to proceed
+                if (!game.hasPossibleMove()) {
+                    gameView.displayRequestWindow("No Possible Moves", "Your turn is over. Changing turn...");
+                    changeTurn(); // End the turn if no moves are available
+                }
+                else {
+                unlockGame(); // Unlock inputs for the turn
+                }
+            } else {
+                gameView.displayColoredRequestWindow("Wrong!", "Time's up or wrong answer. Turn finished.", "red");
+                game.setQuestionRequiredAtTurnStart(false); // Clear the flag
+                changeTurn(); // End the turn
+                unlockGame(); // Unlock inputs for the next player
+            }
+        });
+    }
+
+    // Call this method when the turn starts
+    public void checkTurnStartLogic() {
+        if (game.isQuestionRequiredAtTurnStart()) {
+            handleTurnStartQuestion(); // Handle the question if required
+        }
+    }
+
     private void handleQuestionTriangle(CaseButton caseButton) {
         // Lock the game while displaying the question
         lockGame();
@@ -183,8 +227,13 @@ public class BoardController implements Controller {
             if (isCorrect) {
                 // Notify the player they answered correctly with green text
                 gameView.displayColoredRequestWindow("Correct!", "You answered correctly. Continue your turn.", "green");
-                System.out.print("Test to correct");
-                unlockGame(); // Unlock the game so the player can continue their turn
+	                if (!game.hasPossibleMove()) {
+	                    gameView.displayRequestWindow("No Possible Moves", "Your turn is over. Changing turn...");
+	                    changeTurn(); // End the turn if no moves are available
+	                }else {
+		                System.out.print("Test to correct");
+		                unlockGame(); // Unlock the game so the player can continue their turn
+	                	}
             } else {
                 // Notify the player they answered incorrectly or timed out with red text
                 gameView.displayColoredRequestWindow("Wrong!", "Time's up or wrong answer. Turn finished.", "red");

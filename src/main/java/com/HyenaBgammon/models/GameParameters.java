@@ -82,7 +82,7 @@ public class GameParameters {
     }
     
     public GameDifficulty getDifficulty() {
-        return difficulty;
+        return this.difficulty;
     }
 
 	public void setDifficulty(GameDifficulty difficulty) {

@@ -23,6 +23,7 @@ public class Game {
     private GameDifficulty gameDifficulty;
     private boolean surpriseStationEnabled = false; // Tracks if a surprise station is active
     private boolean surpriseStationHit = false;    // Ensures surprise station is triggered only once
+    private boolean questionRequiredAtTurnStart = false; // New field
 
     private boolean skipNextTurn = false; // Tracks if the next turn should be skipped
 
@@ -32,39 +33,39 @@ public class Game {
      */
     
     public Game(GameParameters p) {
-        gameParameters = p;
-        board = new Board();
-        doublingCube = new DoublingCube();
+        this.gameParameters = p;
+        this.board = new Board();
+        this.doublingCube = new DoublingCube();
 
-        playerTurnHistory = new ArrayList<Turn>();
+        this.playerTurnHistory = new ArrayList<>();
+        this.SixSidedDie = new ArrayList<>();
 
-        SixSidedDie = new ArrayList<SixSidedDie>();
+        // Initialize game state variables
+        this.turnFinished = true;
+        this.gameFinished = false;
 
-        //these variables track the game state
-        turnFinished = true;
-        gameFinished = false;
+        // Initialize game difficulty from GameParameters
+        this.gameDifficulty = p.getDifficulty(); // Ensure GameParameters has a valid difficulty set
     }
 
-    /**
-     *
-     * @param gameId
-     * @param p
-     */
     public Game(int gameId, GameParameters p) {
-        gameParameters = p;
         this.gameId = gameId;
+        this.gameParameters = p;
 
-        board = new Board();
-        doublingCube = new DoublingCube();
+        this.board = new Board();
+        this.doublingCube = new DoublingCube();
 
-        playerTurnHistory = new ArrayList<Turn>();
-        SixSidedDie = new ArrayList<SixSidedDie>();
+        this.playerTurnHistory = new ArrayList<>();
+        this.SixSidedDie = new ArrayList<>();
 
-        //these variables track the game state
-        turnFinished = true;
-        gameFinished = false;
-        
-        System.out.println("The game you just started is: "+this.gameParameters.getDifficulty());
+        // Initialize game state variables
+        this.turnFinished = true;
+        this.gameFinished = false;
+
+        // Initialize game difficulty from GameParameters
+        this.gameDifficulty = p.getDifficulty();
+
+        System.out.println("The game you just started is: " + this.gameParameters.getDifficulty());
     }
 
     /**
@@ -323,7 +324,10 @@ public class Game {
      */
     public void rollDice() {
         SixSidedDie = new ArrayList<SixSidedDie>();
-        if(this.gameParameters.getDifficulty().equals(GameDifficulty.EASY)) {
+        if (gameDifficulty.equals(GameDifficulty.MEDIUM) || gameDifficulty.equals(GameDifficulty.HARD)) {
+            questionRequiredAtTurnStart = true; // Mark that a question is required at the start of the turn
+        }
+         if(this.gameParameters.getDifficulty().equals(GameDifficulty.EASY)) {
         	
 	        SixSidedDie.add(new SixSidedDie(DieType.REGULAR,currentPlayer));
 	        SixSidedDie.add(new SixSidedDie(DieType.REGULAR,currentPlayer));
@@ -333,8 +337,9 @@ public class Game {
 	        }
 	        turnFinished = false;
 	        beginTurn();
-	        
-        } else if(this.gameParameters.getDifficulty().equals(GameDifficulty.MEDIUM)) {
+	       
+        }   
+        else if(this.gameParameters.getDifficulty().equals(GameDifficulty.MEDIUM)) {
         	
 	        SixSidedDie.add(new SixSidedDie(DieType.REGULAR,currentPlayer));
 	        SixSidedDie.add(new SixSidedDie(DieType.REGULAR,currentPlayer));
@@ -768,5 +773,14 @@ public class Game {
     // Setter for surpriseStationHit
     public void setSurpriseStationHit(boolean surpriseStationHit) {
         this.surpriseStationHit = surpriseStationHit;
+    }
+ // Getter for the new field
+    public boolean isQuestionRequiredAtTurnStart() {
+        return questionRequiredAtTurnStart;
+    }
+
+    // Setter for the new field (used when the question is answered or skipped)
+    public void setQuestionRequiredAtTurnStart(boolean required) {
+        this.questionRequiredAtTurnStart = required;
     }
 }

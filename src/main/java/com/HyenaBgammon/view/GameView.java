@@ -152,33 +152,31 @@ public class GameView extends MonochromeView {
         questionLabel.setFont(new Font("Arial", Font.BOLD, 18));
         questionDialog.add(questionLabel, BorderLayout.NORTH);
 
-        // Create answer buttons dynamically
+        // Dynamically create answer buttons
         JPanel answersPanel = new JPanel(new GridLayout(0, 1));
         ButtonGroup answerGroup = new ButtonGroup();
-
-        int index = 0;
-        for (String answer : question.getAnswers()) {
+        String[] answers = question.getAnswers(); // Assuming getAnswers() returns a String[]
+        for (int i = 0; i < answers.length; i++) { // Use `length` for arrays
+            String answer = answers[i]; // Access array elements directly
             JRadioButton answerButton = new JRadioButton(answer);
-            answerButton.setActionCommand(String.valueOf(index + 1)); // Use index as action command
+            answerButton.setActionCommand(String.valueOf(i + 1)); // Action command for selection
             answerGroup.add(answerButton);
             answersPanel.add(answerButton);
-            index++;
         }
+
         questionDialog.add(answersPanel, BorderLayout.CENTER);
 
-        // Add a submit button
+        // Submit button
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(e -> {
             String selectedAnswer = answerGroup.getSelection() != null ? answerGroup.getSelection().getActionCommand() : null;
-
-            // Validate the selected answer
             boolean isCorrect = question.isCorrect(selectedAnswer);
             callback.accept(isCorrect);
             questionDialog.dispose();
         });
         questionDialog.add(submitButton, BorderLayout.SOUTH);
 
-        // Add a timer for automatic submission
+        // Timer for auto-submit
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
@@ -190,7 +188,7 @@ public class GameView extends MonochromeView {
 
         timer.schedule(task, timeLimit * 1000);
 
-        // Cancel the timer when the dialog is closed
+        // Clean up timer on dialog close
         questionDialog.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
@@ -199,7 +197,6 @@ public class GameView extends MonochromeView {
         });
 
         questionDialog.setVisible(true);
-        timer.cancel(); // Cancel the timer if the dialog is closed
     }
 
 
