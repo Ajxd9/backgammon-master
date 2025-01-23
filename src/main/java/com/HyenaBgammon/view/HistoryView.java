@@ -29,7 +29,7 @@ public class HistoryView extends MonochromeView {
         backButton.addActionListener(backListener);
         add(backButton);
         
-        String[] columnNames = {"Winner", "Date", "Time", "Defeat", "Difficulty", "Loser"};
+        String[] columnNames = {"Winner", "Date", "Time", "Difficulty", "Loser"};
         Object[][] rowData = {};
         historyTable = new JTable(rowData, columnNames);
         historyTable.setFillsViewportHeight(true);
