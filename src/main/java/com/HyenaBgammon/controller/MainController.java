@@ -164,14 +164,13 @@ public class MainController implements Controller {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                frame.setContentPane(new HistoryView(new ActionListener() {
-                	@Override
-                    public void actionPerformed(ActionEvent e) {
-                        frame.setContentPane(viewMenu);
-                        frame.revalidate();
-                        frame.repaint();
-                    }
-                }));
+                HistoryView historyView = new HistoryView(event -> {
+                    frame.setContentPane(viewMenu);
+                    frame.revalidate();
+                    frame.repaint();
+                });
+                new HistoryController(historyView);
+                frame.setContentPane(historyView);
                 frame.revalidate();
                 frame.repaint();
             }

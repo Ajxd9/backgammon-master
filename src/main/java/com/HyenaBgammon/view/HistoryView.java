@@ -1,9 +1,11 @@
 package com.HyenaBgammon.view;
 
 import javax.swing.*;
+import com.HyenaBgammon.models.History;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
+import java.util.List;
 
 public class HistoryView extends MonochromeView {
 
@@ -38,6 +40,26 @@ public class HistoryView extends MonochromeView {
         scrollPane.setBounds(100, 200, 600, 300);
         add(scrollPane);
     
+    }
+    
+    public void addBackButtonListener(ActionListener listener) {
+        backButton.addActionListener(listener);
+    }
+    
+    public void setTableData(List<History> histories) {
+        String[] columnNames = {"Winner", "Date", "Time", "Difficulty", "Loser"};
+        Object[][] rowData = new Object[histories.size()][5];
+
+        for (int i = 0; i < histories.size(); i++) {
+            History history = histories.get(i);
+            rowData[i][0] = history.getWinnerName();
+            rowData[i][1] = history.getEndTime().toLocalDate().toString();
+            rowData[i][2] = history.getEndTime().toLocalTime().toString();
+            rowData[i][3] = history.getDifficultyLevel().toString();
+            rowData[i][4] = history.getLoserName();
+        }
+
+        historyTable.setModel(new javax.swing.table.DefaultTableModel(rowData, columnNames));
     }
     
     @Override

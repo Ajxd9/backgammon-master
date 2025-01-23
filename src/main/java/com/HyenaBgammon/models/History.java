@@ -5,13 +5,22 @@ import java.time.LocalDateTime;
 
 public class History {
 
-
-    // Fields
     private String winnerName;
     private String loserName;
     private Duration gameDuration;
     private GameDifficulty difficultyLevel;
     private LocalDateTime endTime;
+    
+	public History(String winnerName, String loserName, Duration gameDuration, GameDifficulty difficultyLevel,
+			LocalDateTime endTime) {
+		super();
+		this.winnerName = winnerName;
+		this.loserName = loserName;
+		this.gameDuration = gameDuration;
+		this.difficultyLevel = difficultyLevel;
+		this.endTime = endTime;
+	}
+	
 	public String getWinnerName() {
 		return winnerName;
 	}
@@ -42,15 +51,5 @@ public class History {
 	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
-	public History(String winnerName, String loserName, Duration gameDuration, GameDifficulty difficultyLevel,
-			LocalDateTime endTime) {
-		super();
-		this.winnerName = winnerName;
-		this.loserName = loserName;
-		this.gameDuration = gameDuration;
-		this.difficultyLevel = difficultyLevel;
-		this.endTime = endTime;
-	}
-
     
 }

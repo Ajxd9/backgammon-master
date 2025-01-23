@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gameHistory>
+  <history>
+    <winner>Alice</winner>
+    <loser>Bob</loser>
+    <duration>45</duration>
+    <difficulty>MEDIUM</difficulty>
+    <endTime>2025-01-24T00:42:18.568</endTime>
+  </history>
+  <history>
+    <winner>Alice</winner>
+    <loser>Bob</loser>
+    <duration>45</duration>
+    <difficulty>MEDIUM</difficulty>
+    <endTime>2025-01-24T00:43:42.064</endTime>
+  </history>
+</gameHistory>
