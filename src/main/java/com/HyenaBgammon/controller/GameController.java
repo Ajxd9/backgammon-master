@@ -15,7 +15,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.SortedSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -23,7 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 
 import org.jdom2.JDOMException;
-
+import com.HyenaBgammon.controller.*;
 import com.HyenaBgammon.models.Square;
 import com.HyenaBgammon.models.SquareColor;
 import com.HyenaBgammon.models.Movement;
@@ -31,6 +35,8 @@ import com.HyenaBgammon.models.SessionState;
 import com.HyenaBgammon.models.SessionManager;
 import com.HyenaBgammon.models.AssistantLevel;
 import com.HyenaBgammon.models.Game;
+import com.HyenaBgammon.models.GameDifficulty;
+import com.HyenaBgammon.models.History;
 import com.HyenaBgammon.models.Profiles;
 import com.HyenaBgammon.models.Session;
 import com.HyenaBgammon.view.GameView;
@@ -50,6 +56,10 @@ public class GameController implements Controller
     private boolean isForwardDirection;
     private Timer gameReviewTimer;
     private SquareColor doubleStakeColor;
+    private HashMap<Integer, History> gameHistory; // To store the history of all games
+    private int gameCounter; // Counter to track the number of games played
+
+   
 
     @Deprecated
     public GameController(Game game)
@@ -69,8 +79,10 @@ public class GameController implements Controller
         this.session = session;
         gameView = new GameView(session.getCurrentGame());
         gameReviewTimer = null;
+        this.gameHistory = new HashMap<>();
+        this.gameCounter = 0;
         build();
-
+     
         boardController = new BoardController(session.getCurrentGame(), gameView, this);
         gameView.getInProgressViewBottomPanel().updateScore(session.getScores().get(session.getGameParameters().getWhitePlayer()),
                                                       session.getScores().get(session.getGameParameters().getBlackPlayer()));
@@ -602,6 +614,9 @@ public class GameController implements Controller
         gameView.updateUI();
     }
 
+ 
+  /*  
+    
     public void endGame()
     {
         if (boardController.getClock() != null)
@@ -633,7 +648,68 @@ public class GameController implements Controller
             );
         }
         gameView.setState(SessionState.FINISHED);
+        
     }
+    
+    
+    */
+    
+  
+    
+    public void endGame() {
+        // Stop the clock if it exists
+        if (boardController.getClock() != null) {
+            boardController.getClock().stop();
+            boardController.getClock().setValue(0);
+        }
+
+        // Get game details
+        Game currentGame = session.getCurrentGame();
+        String winnerName = currentGame.getGameParameters().getPlayer(currentGame.getCurrentPlayer()).getUsername();
+        String whitePlayer = currentGame.getGameParameters().getWhitePlayer().getUsername();
+        String blackPlayer = currentGame.getGameParameters().getBlackPlayer().getUsername();
+
+        // Calculate game duration using session
+        session.endGame(); // This will set the gameEndTime in the session
+        Duration gameDuration = session.getGameDuration(); // Calculate the duration
+
+        GameDifficulty difficultyLevel = currentGame.getGameParameters().getDifficulty();
+
+        // Save the game history
+        gameCounter++;
+        History historyEntry = new History(
+            winnerName,
+            whitePlayer + " vs " + blackPlayer,
+            gameDuration,
+            difficultyLevel,
+            session.endGame() // Use the session's gameEndTime
+        );
+        gameHistory.put(gameCounter, historyEntry);
+
+        // Update UI for scores
+        gameView.getInProgressViewBottomPanel().updateScore(
+            session.getScores().get(session.getGameParameters().getWhitePlayer()),
+            session.getScores().get(session.getGameParameters().getBlackPlayer())
+        );
+
+        // Handle session end or game end
+        if (session.checkSessionEnd()) {
+            session.endSession();
+            gameView.getRightPanelReview().getNextLabel().setText("<html>Finish<br>Session</html>");
+            gameView.displayRequestWindow(
+                session.getCurrentGame().getGameParameters().getPlayer(session.getCurrentGame().getCurrentPlayer()).getUsername(),
+                " wins the session!"
+            );
+        } else {
+            gameView.displayRequestWindow(
+                session.getCurrentGame().getGameParameters().getPlayer(session.getCurrentGame().getCurrentPlayer()).getUsername(),
+                " wins the game!"
+            );
+        }
+
+        gameView.setState(SessionState.FINISHED);
+    }
+
 
     public Game getGame() {
         return session.getCurrentGame();

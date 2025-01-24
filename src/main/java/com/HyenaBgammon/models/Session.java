@@ -1,5 +1,7 @@
 package com.HyenaBgammon.models;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
@@ -14,6 +16,10 @@ public class Session {
     private HashMap<Player, Integer> scores;
     private SessionState sessionState;
     private GameParameters gameParameters;
+    
+    // Fields to store start and end times
+    private LocalDateTime gameStartTime;
+    private LocalDateTime gameEndTime;
     
     public Session() {}
     
@@ -30,7 +36,8 @@ public class Session {
         newGame();
     }
     
-    public void endSession() {
+  /*  public void endSession() {
+    	
         sessionWinner.getStats().addWin();
         
         if (sessionWinner == gameParameters.getWhitePlayer())
@@ -38,11 +45,38 @@ public class Session {
         else
             gameParameters.getWhitePlayer().getStats().addLoss();
     }
+   */
     
-    public void newGame() {
+    public LocalDateTime endSession() {
+        sessionWinner.getStats().addWin();
+        gameEndTime = LocalDateTime.now(); // Record the game end time
+
+        if (sessionWinner == gameParameters.getWhitePlayer()) {
+            gameParameters.getBlackPlayer().getStats().addLoss();
+        } else {
+            gameParameters.getWhitePlayer().getStats().addLoss();
+        }
+        System.out.println(gameEndTime);
+        return gameEndTime; // Return the end time of the game
+    }
+    
+    
+ /*   public void newGame() {
         maxGameId++;
         currentGame = new Game(maxGameId, gameParameters);
+        
     }
+    */
+   
+    public LocalDateTime newGame() {
+        maxGameId++;
+        currentGame = new Game(maxGameId, gameParameters);
+        gameStartTime = LocalDateTime.now(); // Record the game start time
+        gameEndTime = null; // Reset the end time for a new game
+        System.out.println(gameStartTime);
+        return gameStartTime; // Return the start time of the game
+    }
+    
     
     public void StartGame() {
         if (previousGamePlayerColor == null)
@@ -51,7 +85,7 @@ public class Session {
             currentGame.startNewGame(previousGamePlayerColor);
     }
     
-    public void endGame() {
+ /*   public void endGame() {
         previousGamePlayerColor = currentGame.getFirstPlayer();
         int doubling = currentGame.getDoublingCube().getValue();
         SquareColor winningColor = currentGame.getCurrentPlayer();
@@ -59,6 +93,35 @@ public class Session {
         scores.put(gameParameters.getPlayer(winningColor), 
                   scores.get(gameParameters.getPlayer(winningColor)) + doubling);
     }
+    
+*/
+    
+    public LocalDateTime endGame() {
+        gameEndTime = LocalDateTime.now(); // Record the game end time
+        previousGamePlayerColor = currentGame.getFirstPlayer();
+        int doubling = currentGame.getDoublingCube().getValue();
+        SquareColor winningColor = currentGame.getCurrentPlayer();
+        currentGame.endGame();
+        scores.put(gameParameters.getPlayer(winningColor),
+                scores.get(gameParameters.getPlayer(winningColor)) + doubling);
+        System.out.println(gameEndTime);
+        return gameEndTime; // Return the end time of the game
+    }
+    
+    
+    /**
+     * Calculates the duration of the current game.
+     *
+     * @return Duration of the game as a Duration in the format "HH:mm:ss"
+     */    
+    public Duration getGameDuration() {
+        if (gameStartTime == null || gameEndTime == null) {
+            throw new IllegalStateException("Game start time or end time is not set.");
+        }
+        return Duration.between(gameStartTime, gameEndTime);
+    }
+    
+    
     
     public void endSession(Player sessionWinner) {
         this.sessionWinner = sessionWinner;
@@ -84,7 +147,7 @@ public class Session {
         }
         else if(scores.get(gameParameters.getBlackPlayer()) >= gameParameters.getWinningGamesCount()) {
             sessionState = SessionState.FINISHED;
-            sessionWinner = gameParameters.getWhitePlayer();
+            sessionWinner = gameParameters.getBlackPlayer();
             return true;
         }
         return false;

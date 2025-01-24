@@ -1,5 +1,7 @@
 package com.HyenaBgammon.models;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +26,9 @@ public class Game {
     private boolean surpriseStationEnabled = false; // Tracks if a surprise station is active
     private boolean surpriseStationHit = false;    // Ensures surprise station is triggered only once
     private boolean questionRequiredAtTurnStart = false; // New field
+   
+    private LocalDateTime startTime;
+   
 
     private boolean skipNextTurn = false; // Tracks if the next turn should be skipped
 
@@ -67,7 +72,42 @@ public class Game {
 
         System.out.println("The game you just started is: " + this.gameParameters.getDifficulty());
     }
+    
+    
+    public Game(GameParameters gameParameters, DoublingCube doublingCube,
+			ArrayList<com.HyenaBgammon.models.SixSidedDie> sixSidedDie, Board board, SquareColor firstPlayer,
+			SquareColor currentPlayer, ArrayList<Turn> playerTurnHistory, int gameId, boolean gameFinished,
+			boolean turnFinished, int diceUsed, GameDifficulty gameDifficulty, boolean surpriseStationEnabled,
+			boolean surpriseStationHit, boolean questionRequiredAtTurnStart, LocalDateTime startTime,
+			boolean skipNextTurn) {
+		super();
+		this.gameParameters = gameParameters;
+		this.doublingCube = doublingCube;
+		SixSidedDie = sixSidedDie;
+		this.board = board;
+		this.firstPlayer = firstPlayer;
+		this.currentPlayer = currentPlayer;
+		this.playerTurnHistory = playerTurnHistory;
+		this.gameId = gameId;
+		this.gameFinished = gameFinished;
+		this.turnFinished = turnFinished;
+		this.diceUsed = diceUsed;
+		this.gameDifficulty = gameDifficulty;
+		this.surpriseStationEnabled = surpriseStationEnabled;
+		this.surpriseStationHit = surpriseStationHit;
+		this.questionRequiredAtTurnStart = questionRequiredAtTurnStart;
+		this.startTime = startTime;
+		this.skipNextTurn = skipNextTurn;
+	}
 
+    public void startGameTime() {
+        this.startTime = LocalDateTime.now(); // Set the start time
+    }
+    public LocalDateTime getStartTime() {
+        return this.startTime;
+    }
+    
+    
     /**
      *
      */
