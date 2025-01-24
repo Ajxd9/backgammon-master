@@ -5,6 +5,7 @@ import com.HyenaBgammon.models.History;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
+import java.time.Duration;
 import java.util.List;
 
 public class HistoryView extends MonochromeView {
@@ -54,12 +55,19 @@ public class HistoryView extends MonochromeView {
             History history = histories.get(i);
             rowData[i][0] = history.getWinnerName();
             rowData[i][1] = history.getEndTime().toLocalDate().toString();
-            rowData[i][2] = history.getEndTime().toLocalTime().toString();
+            rowData[i][2] = formatDuration(history.getGameDuration());
             rowData[i][3] = history.getDifficultyLevel().toString();
             rowData[i][4] = history.getLoserName();
         }
 
         historyTable.setModel(new javax.swing.table.DefaultTableModel(rowData, columnNames));
+    }
+    
+    private String formatDuration(Duration duration) {
+        long minutes = duration.toMinutes();
+        long seconds = duration.getSeconds() % 60;
+
+        return String.format("%02d:%02d", minutes, seconds);
     }
     
     @Override

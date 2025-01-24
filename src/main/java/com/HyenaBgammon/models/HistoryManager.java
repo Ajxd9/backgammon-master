@@ -36,21 +36,35 @@ public class HistoryManager {
             for (Element historyElement : root.getChildren("history")) {
                 String winner = historyElement.getChildText("winner");
                 String loser = historyElement.getChildText("loser");
-                Duration duration = Duration.ofMinutes(Long.parseLong(historyElement.getChildText("duration")));
+                String durationText = historyElement.getChildText("duration");
                 GameDifficulty difficulty = GameDifficulty.valueOf(historyElement.getChildText("difficulty"));
                 LocalDateTime endTime = LocalDateTime.parse(historyElement.getChildText("endTime"));
 
+                Duration duration = parseDuration(durationText);
+                
                 historyList.add(new History(winner, loser, duration, difficulty, endTime));
             }
         } catch (Exception e) {
             System.err.println("Error loading history: " + e.getMessage());
         }
     }
+    
+    private static Duration parseDuration(String durationText) {
+        if (durationText == null || !durationText.contains(":")) {
+            throw new IllegalArgumentException("Invalid duration format: " + durationText);
+        }
+
+        String[] parts = durationText.split(":");
+        long minutes = Long.parseLong(parts[0]);
+        long seconds = Long.parseLong(parts[1]);
+
+        return Duration.ofMinutes(minutes).plusSeconds(seconds);
+    }
 
     // Save the list of histories to XML
     public static void saveHistory() {
         if (historyList == null) {
-            return; // No history to save
+            return;
         }
 
         Element root = new Element("gameHistory");
@@ -68,7 +82,10 @@ public class HistoryManager {
             historyElement.addContent(loser);
 
             Element duration = new Element("duration");
-            duration.setText(String.valueOf(record.getGameDuration().toMinutes()));
+            long minutes = record.getGameDuration().toMinutes();
+            long seconds = record.getGameDuration().getSeconds() % 60;
+            String formattedDuration = String.format("%02d:%02d", minutes, seconds);
+            duration.setText(formattedDuration);
             historyElement.addContent(duration);
 
             Element difficulty = new Element("difficulty");

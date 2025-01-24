@@ -1,12 +1,3 @@
-// 
-//
-//  @ Project : Project Gammon
-//  @ File : GameController.java
-//  @ Date : 12/12/2012
-//  @ Authors : DONG Chuan, BONNETTO Benjamin, FRANCON Adrien, POTHELUNE Jean-Michel
-//
-//
-
 package com.HyenaBgammon.controller;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
@@ -37,6 +28,7 @@ import com.HyenaBgammon.models.AssistantLevel;
 import com.HyenaBgammon.models.Game;
 import com.HyenaBgammon.models.GameDifficulty;
 import com.HyenaBgammon.models.History;
+import com.HyenaBgammon.models.HistoryManager;
 import com.HyenaBgammon.models.Profiles;
 import com.HyenaBgammon.models.Session;
 import com.HyenaBgammon.view.GameView;
@@ -613,48 +605,6 @@ public class GameController implements Controller
         session.StartGame();
         gameView.updateUI();
     }
-
- 
-  /*  
-    
-    public void endGame()
-    {
-        if (boardController.getClock() != null)
-        {
-            boardController.getClock().stop();
-            boardController.getClock().setValue(0);
-        }
-
-        session.endGame();
-
-        gameView.getInProgressViewBottomPanel().updateScore(
-                session.getScores().get(session.getGameParameters().getWhitePlayer()),
-                session.getScores().get(session.getGameParameters().getBlackPlayer())
-        );
-
-        if(session.checkSessionEnd())
-        {
-            session.endSession();
-            gameView.getRightPanelReview().getNextLabel().setText("<html>Finish<br>Session</html>");
-            gameView.displayRequestWindow(
-                    session.getCurrentGame().getGameParameters().getPlayer(session.getCurrentGame().getCurrentPlayer()).getUsername(),
-                    " wins the session!"
-            );
-        }
-        else
-        {
-            gameView.displayRequestWindow(session.getCurrentGame().getGameParameters().getPlayer(session.getCurrentGame().getCurrentPlayer()).getUsername(),
-                    " wins the game!"
-            );
-        }
-        gameView.setState(SessionState.FINISHED);
-        
-    }
-    
-    
-    */
-    
-  
     
     public void endGame() {
         // Stop the clock if it exists
@@ -668,6 +618,13 @@ public class GameController implements Controller
         String winnerName = currentGame.getGameParameters().getPlayer(currentGame.getCurrentPlayer()).getUsername();
         String whitePlayer = currentGame.getGameParameters().getWhitePlayer().getUsername();
         String blackPlayer = currentGame.getGameParameters().getBlackPlayer().getUsername();
+        String loserName;
+
+        if (winnerName.equals(whitePlayer)) {
+            loserName = blackPlayer;
+        } else {
+            loserName = whitePlayer; 
+        }
 
         // Calculate game duration using session
         session.endGame(); // This will set the gameEndTime in the session
@@ -679,12 +636,13 @@ public class GameController implements Controller
         gameCounter++;
         History historyEntry = new History(
             winnerName,
-            whitePlayer + " vs " + blackPlayer,
+            loserName,
             gameDuration,
             difficultyLevel,
             session.endGame() // Use the session's gameEndTime
         );
-        gameHistory.put(gameCounter, historyEntry);
+        
+        HistoryManager.addHistory(historyEntry);
 
         // Update UI for scores
         gameView.getInProgressViewBottomPanel().updateScore(

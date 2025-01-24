@@ -146,12 +146,6 @@ public class BoardController implements Controller {
             });
         }
     }
-
-
-    
- 
-    
-    
     
     ////////////////////////////////////////////////////////////////////////////////////to do q
     public void handleDicePress(SixSidedDie die) {
