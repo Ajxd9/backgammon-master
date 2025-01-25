@@ -10,7 +10,7 @@ import org.jdom2.Element;
 
 import com.HyenaBgammon.exception.TurnNotPlayableException;
 
-public class Game {
+public class Game extends AbstractGame {
     private GameParameters gameParameters;
     private DoublingCube doublingCube;
     private ArrayList<SixSidedDie> SixSidedDie;
@@ -26,7 +26,8 @@ public class Game {
     private boolean surpriseStationEnabled = false; // Tracks if a surprise station is active
     private boolean surpriseStationHit = false;    // Ensures surprise station is triggered only once
     private boolean questionRequiredAtTurnStart = false; // New field
-   
+    private boolean gameOver;
+
     private LocalDateTime startTime;
    
 
@@ -169,8 +170,23 @@ public class Game {
     /**
      *
      */
-    public void endGame() {
+    @Override
+    protected void endGame() {
+        System.out.println("Game over! Determining the winner...");
         gameFinished = true;
+
+        // Determine the winner based on game state
+        SquareColor winner = (board.isAllPiecesMarked(SquareColor.WHITE)) ? SquareColor.WHITE : SquareColor.BLACK;
+        System.out.println("The winner is: " + winner);
+
+        // Clean up resources
+        cleanupGame();
+    }
+
+    private void cleanupGame() {
+        System.out.println("Cleaning up game resources...");
+        playerTurnHistory.clear();
+        SixSidedDie.clear();
     }
 
     /**
@@ -780,7 +796,59 @@ public class Game {
     public boolean isGameFinished() {
         return gameFinished;
     }
+    @Override
+    protected void initializeGame() {
+        System.out.println("Initializing Backgammon game...");
+        this.board = new Board();
+        this.doublingCube = new DoublingCube();
+        this.SixSidedDie = new ArrayList<>();
+        this.playerTurnHistory = new ArrayList<>();
+        this.currentPlayer = SquareColor.WHITE; // Example starting player
+        this.firstPlayer = currentPlayer;
+        this.gameFinished = false;
+        this.turnFinished = true;
+        this.skipNextTurn = false;
+        this.surpriseStationEnabled = false;
 
+        startGameTime(); // Record the game start time
+        System.out.println("Game initialized. Starting with player: " + currentPlayer);
+    }
+
+    @Override
+    protected boolean isGameOver() {
+        return gameFinished || board.isAllPiecesMarked(currentPlayer);
+    }
+
+    @Override
+    protected void playTurn() {
+        System.out.println("Player " + currentPlayer + "'s turn.");
+        
+        // Roll dice for the current turn
+        rollDice();
+
+        // Perform the player's turn
+        try {
+            if (hasPossibleMove()) {
+                // Example: Automatically play a random move
+                randomMove();
+            } else {
+                System.out.println("No moves available for " + currentPlayer);
+            }
+        } catch (Exception e) {
+            System.out.println("Error during the turn: " + e.getMessage());
+        }
+
+        // Check if a surprise station is enabled and trigger it if applicable
+        if (surpriseStationEnabled && !surpriseStationHit) {
+            System.out.println("Surprise station triggered!");
+            surpriseStationHit = true; // Prevent triggering again in the same turn
+        }
+
+        // End the turn
+        changeTurn();
+    }
+
+  
     public boolean isTurnFinished() {
         return turnFinished;
     }

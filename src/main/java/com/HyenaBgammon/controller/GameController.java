@@ -1,3 +1,12 @@
+// 
+//
+//  @ Project : Project Gammon
+//  @ File : GameController.java
+//  @ Date : 12/12/2012
+//  @ Authors : DONG Chuan, BONNETTO Benjamin, FRANCON Adrien, POTHELUNE Jean-Michel
+//
+//
+
 package com.HyenaBgammon.controller;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
@@ -28,7 +37,6 @@ import com.HyenaBgammon.models.AssistantLevel;
 import com.HyenaBgammon.models.Game;
 import com.HyenaBgammon.models.GameDifficulty;
 import com.HyenaBgammon.models.History;
-import com.HyenaBgammon.models.HistoryManager;
 import com.HyenaBgammon.models.Profiles;
 import com.HyenaBgammon.models.Session;
 import com.HyenaBgammon.view.GameView;
@@ -323,26 +331,17 @@ public class GameController implements Controller
         });
     }
 
-    public void listenerRollDice()
-    {
-        gameView.getRightPanelInProgress().getDices().addMouseListener(new MouseListener(){
+    public void listenerRollDice() {
+        gameView.getRightPanelInProgress().getDices().addMouseListener(new MouseListener() {
             @Override
-            public void mouseClicked(MouseEvent arg0) {}
-            @Override
-            public void mouseEntered(MouseEvent arg0) {}
-            @Override
-            public void mouseExited(MouseEvent arg0) {}
-            @Override
-            public void mousePressed(MouseEvent arg0) {}
-            @Override
-            public void mouseReleased(MouseEvent arg0) {
-                if(session.getCurrentGame().isTurnFinished() && !session.getCurrentGame().isGameFinished())
-                {
-                    session.getCurrentGame().rollDice();
-                    if (boardController.getClock() != null)
+            public void mouseReleased(MouseEvent e) {
+                Game currentGame = session.getCurrentGame();
+                if (currentGame.isTurnFinished() && !currentGame.isGameFinished()) {
+                    currentGame.rollDice(); // Delegate dice rolling to Game
+                    if (boardController.getClock() != null) {
                         boardController.getClock().restart();
-                    if(!session.getCurrentGame().hasPossibleMove())
-                    {
+                    }
+                    if (!currentGame.hasPossibleMove()) {
                         gameView.displayRequestWindow("No possible move", "");
                         boardController.changeTurn();
                     }
@@ -351,8 +350,15 @@ public class GameController implements Controller
                 gameView.getBoardView().updateUI();
                 gameView.getBoardView().updateDice();
             }
+
+            // Empty implementations for other mouse events
+            @Override public void mouseClicked(MouseEvent e) {}
+            @Override public void mousePressed(MouseEvent e) {}
+            @Override public void mouseEntered(MouseEvent e) {}
+            @Override public void mouseExited(MouseEvent e) {}
         });
     }
+
 
     public void listenerGetPossibleMovesPlayer1()
     {
@@ -567,44 +573,85 @@ public class GameController implements Controller
         });
     }
 
-    public void listenerNextGame()
-    {
+    public void listenerNextGame() {
         gameView.getRightPanelReview().getNext().addMouseListener(new MouseListener() {
             @Override
-            public void mouseReleased(MouseEvent arg0) {
-                if(session.isSessionFinished())
-                {
+            public void mouseReleased(MouseEvent e) {
+                if (session.isSessionFinished()) {
                     controller.back();
-                    ((MainController)controller).endSession();
+                    ((MainController) controller).endSession();
                     Profiles profiles = Profiles.getProfiles();
                     profiles.save();
+                } else {
+                    newGame(); // Start a new game using the template method
                 }
-                else
-                    gameController.newGame();
             }
-            @Override
-            public void mousePressed(MouseEvent arg0) {}
-            @Override
-            public void mouseExited(MouseEvent arg0) {}
-            @Override
-            public void mouseEntered(MouseEvent arg0) {}
-            @Override
-            public void mouseClicked(MouseEvent arg0) {}
+
+            // Empty implementations for other mouse events
+            @Override public void mouseClicked(MouseEvent e) {}
+            @Override public void mousePressed(MouseEvent e) {}
+            @Override public void mouseEntered(MouseEvent e) {}
+            @Override public void mouseExited(MouseEvent e) {}
         });
     }
 
-    public void newGame()
-    {
-        session.newGame();
-        session.StartGame();
+    public void newGame() {
+        // Reset session and create a new game
+        session.newGame(); 
+        Game currentGame = session.getCurrentGame();
 
-        gameView.setGame(session.getCurrentGame());
-        gameView.setState(SessionState.IN_PROGRESS);
-        boardController = new BoardController(session.getCurrentGame(), gameView, this);
+        // Update the game view and board controller
+        gameView.setGame(currentGame); 
+        boardController = new BoardController(currentGame, gameView, this);
 
-        session.StartGame();
-        gameView.updateUI();
+        // Start the game lifecycle using the template method
+        System.out.println("Starting a new game...");
+        currentGame.playGame(); 
     }
+
+
+
+ 
+  /*  
+    
+    public void endGame()
+    {
+        if (boardController.getClock() != null)
+        {
+            boardController.getClock().stop();
+            boardController.getClock().setValue(0);
+        }
+
+        session.endGame();
+
+        gameView.getInProgressViewBottomPanel().updateScore(
+                session.getScores().get(session.getGameParameters().getWhitePlayer()),
+                session.getScores().get(session.getGameParameters().getBlackPlayer())
+        );
+
+        if(session.checkSessionEnd())
+        {
+            session.endSession();
+            gameView.getRightPanelReview().getNextLabel().setText("<html>Finish<br>Session</html>");
+            gameView.displayRequestWindow(
+                    session.getCurrentGame().getGameParameters().getPlayer(session.getCurrentGame().getCurrentPlayer()).getUsername(),
+                    " wins the session!"
+            );
+        }
+        else
+        {
+            gameView.displayRequestWindow(session.getCurrentGame().getGameParameters().getPlayer(session.getCurrentGame().getCurrentPlayer()).getUsername(),
+                    " wins the game!"
+            );
+        }
+        gameView.setState(SessionState.FINISHED);
+        
+    }
+    
+    
+    */
+    
+  
     
     public void endGame() {
         // Stop the clock if it exists
@@ -618,13 +665,6 @@ public class GameController implements Controller
         String winnerName = currentGame.getGameParameters().getPlayer(currentGame.getCurrentPlayer()).getUsername();
         String whitePlayer = currentGame.getGameParameters().getWhitePlayer().getUsername();
         String blackPlayer = currentGame.getGameParameters().getBlackPlayer().getUsername();
-        String loserName;
-
-        if (winnerName.equals(whitePlayer)) {
-            loserName = blackPlayer;
-        } else {
-            loserName = whitePlayer; 
-        }
 
         // Calculate game duration using session
         session.endGame(); // This will set the gameEndTime in the session
@@ -636,13 +676,12 @@ public class GameController implements Controller
         gameCounter++;
         History historyEntry = new History(
             winnerName,
-            loserName,
+            whitePlayer + " vs " + blackPlayer,
             gameDuration,
             difficultyLevel,
             session.endGame() // Use the session's gameEndTime
         );
-        
-        HistoryManager.addHistory(historyEntry);
+        gameHistory.put(gameCounter, historyEntry);
 
         // Update UI for scores
         gameView.getInProgressViewBottomPanel().updateScore(
