@@ -2,13 +2,16 @@ package com.HyenaBgammon.view;
 
 import javax.swing.*;
 import com.HyenaBgammon.models.History;
+import com.HyenaBgammon.models.HistoryManager;
+import com.HyenaBgammon.models.HistoryObserver;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.time.Duration;
 import java.util.List;
 
-public class HistoryView extends MonochromeView {
+public class HistoryView extends MonochromeView implements HistoryObserver {
 
     private static final long serialVersionUID = 1L;
     private MonochromeLabel titleLabel;
@@ -18,7 +21,17 @@ public class HistoryView extends MonochromeView {
     public HistoryView(ActionListener backListener) {
         setLayout(null);
         build(backListener);
+        HistoryManager.addObserver(this); // Register as an observer
+
     }
+    
+   
+    @Override
+    public void onHistoryUpdated(List<History> updatedHistory) {
+        System.out.println("HistoryView received updated history. Total records: " + updatedHistory.size());
+        setTableData(updatedHistory);
+    }
+
 
     private void build(ActionListener backListener) {
     	

@@ -15,10 +15,14 @@ import java.util.List;
 
 public class HistoryManager {
     private static List<History> historyList = null;
+    private static List<HistoryObserver> observers = new ArrayList<>();
+
+    
 
     // Fetch history data from XML
     public static void loadHistory() {
         if (historyList != null) {
+            System.out.println("History already loaded.");
             return; // Already loaded
         }
         historyList = new ArrayList<>();
@@ -111,16 +115,36 @@ public class HistoryManager {
             System.err.println("Error saving history: " + e.getMessage());
         }
     }
+    
+    // Observer management
+    public static void addObserver(HistoryObserver observer) {
+        observers.add(observer);
+        System.out.println("Observer added: " + observer.getClass().getName());
+    }
 
-    // Add a new game to the history
+    public static void removeObserver(HistoryObserver observer) {
+        observers.remove(observer);
+    }
+
+    private static void notifyObservers() {
+        System.out.println("Notifying observers...");
+        for (HistoryObserver observer : observers) {
+            observer.onHistoryUpdated(historyList);
+        }
+    }
+
+    
+
     public static void addHistory(History history) {
         if (historyList == null) {
             loadHistory();
         }
         historyList.add(history);
         saveHistory();
+        System.out.println("History added: " + history.getWinnerName() + " vs " + history.getLoserName());
+        notifyObservers();
     }
-
+    
     // Get the list of all histories
     public static List<History> getHistoryList() {
         if (historyList == null) {
