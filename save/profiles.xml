@@ -5,10 +5,10 @@
     <imageSource>images/avatars/asleep_renard.png</imageSource>
     <assistanceLevel>BASIC</assistanceLevel>
     <playerStatistics>
-      <gamesPlayed>0</gamesPlayed>
-      <winCount>0</winCount>
-      <lossCount>0</lossCount>
-      <gamesAgainstPlayer />
+      <gamesPlayed>2</gamesPlayed>
+      <winCount>1</winCount>
+      <lossCount>1</lossCount>
+      <gamesAgainstPlayer ></gamesAgainstPlayer>
       <playTime>0.0</playTime>
     </playerStatistics>
   </players>
@@ -17,9 +17,9 @@
     <imageSource>images/avatars/escargot.png</imageSource>
     <assistanceLevel>BASIC</assistanceLevel>
     <playerStatistics>
-      <gamesPlayed>0</gamesPlayed>
-      <winCount>0</winCount>
-      <lossCount>0</lossCount>
+      <gamesPlayed>2</gamesPlayed>
+      <winCount>1</winCount>
+      <lossCount>1</lossCount>
       <gamesAgainstPlayer />
       <playTime>0.0</playTime>
     </playerStatistics>

@@ -37,6 +37,7 @@ import com.HyenaBgammon.models.AssistantLevel;
 import com.HyenaBgammon.models.Game;
 import com.HyenaBgammon.models.GameDifficulty;
 import com.HyenaBgammon.models.History;
+import com.HyenaBgammon.models.HistoryManager;
 import com.HyenaBgammon.models.Profiles;
 import com.HyenaBgammon.models.Session;
 import com.HyenaBgammon.view.GameView;
@@ -669,6 +670,14 @@ public class GameController implements Controller
         String whitePlayer = currentGame.getGameParameters().getWhitePlayer().getUsername();
         String blackPlayer = currentGame.getGameParameters().getBlackPlayer().getUsername();
 
+        String loserName;
+
+        if (winnerName.equals(whitePlayer)) {
+            loserName = blackPlayer;
+        } else {
+            loserName = whitePlayer; 
+        }
+        
         // Calculate game duration using session
         session.endGame(); // This will set the gameEndTime in the session
         Duration gameDuration = session.getGameDuration(); // Calculate the duration
@@ -679,12 +688,13 @@ public class GameController implements Controller
         gameCounter++;
         History historyEntry = new History(
             winnerName,
-            whitePlayer + " vs " + blackPlayer,
+            loserName,
             gameDuration,
             difficultyLevel,
             session.endGame() // Use the session's gameEndTime
         );
         gameHistory.put(gameCounter, historyEntry);
+        HistoryManager.addHistory(historyEntry);
 
         // Update UI for scores
         gameView.getInProgressViewBottomPanel().updateScore(
