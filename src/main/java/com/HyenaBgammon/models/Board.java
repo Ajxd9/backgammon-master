@@ -14,6 +14,8 @@ import java.util.List;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 
+import static com.HyenaBgammon.models.SquareFactory.createSquare;
+
 public class Board
 {
     private ArrayList<Square> squareList;
@@ -24,9 +26,9 @@ public class Board
     public Board(Game g)
     {
         game = g;
-        squareList = new ArrayList<Square>();
-        victorySquare = new ArrayList<Square>();
-        barSquare = new ArrayList<Square>();
+        squareList = SquareListFactory.createSquareList();
+        victorySquare = SquareListFactory.createSquareList();
+        barSquare = SquareListFactory.createSquareList();
         initializeSquares();
     }
 

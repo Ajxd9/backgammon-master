@@ -43,6 +43,9 @@ import com.HyenaBgammon.view.GameView;
 import com.HyenaBgammon.view.RulesDialog;
 import com.HyenaBgammon.view.RulesView;
 
+
+import static com.HyenaBgammon.models.SquareFactory.createSquare;
+
 public class GameController implements Controller
 {
 	
@@ -65,7 +68,7 @@ public class GameController implements Controller
     public GameController(Game game)
     {
         gameController = this;
-        gameView = new GameView(game);
+        gameView = GameViewFactory.createGameView(game);
 
         build();
         boardController = new BoardController(game, gameView, this);

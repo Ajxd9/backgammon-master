@@ -41,10 +41,9 @@ public class Game extends AbstractGame {
     public Game(GameParameters p) {
         this.gameParameters = p;
         this.board = new Board();
-        this.doublingCube = new DoublingCube();
-
-        this.playerTurnHistory = new ArrayList<>();
-        this.SixSidedDie = new ArrayList<>();
+        this.doublingCube = DoublingCubeFactory.createDoublingCube();
+        this.SixSidedDie = SixSidedDieListFactory.createSixSidedDieList();
+        this.playerTurnHistory.add(new Turn(currentPlayer, SixSidedDie));
 
         // Initialize game state variables
         this.turnFinished = true;

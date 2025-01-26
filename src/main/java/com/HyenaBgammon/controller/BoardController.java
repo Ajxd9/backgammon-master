@@ -41,7 +41,7 @@ public class BoardController implements Controller {
         this.gameView = gameView;
         this.boardView = gameView.getBoardView();
         this.gameController = gameController;
-        this.questionManager = new QuestionManager(); // Use default constructor
+        this.questionManager = QuestionManagerFactory.createQuestionManager();
 
         build();
         boardView.updateDice();
@@ -114,7 +114,7 @@ public class BoardController implements Controller {
                                 
 
                                 boardView.unCandidateAll();
-                                boardView.setPossible(new ArrayList<Square>());
+                                boardView.setPossible(SquareListFactory.createSquareList());
 
                                 if (game.isGameFinished()) {
                                     gameController.endGame();
@@ -136,7 +136,7 @@ public class BoardController implements Controller {
                             }
                             }else {
                                 boardView.unCandidateAll();
-                                boardView.setPossible(new ArrayList<Square>());
+                                boardView.setPossible(SquareListFactory.createSquareList());
                             }
                         }
 
@@ -275,7 +275,7 @@ public class BoardController implements Controller {
 
                     // Clear candidate moves and update board state
                     boardView.unCandidateAll();
-                    boardView.setPossible(new ArrayList<Square>());
+                    boardView.setPossible(SquareListFactory.createSquareList());
 
                     // Logic to handle dice usage and possible moves
                     if (game.areDiceUsed()) {
