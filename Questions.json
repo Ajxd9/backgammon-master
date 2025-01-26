@@ -1,178 +1,156 @@
 {"questions": [
   {
-    "difficulty": "2",
-    "question": "What is the primary goal of continuous integration in Agile testing?",
+    "difficulty": "1",
+    "question": "What is the primary advantage of Agile over Waterfall?",
     "answers": [
-      "To integrate code changes frequently to detect errors early",
-      "To delay integration until all features are developed",
-      "1 + 2",
-      "None of the above."
+      "Shorter development cycles",
+      "Longer project timelines",
+      "Fewer customer interactions",
+      "None of the above"
+    ],
+    "correct_ans": "1"
+  },
+  {
+    "difficulty": "1",
+    "question": "What is the purpose of a daily stand-up meeting in Agile?",
+    "answers": [
+      "To plan the entire project",
+      "To review yesterday's work and set today's goals",
+      "To finalize the product design",
+      "To create project documentation"
+    ],
+    "correct_ans": "2"
+  },
+  {
+    "difficulty": "2",
+    "question": "What are functional requirements in software engineering?",
+    "answers": [
+      "Requirements related to system functionality",
+      "Requirements for system quality attributes",
+      "Requirements about hardware specifications",
+      "None of the above"
     ],
     "correct_ans": "1"
   },
   {
     "difficulty": "2",
-    "question": "A system\u2019s descriptive architecture describes:",
+    "question": "What is the difference between functional and non-functional requirements?",
     "answers": [
-      "programming language of the system",
-      "system design",
-      "how the system has been built",
-      "None."
+      "Functional requirements define behavior; non-functional define attributes like performance",
+      "Functional requirements are optional; non-functional are mandatory",
+      "Functional requirements define security protocols; non-functional do not",
+      "None of the above"
+    ],
+    "correct_ans": "1"
+  },
+  {
+    "difficulty": "2",
+    "question": "What is the main purpose of using a layered architecture?",
+    "answers": [
+      "To simplify system testing",
+      "To separate concerns and modularize the design",
+      "To enforce strict security protocols",
+      "To avoid the use of databases"
+    ],
+    "correct_ans": "2"
+  },
+  {
+    "difficulty": "3",
+    "question": "Which of the following best describes microservices architecture?",
+    "answers": [
+      "A monolithic system divided into layers",
+      "An architecture where each module runs independently",
+      "A design without any modular separation",
+      "A system that avoids service-based communication"
+    ],
+    "correct_ans": "2"
+  },
+  {
+    "difficulty": "2",
+    "question": "What is corrective maintenance in software?",
+    "answers": [
+      "Enhancing software functionality",
+      "Fixing bugs and errors in the system",
+      "Adapting the system to new environments",
+      "Improving performance"
+    ],
+    "correct_ans": "2"
+  },
+  {
+    "difficulty": "2",
+    "question": "What is the goal of adaptive maintenance in software engineering?",
+    "answers": [
+      "To fix bugs",
+      "To add new functionality",
+      "To adapt the system to new environments or platforms",
+      "To optimize system performance"
     ],
     "correct_ans": "3"
   },
   {
-    "difficulty": "2",
-    "question": "What is the primary output of the software development process in MDE ?",
+    "difficulty": "1",
+    "question": "What is the purpose of unit testing?",
     "answers": [
-      "model",
-      "Programs",
-      "Code Comments",
-      "None"
+      "To test individual components or functions of the software",
+      "To test the entire system's performance",
+      "To evaluate user satisfaction",
+      "To validate database connections"
     ],
     "correct_ans": "1"
   },
   {
-    "difficulty": "2",
-    "question": "What is the relationship between (MDA) and (MDE)?",
+    "difficulty": "3",
+    "question": "What is regression testing in software development?",
     "answers": [
-      " Model-driven engineering is a subset of MDA",
-      "Model-driven engineering preceded MDA",
-      "They are unrelated concepts",
-      "None of the above"
-    ],
-    "correct_ans": "1"
-  },
-  {
-    "difficulty": "2",
-    "question": "How does MDA differ from traditional software development approaches?",
-    "answers": [
-      " MDA relies solely on manual coding",
-      " MDA does not involve the use of UML model",
-      "Does not differ.",
-      "MDA focuses on generating code directly from model"
-    ],
-    "correct_ans": "4"
-  },
-  {
-    "difficulty": "2",
-    "question": "What is the purpose of a software test strategy?",
-    "answers": [
-      "To manage project timelines and resources",
-      "To systematically select or generate tests",
-      "To systematically select or generate tests",
+      "Testing new features of the software",
+      "Retesting a system to ensure previous functionalities are not broken",
+      "Testing the system under extreme conditions",
       "None of the above"
     ],
     "correct_ans": "2"
   },
   {
     "difficulty": "2",
-    "question": "How does a software test strategy determine its effectiveness?",
+    "question": "What does continuous integration mean in Agile?",
     "answers": [
-      "By the number of bugs found during testing",
-      "By the frequency of software updates",
-      "By the complexity of the test cases",
-      "None of the above"
+      "Integrating code changes frequently to detect errors early",
+      "Postponing integration until the system is complete",
+      "Integrating code only during sprints",
+      "Avoiding code integration entirely"
     ],
     "correct_ans": "1"
   },
   {
     "difficulty": "2",
-    "question": "What does a hybrid test strategy entail?",
+    "question": "What is the primary goal of a test-driven development (TDD) approach?",
     "answers": [
-      "Combining both black-box and white-box testing techniques",
-      "Ignoring testing altogether in favor of code reviews",
-      "Testing only the user interface of the software",
-      "Employing only manual testing methods"
-    ],
-    "correct_ans": "1"
-  },
-  {
-    "difficulty": "2",
-    "question": "What is the primary purpose of activity diagrams in software design?",
-    "answers": [
-      " To illustrate the activities involved in a process or data processing",
-      " To show interactions between actors and the system",
-      " To depict the object classes in the system",
-      "None."
-    ],
-    "correct_ans": "1"
-  },
-  {
-    "difficulty": "3",
-    "question": "When would you typically use a use case diagram in software development?",
-    "answers": [
-      " To show the interactions between a system and its environment",
-      "To show interactions between system components",
-      "To depict the object classes in the system",
-      "None."
-    ],
-    "correct_ans": "1"
-  },
-  {
-    "difficulty": "2",
-    "question": "In class diagrams, what do associations between classes represent?",
-    "answers": [
-      "Relationships between object classes in the system",
-      " Reactions to internal and external events",
-      "Interactions between system components",
-      "None."
-    ],
-    "correct_ans": "1"
-  },
-  {
-    "difficulty": "2",
-    "question": "What is the primary objective of validation testing?",
-    "answers": [
-      "To expose defects in the system",
-      "To ensure the system performs correctly with expected use",
-      "To deliberately obscure test cases",
-      "None"
+      "To minimize testing efforts",
+      "To write tests before developing the corresponding code",
+      "To write code before considering tests",
+      "To skip tests for simple projects"
     ],
     "correct_ans": "2"
   },
   {
-    "difficulty": "3",
-    "question": "When would you typically use a use case diagram in software development?",
+    "difficulty": "1",
+    "question": "What is the main purpose of stakeholder surveys?",
     "answers": [
-      " To show the interactions between a system and its environment",
-      "To show interactions between system components",
-      "To depict the object classes in the system",
-      "None."
-    ],
-    "correct_ans": "1"
-  },
-  {
-    "difficulty": "3",
-    "question": "When would you typically use a use case diagram in software development?",
-    "answers": [
-      " To show the interactions between a system and its environment",
-      "To show interactions between system components",
-      "To depict the object classes in the system",
-      "None."
-    ],
-    "correct_ans": "1"
-  },
-  {
-    "difficulty": "2",
-    "question": "When would you typically use a use case diagram in software development?",
-    "answers": [
-      " To show the interactions between a system and its environment",
-      "To show interactions between system components",
-      "To depict the object classes in the system",
-      "None."
-    ],
-    "correct_ans": "1"
-  },
-  {
-    "difficulty": "0",
-    "question": "A Common pratice ni Agile architecture design to ensure adaptability:",
-    "answers": [
-      "Creating extensive documentation upfront",
-      " Iterative and incremental design",
-      "Avoiding refactoring",
-      "None of the above"
+      "To determine project timelines",
+      "To gather requirements and stakeholder feedback",
+      "To finalize the programming language",
+      "To evaluate software testing methodologies"
     ],
     "correct_ans": "2"
+  },
+  {
+    "difficulty": "1",
+    "question": "Which type of survey questions are typically used in requirement gathering?",
+    "answers": [
+      "Multiple-choice and open-ended",
+      "Only yes/no questions",
+      "Technical design-related questions only",
+      "None of the above"
+    ],
+    "correct_ans": "1"
   }
 ]}
