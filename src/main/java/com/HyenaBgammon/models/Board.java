@@ -146,7 +146,7 @@ public class Board
 
     public boolean isMovePossible(Square start, Square end)
     {
-        if (start == null || end == null || start.getNumCheckers() == 0) {
+        if (start == null || end == null || start.getNumCheckers() == 0 || start.equals(end)) {
             return false;
         }
 
@@ -345,8 +345,10 @@ public class Board
         if (isPieceOnBar(color)) {
             Square barSquare = getBarSquare(color);
             Square endSquare = getSquareAtDistance(barSquare, die);
-            if (isMovePossible(barSquare, endSquare)) {
-                list.add(new Move(barSquare, endSquare));
+            if(endSquare != null) {
+                if (isMovePossible(barSquare, endSquare)) {
+                    list.add(new Move(barSquare, endSquare));
+                }
             }
             return list;
         }
@@ -356,10 +358,12 @@ public class Board
         for (Square square : allSquares) {
             if(square.getCheckerColor() == color && !die.isUsed()) {
                 Square possibleEnd = getSquareAtDistance(square, die);
+                if(possibleEnd != null) {
                 if(isMovePossible(square, possibleEnd)) {
                     list.add(new Move(square, possibleEnd));
                 }
             }
+        }
         }
         return list;
     }
