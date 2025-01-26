@@ -149,48 +149,153 @@ public class Session {
      * @param root is the "Sessions" root in the XML file
      */
     public boolean load(Element root) {
-        sessionId = Integer.valueOf(root.getChild("session").getAttributeValue("id"));
-        switch(root.getChild("session").getChildText("sessionState")) {
-            case "CONFIGURATION": sessionState = SessionState.CONFIGURATION; break;
-            case "IN_PROGRESS": sessionState = SessionState.IN_PROGRESS; break;
-            case "FINISHED": sessionState = SessionState.FINISHED;
-        }
-        maxGameId = Integer.valueOf(root.getChild("session").getChildText("maxGameId"));
-        switch(root.getChild("session").getChildText("previousGamePlayerColor")) {
-            case "WHITE": previousGamePlayerColor = SquareColor.WHITE; break;
-            case "BLACK": previousGamePlayerColor = SquareColor.BLACK; break;
-            case "EMPTY": previousGamePlayerColor = SquareColor.EMPTY;
-        }
-        
-        GameDifficulty tmpGameDiff = GameDifficulty.valueOf(root.getChild("session").getChildText("gameDifficulty"));
-            
-        int tmpID = Integer.valueOf(root.getChild("session").getChild("players").getChild("blackPlayer").getAttributeValue("id"));
-            
-        scores = new HashMap<Player, Integer>();
-            
-        Profiles profiles = Profiles.getProfiles();
-        Player blackPlayer = profiles.getPlayer(tmpID);
-        if (blackPlayer == null)
+        try {
+            Element sessionElement = root.getChild("session");
+            if (sessionElement == null) {
+                System.err.println("Error: Missing 'session' element in XML.");
+                return false;
+            }
+
+            // Parse session ID
+            String sessionIdStr = sessionElement.getAttributeValue("id");
+            if (sessionIdStr == null) {
+                System.err.println("Error: Missing 'id' attribute in session element.");
+                return false;
+            }
+            sessionId = Integer.parseInt(sessionIdStr);
+
+            // Parse session state
+            String sessionStateText = sessionElement.getChildText("sessionState");
+            if (sessionStateText == null) {
+                System.err.println("Error: Missing 'sessionState' element.");
+                return false;
+            }
+            switch (sessionStateText) {
+                case "CONFIGURATION":
+                    sessionState = SessionState.CONFIGURATION;
+                    break;
+                case "IN_PROGRESS":
+                    sessionState = SessionState.IN_PROGRESS;
+                    break;
+                case "FINISHED":
+                    sessionState = SessionState.FINISHED;
+                    break;
+                default:
+                    System.err.println("Error: Invalid session state: " + sessionStateText);
+                    return false;
+            }
+
+            // Parse maxGameId
+            String maxGameIdText = sessionElement.getChildText("maxGameId");
+            if (maxGameIdText == null) {
+                System.err.println("Error: Missing 'maxGameId' element.");
+                return false;
+            }
+            maxGameId = Integer.parseInt(maxGameIdText);
+
+            // Parse previousGamePlayerColor
+            String previousColorText = sessionElement.getChildText("previousGamePlayerColor");
+            if (previousColorText == null || "null".equalsIgnoreCase(previousColorText)) {
+                previousGamePlayerColor = SquareColor.EMPTY; // Default to EMPTY for null or missing
+            } else {
+                switch (previousColorText) {
+                    case "WHITE":
+                        previousGamePlayerColor = SquareColor.WHITE;
+                        break;
+                    case "BLACK":
+                        previousGamePlayerColor = SquareColor.BLACK;
+                        break;
+                    default:
+                        System.err.println("Error: Invalid player color: " + previousColorText);
+                        return false;
+                }
+            }
+
+            // Parse gameDifficulty
+            String gameDifficultyText = sessionElement.getChildText("gameDifficulty");
+            if (gameDifficultyText == null) {
+                System.err.println("Error: Missing 'gameDifficulty' element.");
+                return false;
+            }
+            GameDifficulty tmpGameDiff;
+            try {
+                tmpGameDiff = GameDifficulty.valueOf(gameDifficultyText);
+            } catch (IllegalArgumentException e) {
+                System.err.println("Error: Invalid game difficulty: " + gameDifficultyText);
+                return false;
+            }
+
+            // Parse blackPlayer
+            Element playersElement = sessionElement.getChild("players");
+            if (playersElement == null) {
+                System.err.println("Error: Missing 'players' element.");
+                return false;
+            }
+            Element blackPlayerElement = playersElement.getChild("blackPlayer");
+            if (blackPlayerElement == null) {
+                System.err.println("Error: Missing 'blackPlayer' element.");
+                return false;
+            }
+            String blackPlayerIdText = blackPlayerElement.getAttributeValue("id");
+            Player blackPlayer = Profiles.getProfiles().getPlayer(Integer.parseInt(blackPlayerIdText));
+            if (blackPlayer == null) {
+                System.err.println("Error: Black player not found.");
+                return false;
+            }
+
+            // Parse blackPlayer score
+            String blackPlayerScoreText = blackPlayerElement.getChildText("score");
+            scores = new HashMap<>();
+            scores.put(blackPlayer, Integer.parseInt(blackPlayerScoreText));
+
+            // Parse whitePlayer
+            Element whitePlayerElement = playersElement.getChild("whitePlayer");
+            if (whitePlayerElement == null) {
+                System.err.println("Error: Missing 'whitePlayer' element.");
+                return false;
+            }
+            String whitePlayerIdText = whitePlayerElement.getAttributeValue("id");
+            Player whitePlayer = Profiles.getProfiles().getPlayer(Integer.parseInt(whitePlayerIdText));
+            if (whitePlayer == null) {
+                System.err.println("Error: White player not found.");
+                return false;
+            }
+
+            // Parse whitePlayer score
+            String whitePlayerScoreText = whitePlayerElement.getChildText("score");
+            scores.put(whitePlayer, Integer.parseInt(whitePlayerScoreText));
+
+            // Load game parameters
+            gameParameters = new GameParameters();
+            Element parametersElement = sessionElement.getChild("parameters");
+            if (parametersElement == null) {
+                System.err.println("Error: Missing 'parameters' element.");
+                return false;
+            }
+            gameParameters.load(parametersElement);
+            gameParameters.setWhitePlayer(whitePlayer);
+            gameParameters.setBlackPlayer(blackPlayer);
+            gameParameters.setDifficulty(tmpGameDiff);
+
+            // Load current game
+            Element gameElement = sessionElement.getChild("game");
+            if (gameElement == null) {
+                System.err.println("Error: Missing 'game' element.");
+                return false;
+            }
+
+
+            return true;
+        } catch (NumberFormatException e) {
+            System.err.println("Error: Invalid number format. " + e.getMessage());
             return false;
-        scores.put(blackPlayer, Integer.valueOf(root.getChild("session").getChild("players").getChild("blackPlayer").getChildText("score")));
-            
-        tmpID = Integer.valueOf(root.getChild("session").getChild("players").getChild("whitePlayer").getAttributeValue("id"));
-        Player whitePlayer = profiles.getPlayer(tmpID);
-        if (whitePlayer == null)
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
             return false;
-        scores.put(whitePlayer, Integer.valueOf(root.getChild("session").getChild("players").getChild("whitePlayer").getChildText("score")));
-            
-        gameParameters = new GameParameters();
-            
-        gameParameters.load(root.getChild("session").getChild("parameters"));
-        gameParameters.setWhitePlayer(whitePlayer);
-        gameParameters.setBlackPlayer(blackPlayer);
-        gameParameters.setDifficulty(tmpGameDiff);
-            
-        currentGame = new Game(gameParameters);
-        currentGame.load(root.getChild("session").getChild("game"));
-        return true;
+        }
     }
+
+
 
     public int getSessionId() {
         return sessionId;
