@@ -173,6 +173,35 @@ public class Board
                 return false;
         }
     }
+    public boolean isCaptureMove(Move move) {
+        Square start = move.getStartSquare();
+        Square end = move.getEndSquare();
+
+        // A capture happens if the end square contains a **single** opponent checker
+        if (end.getNumCheckers() == 1 && end.getCheckerColor() != start.getCheckerColor()) {
+            return true;
+        }
+        return false;
+    }
+    public int distanceToGoal(Square square) {
+        // Get AI color
+        SquareColor color = square.getCheckerColor();
+
+        if (color == SquareColor.WHITE) {
+            return 24 - square.getPosition(); // White moves **forward**
+        } else {
+            return square.getPosition(); // Black moves **backward**
+        }
+    }
+    public boolean isCheckerExposed(Square square) {
+        return square.getNumCheckers() == 1; // A checker is "exposed" if it's alone
+    }
+    public boolean isBlockadeMove(Move move) {
+        Square end = move.getEndSquare();
+        
+        // Blockades happen when AI **stacks at least 2 checkers on a square**
+        return end.getNumCheckers() >= 2 && end.getCheckerColor() == move.getStartSquare().getCheckerColor();
+    }
 
     public boolean canCapturePiece(Square start, Square end)
     {
