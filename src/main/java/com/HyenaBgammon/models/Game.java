@@ -27,6 +27,7 @@ public class Game extends AbstractGame {
     private boolean surpriseStationHit = false;    // Ensures surprise station is triggered only once
     private boolean questionRequiredAtTurnStart = false; // New field
     private boolean gameOver;
+    private boolean diceRolled = false; // Track dice roll state
 
     private LocalDateTime startTime;
    
@@ -429,11 +430,28 @@ public class Game extends AbstractGame {
      */
     public void randomMove() throws TurnNotPlayableException {
         List<Move> possibleMoves = getPossibleMoves();
-        if (possibleMoves.size() != 0)
-            playMove(possibleMoves.get((int)(Math.random() * possibleMoves.size())));
-        else
+
+        if (possibleMoves == null || possibleMoves.isEmpty()) {
             throw new TurnNotPlayableException("No possible moves available");
+        }
+
+        // **Choose a Random Move**
+        Move selectedMove = possibleMoves.get((int) (Math.random() * possibleMoves.size()));
+
+        System.out.println("AI executing move from " + selectedMove.getStartSquare() + " to " + selectedMove.getEndSquare());
+        
+        playMove(selectedMove);
+
+        // **Automatically proceed to next turn**
+        new java.util.Timer().schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                nextTurn();
+            }
+        }, 500); // 0.5-second delay before next turn
     }
+
+
 
     /**
      *
@@ -712,7 +730,33 @@ public class Game extends AbstractGame {
             playerTurnHistory.add(tmpTurn);
         }
     }
-    
+    public void nextTurn() {
+        if (board.isAllPiecesMarked(currentPlayer)) {
+            endGame();
+            return; // Stop execution after game ends
+        }
+
+        if (skipNextTurn) {
+            System.out.println("Skipping " + currentPlayer + "'s turn due to a special condition.");
+            skipNextTurn = false; // Reset the skip flag
+            return;
+        }
+
+        // Change to the next player
+        currentPlayer = (currentPlayer == SquareColor.WHITE) ? SquareColor.BLACK : SquareColor.WHITE;
+        System.out.println("Next turn! Now it's " + gameParameters.getPlayer(currentPlayer).getUsername() + "'s turn.");
+
+        // Reset dice and turn status
+        SixSidedDie.clear();
+        turnFinished = false;
+
+        // **Handle AI turn**
+        Player currentPlayerObj = gameParameters.getPlayer(currentPlayer);
+        if (currentPlayerObj.isAI()) {
+            System.out.println(currentPlayerObj.getUsername() + " (AI) is playing...");
+            handleAITurn(); // Call AI turn logic
+        }
+    }
     public void rollDi() {
         // Step 1: Clear the existing dice list to reset for the current turn
         SixSidedDie = new ArrayList<SixSidedDie>();
@@ -724,18 +768,67 @@ public class Game extends AbstractGame {
         SixSidedDie.addAll(gameDifficulty.generateDice(currentPlayer));
 
         // Step 3: Mark the current turn as active (not yet finished)
-        turnFinished = false;
+        diceRolled = true; // Mark that dice have been rolled
 
+        turnFinished = false;
+        Player current = gameParameters.getPlayer(currentPlayer);
+        if (current.isAI()) {
+            handleAITurn();
+        }
         // Step 4: Start the player's turn and record the dice rolled
         beginTurn();
     }
+    private void handleAITurn() {
+        Player aiPlayer = gameParameters.getPlayer(currentPlayer);
+
+        if (!aiPlayer.isAI()) {
+            return; // Do nothing if it's not AI
+        }
+
+        System.out.println("AI (" + aiPlayer.getUsername() + ") is playing...");
+
+        // **Step 1: AI Rolls Dice**
+        if (!diceRolled) {
+            rollDice();
+            System.out.println("AI rolled dice: " + SixSidedDie);
+        }
+
+        // **Step 2: AI Tries to Move**
+        if (hasPossibleMove()) {
+            try {
+                randomMove(); // AI chooses a random move
+                System.out.println("AI made a move.");
+            } catch (TurnNotPlayableException e) {
+                System.out.println("AI has no valid moves: " + e.getMessage());
+            }
+        } else {
+            System.out.println("AI has no possible moves. Skipping turn.");
+        }
+
+        // **Step 3: Update UI (if applicable)**
+        // (You'll need to update the UI in GameController)
+
+        // **Step 4: Automatically Move to Next Turn**
+        new java.util.Timer().schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                nextTurn();
+            }
+        }, 1000); // 1-second delay before next turn
+    }
+
 
     /* GETTERS AND SETTERS */
 
     public GameParameters getGameParameters() {
+        if (this.gameParameters.getBlackPlayer() == null && this.gameParameters.isPlayerVsAI()) {
+            Player aiPlayer = new Player("AI Player",true); // ✅ Now this works!
+            aiPlayer.setAI(true);
+            this.gameParameters.setBlackPlayer(aiPlayer);
+        }
         return gameParameters;
     }
-    
+
     public GameDifficulty getGameDiff() {
     	return this.gameParameters.getDifficulty();
     }
@@ -846,7 +939,7 @@ public class Game extends AbstractGame {
         // End the turn
         changeTurn();
     }
-
+    
   
     public boolean isTurnFinished() {
         return turnFinished;
@@ -884,6 +977,9 @@ public class Game extends AbstractGame {
  // Getter for the new field
     public boolean isQuestionRequiredAtTurnStart() {
         return questionRequiredAtTurnStart;
+    }
+    public boolean hasRolledDice() {
+        return diceRolled; // Returns true if dice have been rolled, false otherwise
     }
 
     // Setter for the new field (used when the question is answered or skipped)

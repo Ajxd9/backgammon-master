@@ -28,9 +28,11 @@ import javax.swing.Timer;
 
 import org.jdom2.JDOMException;
 import com.HyenaBgammon.controller.*;
+import com.HyenaBgammon.exception.TurnNotPlayableException;
 import com.HyenaBgammon.models.Square;
 import com.HyenaBgammon.models.SquareColor;
 import com.HyenaBgammon.models.Movement;
+import com.HyenaBgammon.models.Player;
 import com.HyenaBgammon.models.SessionState;
 import com.HyenaBgammon.models.SessionManager;
 import com.HyenaBgammon.models.AssistantLevel;
@@ -600,17 +602,16 @@ public class GameController implements Controller
     }
 
     public void newGame() {
-        // Reset session and create a new game
         session.newGame(); 
         Game currentGame = session.getCurrentGame();
-
-        // Update the game view and board controller
         gameView.setGame(currentGame); 
         boardController = new BoardController(currentGame, gameView, this);
 
-        // Start the game lifecycle using the template method
         System.out.println("Starting a new game...");
         currentGame.playGame(); 
+
+        // Check if AI should move first
+        handleAITurn();
     }
 
 
@@ -719,8 +720,90 @@ public class GameController implements Controller
 
         gameView.setState(SessionState.FINISHED);
     }
+  
+    /**
+     * Sets up the game based on the selected mode (Player vs AI or Player vs Player).
+     * 
+     * @param isPlayerVsAI True if Player vs AI mode is selected, false otherwise.
+     */
+    public void setupGame(boolean isPlayerVsAI) {
+        session.newGame();
+        Game currentGame = session.getCurrentGame();
+
+        // Assign Player 1 (White)
+        Player whitePlayer = currentGame.getGameParameters().getWhitePlayer();
+
+        Player blackPlayer;
+        if (isPlayerVsAI) {
+            blackPlayer = new Player("AI Player",true);
+            blackPlayer.setAI(true); // Mark AI as Player 2
+        } else {
+            blackPlayer = currentGame.getGameParameters().getBlackPlayer(); // Select normal player
+        }
+
+        // Assign players back to game parameters
+        currentGame.getGameParameters().setWhitePlayer(whitePlayer);
+        currentGame.getGameParameters().setBlackPlayer(blackPlayer);
+
+        gameView.setGame(currentGame);
+        boardController = new BoardController(currentGame, gameView, this);
+
+        System.out.println("Starting a new game...");
+        currentGame.playGame();
+
+        // If AI starts the game, handle its turn immediately
+        handleAITurn();
+    }
+
+    private void handleAITurn() {
+        Player currentPlayer = session.getCurrentGame().getGameParameters().getPlayer(session.getCurrentGame().getCurrentPlayer());
+
+        if (currentPlayer.isAI()) {
+            System.out.println(currentPlayer.getUsername() + " (AI) turn started...");
+
+            // ✅ Step 1: Roll dice if not already rolled
+            if (!session.getCurrentGame().hasRolledDice()) {
+                session.getCurrentGame().rollDice();
+                System.out.println("AI rolled dice.");
+            }
+
+            // ✅ Step 2: Check for possible moves and play one
+            if (session.getCurrentGame().hasPossibleMove()) {
+                try {
+                    session.getCurrentGame().randomMove();
+                    System.out.println("AI made a move.");
+                } catch (TurnNotPlayableException e) {
+                    System.out.println("AI could not make a move: " + e.getMessage());
+                }
+            } else {
+                System.out.println("AI has no possible moves. Skipping turn.");
+            }
+
+            // ✅ Step 3: Update UI
+            gameView.getBoardView().updateUI();
+            gameView.updateUI();
+
+            // ✅ Step 4: Move to the next turn after a delay
+            new java.util.Timer().schedule(new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    session.getCurrentGame().nextTurn();
+                }
+            }, 1000);
+        }
+    }
 
 
+
+
+
+
+    public void nextTurn() {
+        session.getCurrentGame().nextTurn();
+
+        // Check if the next player is AI and make a move automatically
+        handleAITurn();
+    }
     public Game getGame() {
         return session.getCurrentGame();
     }

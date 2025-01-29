@@ -9,7 +9,8 @@ public class GameParameters {
     public Player whitePlayer;
     public Player blackPlayer;
     private GameDifficulty difficulty;
-    
+    private boolean playerVsAI = false; // Default to false
+
     public GameParameters(int secondsPerTurn, int winningGamesCount, boolean useDoubling, GameDifficulty difficulty, Player whitePlayer, Player blackPlayer) {
         this.secondsPerTurn = secondsPerTurn;
         this.winningGamesCount = winningGamesCount;
@@ -62,6 +63,9 @@ public class GameParameters {
     }
 
     public Player getBlackPlayer() {
+        if (blackPlayer == null && isPlayerVsAI()) {
+            blackPlayer = new Player(2, "AI Player", "ai_image.png", AssistantLevel.NOT_USED, true);
+        }
         return blackPlayer;
     }
     
@@ -88,5 +92,14 @@ public class GameParameters {
 	public void setDifficulty(GameDifficulty difficulty) {
 		this.difficulty = difficulty;
 	}
-    
+	public GameParameters(boolean playerVsAI) {
+	    this.playerVsAI = playerVsAI;
+	}
+	public boolean isPlayerVsAI() {
+	    return playerVsAI;
+	}
+	 // Setter method (NEWLY ADDED)
+    public void setPlayerVsAI(boolean playerVsAI) {
+        this.playerVsAI = playerVsAI;
+    }
 }

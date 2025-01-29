@@ -4,11 +4,12 @@
     <username>player 1</username>
     <imageSource>images/avatars/asleep_renard.png</imageSource>
     <assistanceLevel>BASIC</assistanceLevel>
+    <isAI>false</isAI>
     <playerStatistics>
       <gamesPlayed>2</gamesPlayed>
       <winCount>1</winCount>
       <lossCount>1</lossCount>
-      <gamesAgainstPlayer ></gamesAgainstPlayer>
+      <gamesAgainstPlayer />
       <playTime>0.0</playTime>
     </playerStatistics>
   </players>
@@ -16,6 +17,7 @@
     <username>player2</username>
     <imageSource>images/avatars/escargot.png</imageSource>
     <assistanceLevel>BASIC</assistanceLevel>
+    <isAI>false</isAI>
     <playerStatistics>
       <gamesPlayed>2</gamesPlayed>
       <winCount>1</winCount>

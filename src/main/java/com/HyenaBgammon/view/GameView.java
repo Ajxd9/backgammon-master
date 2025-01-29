@@ -15,6 +15,7 @@ import javax.swing.*;
 import com.HyenaBgammon.models.SquareColor;
 import com.HyenaBgammon.models.SessionState;
 import com.HyenaBgammon.models.Game;
+import com.HyenaBgammon.models.Player;
 import com.HyenaBgammon.models.Question;
 
 public class GameView extends MonochromeView {
@@ -134,7 +135,28 @@ public class GameView extends MonochromeView {
         dialog.setVisible(true);
     }
 
+    /**
+     * Configures the game based on the selected mode (Player vs AI or Player vs Player).
+     * 
+     * @param isPlayerVsAI True for Player vs AI mode, False for Player vs Player.
+     */
+    private void setupGame(boolean isPlayerVsAI) {
+        Player blackPlayer = game.getGameParameters().getBlackPlayer();
 
+        if (isPlayerVsAI) {
+            blackPlayer.setAI(true); // Set Black as AI
+            blackPlayer.setUsername("AI Player");
+        } else {
+            blackPlayer.setAI(false); // Set both players as humans
+        }
+
+        // Reset and initialize the board
+        boardView.setVisible(false);
+        boardView = new BoardView(game);
+        add(boardView, BorderLayout.CENTER);
+
+        System.out.println("Game setup complete: " + (isPlayerVsAI ? "Player vs AI" : "Player vs Player"));
+    }
     /**
      * Displays a question to the player with choices.
      * @param difficulty The difficulty level of the question.
@@ -239,8 +261,8 @@ public class GameView extends MonochromeView {
      */
     public void setState(SessionState state) {
         this.state = state;
-        // Change panels based on the state
-        if (state.equals(SessionState.IN_PROGRESS)) {
+
+        if (state == SessionState.IN_PROGRESS) {
             rightPanelInProgress.setVisible(true);
             rightPanelReview.setVisible(false);
         } else {
@@ -248,7 +270,7 @@ public class GameView extends MonochromeView {
             rightPanelReview.setVisible(true);
         }
 
-        if (state.equals(SessionState.REPLAY)) {
+        if (state == SessionState.REPLAY) {
             finishedViewBottom.setVisible(true);
             inProgressViewBottom.setVisible(false);
         } else {

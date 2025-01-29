@@ -7,11 +7,15 @@ import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
+
+import com.HyenaBgammon.models.AssistantLevel;
+import com.HyenaBgammon.models.GameParameters;
+import com.HyenaBgammon.models.Player;
+
+import javax.swing.ButtonGroup;
 
 public class SettingsPanel extends MonochromePanel {
-    /**
-     * This class displays the game parameters that can be selected.
-     */
     private static final long serialVersionUID = -4599011779523529733L;
 
     private MonochromeIconButton increaseGames;
@@ -38,13 +42,21 @@ public class SettingsPanel extends MonochromePanel {
     private int numberOfGames;
     private int timeLimit;
 
+    // New fields for Player vs AI and Player vs Player selection
+    private JRadioButton playerVsPlayerButton;
+    private JRadioButton playerVsAIButton;
+    private ButtonGroup gameModeGroup;
+    private JLabel player2Selection; // Store Player 2 selection
+    private GameParameters gameParams;  // Declare it here
+    private NewSessionView newSessionView;
+
     /**
      * Constructor of the class.
      */
     public SettingsPanel() {
         super("Parameters");
-
-        build();
+        gameParams = new GameParameters(false);  // Default to Player vs Player
+        build();  // Now build the UI
     }
 
     public void build() {
@@ -120,7 +132,80 @@ public class SettingsPanel extends MonochromePanel {
         setupIncreaseTimeListener();
         setupDecreaseTimeListener();
         setupInfiniteTimeListener();
+
+        // Add game mode selection
+        JLabel modeText = new JLabel("Select Game Mode");
+        modeText.setForeground(new Color(0xCCCCCC));
+        modeText.setBounds(20, 330, 300, 50);
+        add(modeText);
+
+        playerVsPlayerButton = new JRadioButton("Player vs Player");
+        playerVsAIButton = new JRadioButton("Player vs AI");
+        playerVsAIButton.setSelected(false);
+        gameModeGroup = new ButtonGroup();
+        gameModeGroup.add(playerVsAIButton);
+
+        gameModeGroup.add(playerVsPlayerButton);
+        gameModeGroup.add(playerVsAIButton);
+
+        playerVsPlayerButton.setBounds(50, 380, 150, 30);
+        playerVsAIButton.setBounds(50, 420, 150, 30);
+
+        playerVsPlayerButton.setSelected(true); // Default to Player vs Player
+
+        playerVsPlayerButton.setForeground(new Color(0xCCCCCC));
+        playerVsAIButton.setForeground(new Color(0xCCCCCC));
+
+        add(playerVsPlayerButton);
+        add(playerVsAIButton);
+
+        // Player 2 selection label
+        player2Selection = new JLabel("Select Player 2");
+        player2Selection.setForeground(new Color(0xCCCCCC));
+        player2Selection.setBounds(50, 460, 200, 30);
+        add(player2Selection);
+
+        // Add listener to update UI based on selected game mode
+        playerVsPlayerButton.addActionListener(e -> {
+            System.out.println("Player vs Player button clicked.");
+            updatePlayerSelection();
+        });
+
+        playerVsAIButton.addActionListener(e -> {
+            System.out.println("Player vs AI button clicked.");
+            updatePlayerSelection();
+        });
+}
+
+    /**
+     * Checks if Player vs AI mode is selected.
+     * @return Returns true if Player vs AI is selected, otherwise false.
+     */
+    public boolean isPlayerVsAI() {
+        if (playerVsAIButton == null) {
+            System.out.println("Warning: playerVsAIButton is not initialized yet.");
+            return false;  // Default to Player vs Player mode
+        }
+        return playerVsAIButton.isSelected();
     }
+    private void updatePlayerSelection() {
+        if (isPlayerVsAI()) {
+            // Set Player 2 as AI automatically
+            player2Selection.setText("AI Player (Auto)");
+            player2Selection.setEnabled(false);
+        } else {
+            // Allow selecting Player 2 manually
+            player2Selection.setText("Select Player 2");
+            player2Selection.setEnabled(true);
+        }
+
+        // Notify NewSessionView to update Player 2 accordingly
+        firePropertyChange("gameModeChanged", null, isPlayerVsAI());
+    }
+
+
+
+
 
     /**
      * Updates the time value based on the user's choice.
@@ -260,7 +345,7 @@ public class SettingsPanel extends MonochromePanel {
             }
         });
     }
-    
+
     /**
      * Getter for the number of games.
      * @return Returns the selected number of games.
@@ -316,5 +401,5 @@ public class SettingsPanel extends MonochromePanel {
         g.drawImage(gamesIcon.getImage(), 10, 75, this);
         g.drawImage(timeIcon.getImage(), 10, 194, this);
     }
+    
 }
-

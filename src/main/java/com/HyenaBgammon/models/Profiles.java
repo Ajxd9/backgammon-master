@@ -106,7 +106,7 @@ public class Profiles {
      * Other functions    
      */
     public void add(String _username, String _imageSource, AssistantLevel _level) {
-        players.add(new Player(players.size()+1, _username, _imageSource, _level));
+        players.add(new Player(players.size()+1, _username, _imageSource, _level, false));
     }
     
     public void modifyUsername(String _username, Player p) {

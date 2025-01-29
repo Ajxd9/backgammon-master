@@ -14,6 +14,7 @@ import java.awt.geom.Point2D;
 
 import javax.swing.JPanel;
 
+import com.HyenaBgammon.models.AssistantLevel;
 import com.HyenaBgammon.models.GameDifficulty;
 import com.HyenaBgammon.models.Player;
 import com.HyenaBgammon.models.SquareColor;
@@ -48,6 +49,16 @@ public class NewSessionView extends JPanel {
      */
     public NewSessionView() {
         build();
+        settingsPanel.addPropertyChangeListener("gameModeChanged", evt -> {
+            boolean isAISelected = (boolean) evt.getNewValue();
+            if (isAISelected) {
+                // Automatically assign AI to Player 2
+                setPlayer2(new Player(2, "AI Player", "ai_image.png", AssistantLevel.NOT_USED, true));
+                changeBlackPlayerButton.setEnabled(false); // Disable Player 2 selection
+            } else {
+                changeBlackPlayerButton.setEnabled(true); // Enable Player 2 selection
+            }
+        });
     }
 
     /**
@@ -71,11 +82,36 @@ public class NewSessionView extends JPanel {
         	public void actionPerformed(ActionEvent e) {
         	}
         });
-        settingsPanel.setBounds(453, 57, 344, 352);
+        settingsPanel.setBounds(413, 11, 566, 509);
         
         startButton = new MonochromeButton("Start");
-        startButton.setBounds(195, 420, 380, 58);
-         
+        startButton.setBounds(23, 397, 380, 58);
+        startButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (p1 == null) {
+                    System.out.println("Please select Player 1.");
+                    return;
+                }
+
+                if (settingsPanel.isPlayerVsAI()) {
+                    p2 = new Player(2, "AI Player", "ai_image.png", AssistantLevel.NOT_USED, true);
+                }
+
+                if (p2 == null) {
+                    System.out.println("Please select Player 2.");
+                    return;
+                }
+
+                System.out.println("Starting game with Player 1: " + p1.getUsername() + " and Player 2: " + p2.getUsername());
+                // Proceed to start the game
+            }
+
+            @Override public void mousePressed(MouseEvent e) {}
+            @Override public void mouseReleased(MouseEvent e) {}
+            @Override public void mouseEntered(MouseEvent e) {}
+            @Override public void mouseExited(MouseEvent e) {}
+        });
         changeColorButton = new MonochromeIconButton(MonochromeIconType.SWITCH, "MonochromeIconButton", "BLACK");
         changeColorButton.setBounds(175, 190, 55, 55);
         changeColorButton.setSizeBig();
@@ -166,9 +202,17 @@ public class NewSessionView extends JPanel {
      * @param blackPlayer The black player passed as a parameter
      */
     public void setPlayer2(Player blackPlayer) {
+        if (settingsPanel.isPlayerVsAI()) {
+            System.out.println("Player vs AI is selected. Assigning AI as Player 2...");
+            blackPlayer = new Player(2, "AI Player", "ai_image.png", AssistantLevel.NOT_USED, true);
+        }
+
+        System.out.println("Setting Player 2: " + (blackPlayer != null ? blackPlayer.getUsername() : "None"));
+        
         playerPanel2.setPlayer(blackPlayer);
         p2 = blackPlayer;
     }
+
 
     /**
      * Getter for the start game button
