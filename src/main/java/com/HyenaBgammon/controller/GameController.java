@@ -340,7 +340,7 @@ public class GameController implements Controller
     }
 
     public void listenerRollDice() {
-        gameView.getRightPanelInProgress().getDices().addMouseListener(new MouseListener() {
+          gameView.getRightPanelInProgress().getDices().addMouseListener(new MouseListener() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 Game currentGame = session.getCurrentGame();
@@ -358,13 +358,13 @@ public class GameController implements Controller
                 gameView.getBoardView().updateUI();
                 gameView.getBoardView().updateDice();
             }
-
             // Empty implementations for other mouse events
             @Override public void mouseClicked(MouseEvent e) {}
             @Override public void mousePressed(MouseEvent e) {}
             @Override public void mouseEntered(MouseEvent e) {}
             @Override public void mouseExited(MouseEvent e) {}
         });
+       
     }
 
 
@@ -757,50 +757,26 @@ public class GameController implements Controller
         handleAITurn();
     }
 
-    private void handleAITurn() {
-        Game game = session.getCurrentGame();
-        Player aiPlayer = game.getGameParameters().getPlayer(game.getCurrentPlayer());
-
-        if (!aiPlayer.isAI()) return; // Ensure this runs only for AI
-
-        System.out.println(aiPlayer.getUsername() + " (AI) turn started...");
-
-        // ✅ Step 1: Roll dice if not already rolled
-        if (!game.hasRolledDice()) {
-            game.rollDice();
-            System.out.println("AI rolled dice.");
-        }
-
-        // ✅ Step 2: Evaluate and play the best move based on AI strategy
-        if (game.hasPossibleMove()) {
-            Move bestMove = getBestMoveForAI(game);
-            if (bestMove != null) {
-                game.playMove(bestMove);
-                System.out.println("AI selected best move: " + bestMove.getStartSquare() + " ➡ " + bestMove.getEndSquare());
-            } else {
-                System.out.println("AI could not find an optimal move.");
+ // ✅ Ensure AI Rolls Dice Automatically Without Button Press
+    private void autoRollDiceForAI() {
+        Game currentGame = session.getCurrentGame();
+        Player currentPlayer = currentGame.getGameParameters().getPlayer(currentGame.getCurrentPlayer());
+        
+        if (currentPlayer.isAI() && currentGame.isTurnFinished() && !currentGame.isGameFinished()) {
+            currentGame.rollDice(); // AI Rolls Dice Automatically
+            if (boardController.getClock() != null) {
+                boardController.getClock().restart();
             }
-        } else {
-            System.out.println("AI has no possible moves. Skipping turn.");
-        }
-
-        // ✅ Step 3: Update UI
-        gameView.getBoardView().updateUI();
-        gameView.updateUI();
-
-        // ✅ Step 4: Move to the next turn after a short delay (simulate AI thinking)
-        new java.util.Timer().schedule(new java.util.TimerTask() {
-            @Override
-            public void run() {
-                game.nextTurn();
+            if (!currentGame.hasPossibleMove()) {
+                gameView.displayRequestWindow("No possible move", "");
+                boardController.changeTurn();
             }
-        }, 1000);
+            gameView.updateUI();
+            gameView.getBoardView().updateUI();
+            gameView.getBoardView().updateDice();
+        }
     }
-
-
-
-
-
+    
 
     public void nextTurn() {
         session.getCurrentGame().nextTurn();
@@ -861,10 +837,127 @@ public class GameController implements Controller
         squares.add(new Square(SquareColor.BLACK, 0, 25));
         session.getCurrentGame().getBoard().initializeBarSquares(squares);
     }
-    private Move getBestMoveForAI(Game game) {
-        List<Move> possibleMoves = game.getPossibleMoves();
-        if (possibleMoves.isEmpty()) return null;
 
+  /*      private void handleAITurn() {
+        Game game = session.getCurrentGame();
+        Player aiPlayer = game.getGameParameters().getPlayer(game.getCurrentPlayer());
+
+        if (!aiPlayer.isAI()) return; // Ensure this runs only for AI
+
+        System.out.println(aiPlayer.getUsername() + " (AI) turn started...");
+
+        // Always roll dice at the start of AI's turn
+        game.rollDice();
+        System.out.println("AI rolled dice: " + game.getSixSidedDie());
+
+        // Ensure dice UI updates immediately
+        gameView.getRightPanelInProgress().getDices().repaint(); // Ensure dice display refreshes
+        
+        // Evaluate possible moves AFTER rolling the dice
+        List<Move> possibleMoves = game.getPossibleMoves();
+        if (!possibleMoves.isEmpty()) {
+            Move bestMove = getBestMoveForAI(game, possibleMoves);
+            if (bestMove != null) {
+                boolean moveExecuted = game.playMove(bestMove);
+                if (moveExecuted) {
+                    System.out.println("AI moved from " + bestMove.getStartSquare() + " to " + bestMove.getEndSquare());
+                } else {
+                    System.out.println("AI attempted to move, but move execution failed.");
+                }
+            } else {
+                System.out.println("AI could not find an optimal move.");
+            }
+        } else {
+            System.out.println("AI has no possible moves. Skipping turn.");
+        }
+
+        //  Update UI after move execution
+        gameView.getBoardView().updateUI();
+        gameView.updateUI();
+
+        // ✅ Step 5: Move to the next turn after a short delay (simulate AI thinking)
+        new java.util.Timer().schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                game.nextTurn();
+            }
+        }, 1000);
+    }
+    
+*/
+    
+    private void handleAITurn() {
+        Game game = session.getCurrentGame();
+        Player aiPlayer = game.getGameParameters().getPlayer(game.getCurrentPlayer());
+
+        if (!aiPlayer.isAI()) return; // Ensure this runs only for AI
+
+        System.out.println(aiPlayer.getUsername() + " (AI) turn started...");
+
+        // Ensure AI only rolls if its turn has finished
+        if (game.isTurnFinished() && !game.isGameFinished()) {
+            game.rollDice(); // AI Rolls the dice
+            System.out.println("AI rolled dice: " + game.getSixSidedDie());
+
+            // Restart clock if it exists
+            if (boardController.getClock() != null) {
+                boardController.getClock().restart();
+            }
+
+            // If no possible moves, display message and change turn
+            if (!game.hasPossibleMove()) {
+                gameView.displayRequestWindow("No possible move", "");
+                boardController.changeTurn();
+                gameView.updateUI();
+                gameView.getBoardView().updateUI();
+                gameView.getBoardView().updateDice();
+                return; // Exit early since AI has no move
+            }
+        }
+
+        // Ensure dice UI updates immediately
+        gameView.getRightPanelInProgress().getDices().repaint();
+        gameView.getBoardView().updateDice();
+
+        // Evaluate possible moves AFTER rolling the dice
+        List<Move> possibleMoves = game.getPossibleMoves();
+        if (!possibleMoves.isEmpty()) {
+            Move bestMove = getBestMoveForAI(game, possibleMoves);
+            if (bestMove != null) {
+                boolean moveExecuted = game.playMove(bestMove);
+                if (moveExecuted) {
+                    System.out.println("AI moved from " + bestMove.getStartSquare() + " to " + bestMove.getEndSquare());
+                } else {
+                    System.out.println("AI attempted to move, but move execution failed.");
+                }
+            } else {
+                System.out.println("AI could not find an optimal move.");
+            }
+        } else {
+            System.out.println("AI has no possible moves. Skipping turn.");
+        }
+
+        // Update UI after move execution
+        gameView.getBoardView().updateUI();
+        gameView.updateUI();
+
+        // ✅ Step 5: Move to the next turn after a short delay (simulate AI thinking)
+        new java.util.Timer().schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                game.nextTurn();
+                handleAITurn(); // Ensure AI plays continuously if it's still its turn
+            }
+        }, 1000);
+    }
+    
+    
+
+
+    /**
+     * AI selects the best possible move based on evaluation criteria.
+     */
+    private Move getBestMoveForAI(Game game, List<Move> possibleMoves) {
         Move bestMove = null;
         int highestScore = Integer.MIN_VALUE;
 
@@ -875,32 +968,35 @@ public class GameController implements Controller
                 bestMove = move;
             }
         }
-
         return bestMove;
     }
+
+    /**
+     * Evaluates AI moves based on capturing, movement efficiency, blockades, and risk minimization.
+     */
     private int evaluateMove(Game game, Move move) {
         int score = 0;
 
-        // ✅ 1. Prioritize moves that remove opponent's checkers (capture)
+        // ✅ 1. Prioritize capturing opponent's checkers
         if (game.getBoard().isCaptureMove(move)) {
-            score += 50; // Assign high value to capturing moves
+            score += 50; // High value for capturing
         }
 
-        // ✅ 2. Prioritize moves that advance AI's checkers toward victory
+        // ✅ 2. Prefer moves that advance AI's checkers toward victory
         int distanceBefore = game.getBoard().distanceToGoal(move.getStartSquare());
         int distanceAfter = game.getBoard().distanceToGoal(move.getEndSquare());
         if (distanceAfter < distanceBefore) {
-            score += 20; // Reward moves that bring checkers closer to victory
+            score += 20;
         }
 
-        // ✅ 3. Avoid leaving AI checkers vulnerable
+        // ✅ 3. Avoid leaving AI checkers exposed
         if (game.getBoard().isCheckerExposed(move.getEndSquare())) {
-            score -= 30; // Penalize risky moves
+            score -= 30;
         }
 
-        // ✅ 4. Encourage forming a blockade (stacking checkers together)
+        // ✅ 4. Encourage blockades (stacking checkers together)
         if (game.getBoard().isBlockadeMove(move)) {
-            score += 15; // Reward moves that create a strong position
+            score += 15;
         }
 
         return score;

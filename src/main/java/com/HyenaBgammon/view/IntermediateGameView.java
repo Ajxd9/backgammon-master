@@ -92,7 +92,7 @@ public class IntermediateGameView extends MonochromeView {
         sessionList = new ArrayList<>();
 
         newSessionView = new NewSessionView();
-        newSessionView.setBounds(0, 80, 794, 495);
+        newSessionView.setBounds(0, 80, 946, 630);
         add(newSessionView);
 
         loadGameView = new LoadGameView(sessionList, windowToDisplay);

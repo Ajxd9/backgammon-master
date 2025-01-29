@@ -364,6 +364,8 @@ public class BoardView extends JPanel {
 */
     
     
+    
+   /* 
     public void updateDice() {
         List<SixSidedDie> dice = game.getSixSidedDie();
 
@@ -394,6 +396,40 @@ public class BoardView extends JPanel {
         revalidate();
         repaint();
     }
+    
+    */
+    
+ // ✅ Ensure Dice Button Click is Not Required
+    public void updateDice() {
+        List<SixSidedDie> dice = game.getSixSidedDie();
+        
+        if (dieButtons != null) {
+            for (DieButton dieBtn : dieButtons) {
+                remove(dieBtn);
+            }
+        }
+        
+        dieButtons = new ArrayList<>();
+        int size = dice.size();
+        int i = 0;
+        
+        for (SixSidedDie die : dice) {
+            DieButton btn = new DieButton(die);
+            btn.setEnabled(false); // Prevent user from clicking AI dice
+            int y = (int) (252 + 40 * ((float) i - size / 2));
+            btn.setBounds(427 - 173, y, btn.getPreferredSize().width, btn.getPreferredSize().height);
+            add(btn);
+            dieButtons.add(btn);
+            i++;
+        }
+        
+        revalidate();
+        repaint();
+        this.revalidate();
+        this.repaint();
+        }
+
+
     	
     public void updateMarkers() {
         questionStations.clear();
