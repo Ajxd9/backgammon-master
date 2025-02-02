@@ -24,7 +24,17 @@ public class Player {
         this.isAI = false; // Default is not AI
     }
 
-    /**
+    public Player(Integer id, String username, String imageSource, AssistantLevel assistanceLevel,
+			PlayerStatistics stats) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.imageSource = imageSource;
+		this.assistanceLevel = assistanceLevel;
+		this.stats = stats;
+	}
+
+	/**
      * Constructor for a player with all attributes.
      * @param id Player ID.
      * @param username Player's username.
@@ -55,7 +65,18 @@ public class Player {
         this.isAI = isAI;
     }
 
-    /**
+
+
+    
+	public Player(Integer id, String username, String imageSource, AssistantLevel assistanceLevel) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.imageSource = imageSource;
+		this.assistanceLevel = assistanceLevel;
+	}
+
+	/**
      * AI makes a move if enabled.
      */
     public void makeMove(Game game) {
