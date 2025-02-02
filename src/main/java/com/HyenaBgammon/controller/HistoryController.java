@@ -23,7 +23,6 @@ public class HistoryController {
         view.addBackButtonListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Back button clicked. Navigate to previous view.");
             }
         });
     }
