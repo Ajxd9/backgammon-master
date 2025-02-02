@@ -32,8 +32,9 @@ public class DiceRollingTest {
             false,                           // useDoubling
             difficulty,                      // game difficulty
             new Player(1, "Player 1", "", AssistantLevel.NOT_USED), // white player
-            new Player(2, "Player 2", "", AssistantLevel.NOT_USED)  // black player
-        );
+            new Player(2, "Player 2", "", AssistantLevel.NOT_USED),  // black player
+            "Red & Blue"
+        		);
 
         Game game = new Game(gameParameters);
         game.setCurrentPlayer(SquareColor.WHITE);
