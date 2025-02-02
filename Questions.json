@@ -152,16 +152,5 @@
       "None of the above"
     ],
     "correct_ans": "1"
-  },
-  {
-    "difficulty": "1",
-    "question": "jcd",
-    "answers": [
-      "dmc",
-      "cm",
-      "c",
-      "s"
-    ],
-    "correct_ans": "1"
   }
 ]}
