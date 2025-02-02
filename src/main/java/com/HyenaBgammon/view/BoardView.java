@@ -28,6 +28,7 @@ import com.HyenaBgammon.models.SquareColor;
 import com.HyenaBgammon.models.SquareType;
 import com.HyenaBgammon.models.SixSidedDie;
 import com.HyenaBgammon.models.Game;
+import com.HyenaBgammon.models.GameParameters;
 import com.HyenaBgammon.controller.BoardController;
 import com.HyenaBgammon.models.Board;
 
@@ -39,7 +40,10 @@ public class BoardView extends JPanel {
     public static final ImageIcon arrowImage = new ImageIcon("images/small_arrows.png");
     private Set<Square> questionTriangles = new HashSet<>();
     private Set<Square> surpriseTriangles = new HashSet<>();
-
+    private ImageIcon whiteCheckerImage;
+    private ImageIcon blackCheckerImage;
+    private GameParameters gameParams;
+    
     private Game game;
     private Board board;
     private Set<Square> questionStations = new HashSet<>();
@@ -52,6 +56,8 @@ public class BoardView extends JPanel {
 
 
     public BoardView(Game game) {
+    	this.gameParams = game.getGameParameters();
+        loadCheckerImages();
         this.game = game;
         this.board = game.getBoard();
         this.SquareButtons = new HashMap<>();
@@ -362,9 +368,6 @@ public class BoardView extends JPanel {
         repaint();
     }
 */
-    
-    
-    
    
     public void updateDice() {
         List<SixSidedDie> dice = game.getSixSidedDie();
@@ -396,10 +399,6 @@ public class BoardView extends JPanel {
         revalidate();
         repaint();
     }
-    
-    
-    
- 
     	
     public void updateMarkers() {
         questionStations.clear();
@@ -408,5 +407,17 @@ public class BoardView extends JPanel {
     }
     public Collection<CaseButton> getSquareButtons() {
         return SquareButtons.values();
+    }
+    
+    private void loadCheckerImages() {
+        String checkerSet = gameParams.getCheckerColorSet();
+
+        if ("Black & White".equals(checkerSet)) {
+            whiteCheckerImage = new ImageIcon("images/pion_blanc.png");
+            blackCheckerImage = new ImageIcon("images/pion_noir.png");
+        } else {
+            whiteCheckerImage = new ImageIcon("images/pion_bleu.png");
+            blackCheckerImage = new ImageIcon("images/pion_rouge.png");
+        }
     }
 }

@@ -6,10 +6,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 
 import com.HyenaBgammon.models.AssistantLevel;
+import com.HyenaBgammon.models.GameDifficulty;
 import com.HyenaBgammon.models.GameParameters;
 import com.HyenaBgammon.models.Player;
 
@@ -41,6 +43,8 @@ public class SettingsPanel extends MonochromePanel {
 
     private int numberOfGames;
     private int timeLimit;
+    
+    private String selectedSet;
 
     // New fields for Player vs AI and Player vs Player selection
     private JRadioButton playerVsPlayerButton;
@@ -68,7 +72,7 @@ public class SettingsPanel extends MonochromePanel {
             System.err.println(err);
         }
 
-        numberOfGames = 3;
+        numberOfGames = 1;
         timeLimit = 30;
 
         gamesText = new JLabel();
@@ -122,9 +126,35 @@ public class SettingsPanel extends MonochromePanel {
         add(infiniteTime);
 
         doublingCube = new MonochromeCheckbox("Doubling Cube");
-        doublingCube.setBounds(100, 270, 150, 50);
+        doublingCube.setBounds(10, 270, 150, 50);
         doublingCube.setSelected(true);
         add(doublingCube);
+        
+        JLabel checkerColorLabel = new JLabel("Select Checker Color Set:");
+        checkerColorLabel.setForeground(new Color(0xCCCCCC));
+        checkerColorLabel.setBounds(220, 270, 150, 50);
+        add(checkerColorLabel);
+
+        // Define available color sets
+        String[] colorSets = {"Black & White", "Red & Blue"};
+        JComboBox<String> colorSetComboBox = new JComboBox<>(colorSets);
+        colorSetComboBox.setBounds(220, 320, 150, 50);
+        add(colorSetComboBox);
+
+        // Add Action Listener to store selected color set
+        String savedSet = gameParams.getCheckerColorSet();
+        if (savedSet != null) {
+            colorSetComboBox.setSelectedItem(savedSet);
+        }
+        
+        colorSetComboBox.setSelectedItem(gameParams.getCheckerColorSet());
+        
+        colorSetComboBox.addActionListener(e -> {
+            this.selectedSet = (String) colorSetComboBox.getSelectedItem();
+            gameParams.setCheckerColorSet(selectedSet); // Store it in GameParameters
+        });
+        // Add to panel
+        add(colorSetComboBox);
 
         setupIncreaseGamesListener();
         setupDecreaseGamesListener();
@@ -400,6 +430,10 @@ public class SettingsPanel extends MonochromePanel {
 
         g.drawImage(gamesIcon.getImage(), 10, 75, this);
         g.drawImage(timeIcon.getImage(), 10, 194, this);
+    }
+    
+    public String getSelectedSet() {
+    	return  this.selectedSet;
     }
     
 }
