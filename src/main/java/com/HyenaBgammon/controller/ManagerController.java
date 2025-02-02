@@ -34,33 +34,31 @@ public class ManagerController {
         view.addDeleteButtonListener(new DeleteButtonListener());
         view.addListSelectionListener(new QuestionListListener());
     }
-
     class SaveButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            Question question;
-            if (isNewQuestion) {
-                question = new Question();
-                model.addQuestion(question);
-                currentQuestionIndex = model.getQuestions().size() - 1;
-            } else {
-                question = model.getQuestion(currentQuestionIndex);
-            }
+            Question question = isNewQuestion ? new Question() : model.getQuestion(currentQuestionIndex);
 
-            // Update question data
+            // Update question data from view
             updateQuestionFromFields(question);
 
-            // Validate question
+            // Validate question before saving or adding
             if (!model.isValidQuestion(question)) {
                 view.showError("Please fill in all fields correctly.");
                 return;
+            }
+
+            if (isNewQuestion) {
+                // Only add a new question if validation passes
+                model.addQuestion(question);
+                currentQuestionIndex = model.getQuestions().size() - 1;
+                isNewQuestion = false;
             }
 
             try {
                 model.saveQuestions();
                 view.updateQuestionList(model.getQuestions());
                 view.setEditMode(false);
-                isNewQuestion = false;
                 view.showSuccess("Question saved successfully!");
             } catch (Exception ex) {
                 view.showError("Error saving question: " + ex.getMessage());
@@ -71,6 +69,7 @@ public class ManagerController {
     class NewButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            // Clear the form for new entry without pre-adding it
             isNewQuestion = true;
             view.clearFields();
             view.setEditMode(true);
@@ -79,6 +78,7 @@ public class ManagerController {
             view.enableEditDelete(false);
         }
     }
+
 
     class EditButtonListener implements ActionListener {
         @Override
