@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
@@ -24,6 +25,9 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
@@ -343,6 +347,7 @@ public class GameController implements Controller
           gameView.getRightPanelInProgress().getDices().addMouseListener(new MouseListener() {
             @Override
             public void mouseReleased(MouseEvent e) {
+                rollDiceAndUpdateUI();  // 🎲 Now plays sound + rolls dice + updates UI
                 Game currentGame = session.getCurrentGame();
                 if (currentGame.isTurnFinished() && !currentGame.isGameFinished()) {
                     currentGame.rollDice(); // Delegate dice rolling to Game
@@ -777,6 +782,8 @@ public class GameController implements Controller
         }
     }
     
+    
+    
 
     public void nextTurn() {
         session.getCurrentGame().nextTurn();
@@ -886,72 +893,102 @@ public class GameController implements Controller
     
 */
     
+    private void rollDiceAndUpdateUI() {
+        Game currentGame = session.getCurrentGame();
+        Player currentPlayer = currentGame.getGameParameters().getPlayer(currentGame.getCurrentPlayer());
+
+        if (!currentGame.isTurnFinished() || currentGame.isGameFinished()) {
+            System.out.println("DEBUG: Dice roll skipped (game is finished or turn not completed).");
+            return;
+        }
+        System.out.println("INFO: Rolling dice for AI: " + currentPlayer.getUsername());
+        // Play sound effect when rolling dice
+        playDiceRollSound();
+        // Roll Dice
+        currentGame.rollDice();
+        System.out.println("DEBUG: AI rolled dice: " + currentGame.getSixSidedDie());
+
+        if (boardController.getClock() != null) {
+            boardController.getClock().restart();
+        }
+
+        System.out.println("DEBUG: UI updated after dice roll.");
+        gameView.getBoardView().updateDice();
+        gameView.updateUI();
+        gameView.getBoardView().updateUI();
+    }
+    
+    
+    private void playDiceRollSound() {
+        try {
+            // Load the WAV file from resources folder
+            File soundFile = new File("src/main/java/resources/dice.wav");
+            
+            if (!soundFile.exists()) {
+                System.out.println("ERROR: Sound file not found!");
+                return;
+            }
+
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    
+    
     private void handleAITurn() {
         Game game = session.getCurrentGame();
         Player aiPlayer = game.getGameParameters().getPlayer(game.getCurrentPlayer());
 
         if (!aiPlayer.isAI()) return; // Ensure this runs only for AI
 
-        System.out.println(aiPlayer.getUsername() + " (AI) turn started...");
+        System.out.println("DEBUG: AI turn started for " + aiPlayer.getUsername());
 
-        // Ensure AI only rolls if its turn has finished
-        if (game.isTurnFinished() && !game.isGameFinished()) {
-            game.rollDice(); // AI Rolls the dice
-            System.out.println("AI rolled dice: " + game.getSixSidedDie());
+        // ✅ Log dice rolling event
+        rollDiceAndUpdateUI();
 
-            // Restart clock if it exists
-            if (boardController.getClock() != null) {
-                boardController.getClock().restart();
-            }
-
-            // If no possible moves, display message and change turn
-            if (!game.hasPossibleMove()) {
-                gameView.displayRequestWindow("No possible move", "");
-                boardController.changeTurn();
-                gameView.updateUI();
-                gameView.getBoardView().updateUI();
-                gameView.getBoardView().updateDice();
-                return; // Exit early since AI has no move
-            }
-        }
-
-        // Ensure dice UI updates immediately
-        gameView.getRightPanelInProgress().getDices().repaint();
-        gameView.getBoardView().updateDice();
-
-        // Evaluate possible moves AFTER rolling the dice
-        List<Move> possibleMoves = game.getPossibleMoves();
-        if (!possibleMoves.isEmpty()) {
-            Move bestMove = getBestMoveForAI(game, possibleMoves);
-            if (bestMove != null) {
-                boolean moveExecuted = game.playMove(bestMove);
-                if (moveExecuted) {
-                    System.out.println("AI moved from " + bestMove.getStartSquare() + " to " + bestMove.getEndSquare());
-                } else {
-                    System.out.println("AI attempted to move, but move execution failed.");
-                }
-            } else {
-                System.out.println("AI could not find an optimal move.");
-            }
-        } else {
-            System.out.println("AI has no possible moves. Skipping turn.");
-        }
-
-        // Update UI after move execution
-        gameView.getBoardView().updateUI();
-        gameView.updateUI();
-
-        // ✅ Step 5: Move to the next turn after a short delay (simulate AI thinking)
+        // ✅ Delay AI thinking before making a move
         new java.util.Timer().schedule(new java.util.TimerTask() {
             @Override
             public void run() {
-                game.nextTurn();
-                handleAITurn(); // Ensure AI plays continuously if it's still its turn
+                System.out.println("DEBUG: AI evaluating possible moves...");
+                List<Move> possibleMoves = game.getPossibleMoves();
+                if (!possibleMoves.isEmpty()) {
+                    Move bestMove = getBestMoveForAI(game, possibleMoves);
+                    if (bestMove != null) {
+                        boolean moveExecuted = game.playMove(bestMove);
+                        if (moveExecuted) {
+                            System.out.println("INFO: AI moved from " + bestMove.getStartSquare() + " to " + bestMove.getEndSquare());
+                        } else {
+                            System.out.println("WARNING: AI attempted to move, but execution failed.");
+                        }
+                    }
+                } else {
+                    System.out.println("INFO: AI has no possible moves. Skipping turn.");
+                }
+
+                // ✅ Log UI update
+                System.out.println("DEBUG: Updating game UI after AI move.");
+                gameView.updateUI();
+                gameView.getBoardView().updateUI();
+
+                // ✅ Move to the next turn after a short delay
+                new java.util.Timer().schedule(new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        System.out.println("DEBUG: AI turn ended, switching to next turn.");
+                        game.nextTurn();
+                        handleAITurn(); // Ensure AI continues playing if it's still AI's turn
+                    }
+                }, 1000);
             }
-        }, 1000);
+        }, 500);
     }
-    
-    
+
 
 
     /**
@@ -961,16 +998,26 @@ public class GameController implements Controller
         Move bestMove = null;
         int highestScore = Integer.MIN_VALUE;
 
+        System.out.println("DEBUG: AI evaluating " + possibleMoves.size() + " possible moves.");
+
         for (Move move : possibleMoves) {
             int moveScore = evaluateMove(game, move);
+            System.out.println("DEBUG: Move " + move.getStartSquare() + " → " + move.getEndSquare() + " scored " + moveScore);
             if (moveScore > highestScore) {
                 highestScore = moveScore;
                 bestMove = move;
             }
         }
+
+        if (bestMove != null) {
+            System.out.println("INFO: AI selected best move: " + bestMove.getStartSquare() + " → " + bestMove.getEndSquare());
+        } else {
+            System.out.println("WARNING: AI could not find a move.");
+        }
+
         return bestMove;
     }
-
+    
     /**
      * Evaluates AI moves based on capturing, movement efficiency, blockades, and risk minimization.
      */
