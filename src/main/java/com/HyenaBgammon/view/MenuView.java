@@ -19,7 +19,7 @@ public class MenuView extends MonochromeView {
      * This class allows us to visualize the menu of our game.
      */
     private static final long serialVersionUID = 3060121008717453091L;
-    public static final String img_menu = "images/menu_bg.png";
+    public static final String img_menu = "images/menu.png";
     
     // Declaration of button variables
     private MonochromeButton newSessionButton;
@@ -40,7 +40,7 @@ public class MenuView extends MonochromeView {
     	// Title Label
     	JLabel titleLabel = new JLabel("Hyena Backgammon");
     	titleLabel.setFont(new Font("Verdana", Font.BOLD, 30)); // Set custom font
-    	titleLabel.setForeground(Color.WHITE);
+    	titleLabel.setForeground(Color.BLACK);
     	titleLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center-align text
     	titleLabel.setBounds(200, 80, 400, 50); // Position at the top-center
     	add(titleLabel);
@@ -149,11 +149,21 @@ public class MenuView extends MonochromeView {
     public MonochromeButton getHistoryButton() {
         return historyButton;
     }
-
+    
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (icon != null) {
+            g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+    
+    /*
 	@Override
     protected void paintComponent(Graphics g) {
         
         g.drawImage(icon.getImage(), 0, 0, this);
         
     }
+    */
 }

@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JFrame;
 
@@ -30,7 +31,8 @@ public class BoardController implements Controller {
     private GameView gameView;
     private Clock Clock;
     private boolean turnChanged = false; // Add a flag to track turn changes
-
+    private static List<CaseButton> allCaseButtons;
+    
     private GameController gameController;
     private JFrame frame;
     private QuestionManager questionManager; // Added QuestionManager
@@ -373,4 +375,5 @@ public class BoardController implements Controller {
 
     @Override
     public void back() {}
+    
 }

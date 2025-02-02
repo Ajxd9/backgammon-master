@@ -1,5 +1,11 @@
 package com.HyenaBgammon.models;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.jdom2.Element;
 
 public class GameParameters {
@@ -10,17 +16,21 @@ public class GameParameters {
     public Player blackPlayer;
     private GameDifficulty difficulty;
     private boolean playerVsAI = false; // Default to false
-
-    public GameParameters(int secondsPerTurn, int winningGamesCount, boolean useDoubling, GameDifficulty difficulty, Player whitePlayer, Player blackPlayer) {
+    private String checkerColorSet = "Black & White"; // Default is black & White
+    private static final String SETTINGS_FILE = "game_settings.properties";
+    
+    public GameParameters(int secondsPerTurn, int winningGamesCount, boolean useDoubling, GameDifficulty difficulty, Player whitePlayer, Player blackPlayer, String color) {
         this.secondsPerTurn = secondsPerTurn;
         this.winningGamesCount = winningGamesCount;
         this.useDoubling = useDoubling;
         this.difficulty = difficulty;
         this.whitePlayer = whitePlayer;
         this.blackPlayer = blackPlayer;
+        this.checkerColorSet = color;
     }
     
     public GameParameters() {
+    	loadSettings();
     }
     
     public void save(Element session) {
@@ -102,4 +112,31 @@ public class GameParameters {
     public void setPlayerVsAI(boolean playerVsAI) {
         this.playerVsAI = playerVsAI;
     }
+	public String getCheckerColorSet() {
+		return checkerColorSet;
+	}
+	public void setCheckerColorSet(String checkerColorSet) {
+		this.checkerColorSet = checkerColorSet;
+		System.out.println(checkerColorSet);
+	}
+	
+	private void saveSettings() {
+        try (FileOutputStream fileOut = new FileOutputStream(SETTINGS_FILE);
+             ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+            out.writeObject(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+	
+    private void loadSettings() {
+        try (FileInputStream fileIn = new FileInputStream(SETTINGS_FILE);
+             ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            GameParameters loadedParams = (GameParameters) in.readObject();
+            this.checkerColorSet = loadedParams.checkerColorSet;
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("No previous settings found. Using defaults.");
+        }
+    }
+    
 }

@@ -113,6 +113,7 @@ public class IntermediateGameController implements Controller {
                 int numGames = gameCreationView.getNewSessionView().getSettingsPanel().getNumberOfGames();
                 boolean doubling = gameCreationView.getNewSessionView().getSettingsPanel().getdoublingCube().isSelected();
                 GameDifficulty selectedDifficulty = gameCreationView.getNewSessionView().getSelectedDifficulty();
+                String color = gameCreationView.getNewSessionView().getSettingsPanel().getSelectedSet();
                 
                 Player whitePlayer = gameCreationView.getNewSessionView().getPlayerPanel1().getPlayer();
                 Player blackPlayer = gameCreationView.getNewSessionView().getPlayerPanel2().getPlayer();
@@ -127,7 +128,7 @@ public class IntermediateGameController implements Controller {
                     return;
                 }
                 // Creation of game parameters
-                GameParameters params = new GameParameters(time, numGames, doubling, selectedDifficulty, whitePlayer, blackPlayer);
+                GameParameters params = new GameParameters(time, numGames, doubling, selectedDifficulty, whitePlayer, blackPlayer, color);
                 gameCreationView.setVisible(false);
                 mainController.newSession(params);
             }

@@ -9,6 +9,7 @@ import java.util.List;
 import org.jdom2.Element;
 
 import com.HyenaBgammon.exception.TurnNotPlayableException;
+import com.HyenaBgammon.view.CaseButton;
 
 public class Game extends AbstractGame {
     private GameParameters gameParameters;
@@ -23,6 +24,7 @@ public class Game extends AbstractGame {
     private boolean turnFinished;
     private int diceUsed;
     private GameDifficulty gameDifficulty;
+    private String colorSet;
     private boolean surpriseStationEnabled = false; // Tracks if a surprise station is active
     private boolean surpriseStationHit = false;    // Ensures surprise station is triggered only once
     private boolean questionRequiredAtTurnStart = false; // New field
@@ -51,6 +53,9 @@ public class Game extends AbstractGame {
 
         // Initialize game difficulty from GameParameters
         this.gameDifficulty = p.getDifficulty(); // Ensure GameParameters has a valid difficulty set
+        this.colorSet = p.getCheckerColorSet();
+        System.out.println(colorSet);
+        CaseButton.loadCheckerImages(colorSet);
     }
 
     public Game(int gameId, GameParameters p) {
@@ -69,6 +74,9 @@ public class Game extends AbstractGame {
 
         // Initialize game difficulty from GameParameters
         this.gameDifficulty = p.getDifficulty();
+        this.colorSet = p.getCheckerColorSet();
+        System.out.println(colorSet);
+        CaseButton.loadCheckerImages(colorSet);
 
         System.out.println("The game you just started is: " + this.gameParameters.getDifficulty());
     }

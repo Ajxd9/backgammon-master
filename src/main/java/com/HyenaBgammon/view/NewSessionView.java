@@ -255,7 +255,6 @@ public class NewSessionView extends JPanel {
     }
     
     public GameDifficulty getSelectedDifficulty() {
-    	System.out.println("Game difficulty: " + difficultySelector.getSelectedItem());
         return (GameDifficulty) difficultySelector.getSelectedItem();
     }
 
