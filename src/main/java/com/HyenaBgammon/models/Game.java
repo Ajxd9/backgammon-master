@@ -24,7 +24,7 @@ public class Game extends AbstractGame {
     private boolean turnFinished;
     private int diceUsed;
     private GameDifficulty gameDifficulty;
-    private String colorSet;
+    private String colorSet = "Black & White";
     private boolean surpriseStationEnabled = false; // Tracks if a surprise station is active
     private boolean surpriseStationHit = false;    // Ensures surprise station is triggered only once
     private boolean questionRequiredAtTurnStart = false; // New field
@@ -74,7 +74,11 @@ public class Game extends AbstractGame {
 
         // Initialize game difficulty from GameParameters
         this.gameDifficulty = p.getDifficulty();
+        if(p.getCheckerColorSet() == null) {
+        	this.colorSet = "Black & White";
+        }else {
         this.colorSet = p.getCheckerColorSet();
+        }
         System.out.println(colorSet);
         CaseButton.loadCheckerImages(colorSet);
 
