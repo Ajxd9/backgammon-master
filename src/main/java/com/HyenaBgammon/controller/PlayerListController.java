@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Calendar;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import com.HyenaBgammon.models.Player;
 import com.HyenaBgammon.models.Profiles;
@@ -231,9 +232,21 @@ public class PlayerListController implements Controller {
             public void mousePressed(MouseEvent e) {}
             @Override
             public void mouseReleased(MouseEvent e) {
-                if(flag){
+                
+                String nickname = AddPlayerView.getPlayerNickname().getText().trim();
+
+                // Validate nickname: prevent empty nicknames
+                if (nickname.isEmpty()) {
+                    JOptionPane.showMessageDialog(AddPlayerView,
+                            "Nickname cannot be empty!",
+                            "Input Error",
+                            JOptionPane.WARNING_MESSAGE);
+                    return; // Stop execution to prevent saving
+                }
+            	
+            	if(flag){
                     boolean flag = true;
-                    
+                    boolean check = true;
                     Player tmpPlayer = new Player();        
                     tmpPlayer.setUsername(AddPlayerView.getPlayerNickname().getText());    
                     tmpPlayer.setImageSource(PlayerListView.getAddPlayerView().getPath());

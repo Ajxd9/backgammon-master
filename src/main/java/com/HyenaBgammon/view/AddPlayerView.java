@@ -7,6 +7,7 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
@@ -173,7 +174,7 @@ public class AddPlayerView extends MonochromePanel {
     /**
      * Getter for the save button
      * @return returns the save button class
-     */
+     */	
     public MonochromeButton getSaveButton() {
         return saveButton;
     }
